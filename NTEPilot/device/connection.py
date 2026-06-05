@@ -593,3 +593,118 @@ class Connection:
         self.orientation = o
         logger.attr('Device Orientation', f'{o} ({Connection._orientation_description.get(o, "Unknown")})')
         return o
+
+    @retry
+    def app_current_adb(self):
+        """
+        获取当前前台应用的包名，复制自 uiautomator2。
+
+        Returns:
+            当前前台应用的包名。
+
+        Raises:
+            OSError: 无法获取前台应用时抛出。
+
+        Note:
+            reset_uiautomator 函数依赖此方法，因此不能在此使用 jsonrpc。
+        """
+        # 相关 issue: https://github.com/openatx/uiautomator2/issues/200
+        # $ adb shell dumpsys window windows
+        # 输出示例:
+        #   mCurrentFocus=Window{41b37570 u0 com.incall.apps.launcher/com.incall.apps.launcher.Launcher}
+        #   mFocusedApp=AppWindowToken{422df168 token=Token{422def98 ActivityRecord{422dee38 u0 com.example/.UI.play.PlayActivity t14}}}
+        # 正则表达式
+        #   r'mFocusedApp=.*ActivityRecord{\w+ \w+ (?P<package>.*)/(?P<activity>.*) .*'
+        #   r'mCurrentFocus=Window{\w+ \w+ (?P<package>.*)/(?P<activity>.*)\}')
+        _focusedRE = re.compile(
+            r'mCurrentFocus=Window{.*\s+(?P<package>[^\s]+)/(?P<activity>[^\s]+)\}'
+        )
+        m = _focusedRE.search(self.adb_shell(['dumpsys', 'window', 'windows']))
+        if m:
+            return m.group('package')
+
+        # 尝试: adb shell dumpsys activity top
+        _activityRE = re.compile(
+            r'ACTIVITY (?P<package>[^\s]+)/(?P<activity>[^/\s]+) \w+ pid=(?P<pid>\d+)'
+        )
+        output = self.adb_shell(['dumpsys', 'activity', 'top'])
+        ms = _activityRE.finditer(output)
+        ret = None
+        for m in ms:
+            ret = m.group('package')
+        if ret:  # 取最后一个结果
+            return ret
+        raise OSError("Couldn't get focused app")
+
+    def app_is_running(self) -> bool:
+        package = self.app_current_adb()
+        logger.attr('Package_name', package)
+        return package == self.package
+
+    def app_start_adb(self, package_name=None, activity_name=None, allow_failure=False):
+        """
+        启动应用，依次尝试 am start 和 monkey 方式。
+
+        Args:
+            package_name: 应用包名，为 None 时从配置获取。
+            activity_name: Activity 名称，为 None 时从 config.ACTIVITY_NAME 获取，
+                仍为 None 时通过 monkey 启动，monkey 失败后再通过 am 启动。
+            allow_failure: 为 True 时不抛出 PackageNotInstalled 异常，直接返回 False。
+
+        Returns:
+            是否成功启动。
+
+        Raises:
+            PackageNotInstalled: 应用未安装且 allow_failure 为 False 时抛出。
+        """
+        if not package_name:
+            package_name = self.package
+        if not activity_name:
+            activity_name = config.ACTIVITY_NAME
+
+        if activity_name:
+            if self._app_start_adb_am(package_name, activity_name, allow_failure):
+                return True
+        if self._app_start_adb_monkey(package_name, allow_failure):
+            return True
+        if self._app_start_adb_am(package_name, activity_name, allow_failure):
+            return True
+
+        logger.error('app_start_adb: All trials failed')
+        return False
+
+    def _app_start_adb_am(self, package_name, activity_name=None, allow_failure=False):
+        if not activity_name:
+            return False
+        if activity_name.startswith('.'):
+            activity_name = package_name + activity_name
+
+        output = self.adb_shell(['am', 'start', '-n', f'{package_name}/{activity_name}'])
+        if 'Error' in output or 'Exception' in output:
+            logger.warning(output)
+            if 'does not exist' in output or 'not found' in output or 'Unknown package' in output:
+                if allow_failure:
+                    return False
+                raise PackageNotInstalled(package_name)
+            return False
+        return True
+
+    def _app_start_adb_monkey(self, package_name, allow_failure=False):
+        output = self.adb_shell([
+            'monkey', '-p', package_name,
+            '-c', 'android.intent.category.LAUNCHER',
+            '1'
+        ])
+        if 'No activities found' in output or 'monkey aborted' in output:
+            logger.warning(output)
+            if allow_failure:
+                return False
+            raise PackageNotInstalled(package_name)
+        return True
+
+    @retry
+    def app_stop_adb(self, package_name=None):
+        """停止应用：am force-stop。"""
+        if not package_name:
+            package_name = self.package
+        self.adb_shell(['am', 'force-stop', package_name])

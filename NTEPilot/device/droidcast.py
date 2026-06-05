@@ -16,7 +16,7 @@ from .utils import (
     ImageTruncated, PackageNotInstalled, RETRY_TRIES, handle_adb_error, handle_unknown_host_service, retry_sleep, handle_image_truncated)
 from .connection import Connection
 
-DROIDCAST_FILEPATH_LOCAL = './assets/bin/DroidCast/DroidCast_raw-release-1.1.apk'
+DROIDCAST_FILEPATH_LOCAL = './bin/DroidCast/DroidCast_raw-release-1.1.apk'
 DROIDCAST_FILEPATH_REMOTE = '/data/local/tmp/DroidCast_raw.apk'
 
 class DroidCastVersionIncompatible(Exception):
