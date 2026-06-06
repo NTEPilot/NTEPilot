@@ -221,31 +221,8 @@ class DroidCast(Connection):
             raise ImageTruncated(str(e)+'\nIf your emulator resolution not 1280x720, please set emulator resolution to 1280x720')
 
         # 将 RGB565 转换为 RGB888
-        # https://blog.csdn.net/happy08god/article/details/10516871
-
-        # r = (arr & 0b1111100000000000) >> (11 - 3)
-        # g = (arr & 0b0000011111100000) >> (5 - 2)
-        # b = (arr & 0b0000000000011111) << 3
-        # r |= (r & 0b11100000) >> 5
-        # g |= (g & 0b11000000) >> 6
-        # b |= (b & 0b11100000) >> 5
-        # r = r.astype(np.uint8)
-        # g = g.astype(np.uint8)
-        # b = b.astype(np.uint8)
-        # image = cv2.merge([r, g, b])
-
-        # 与上方代码功能相同，但耗时约 2.7ms 而非 16ms。
-        # 注意 cv2.convertScaleAbs 比 cv2.multiply 快 5 倍，cv2.add 比 cv2.convertScaleAbs 快 8 倍
-        # 注意 cv2.convertScaleAbs 包含四舍五入
-        tmp = np.empty_like(arr)
-        cv2.bitwise_and(arr, 0b1111100000000000, dst=tmp)
-        r = cv2.convertScaleAbs(tmp, alpha=0.0040283203125)  # 0.00390625 * 1.03125
-        cv2.bitwise_and(arr, 0b0000011111100000, dst=tmp)
-        g = cv2.convertScaleAbs(tmp, alpha=0.126953125)  # 0.125 * 1.015625
-        cv2.bitwise_and(arr, 0b0000000000011111, dst=tmp)
-        b = cv2.convertScaleAbs(tmp, alpha=8.25)  # 8 * 1.03125
-
-        image = cv2.merge([r, g, b])
+        arr_u8 = arr.view(np.uint8).reshape((arr.shape[0], arr.shape[1], 2))
+        image = cv2.cvtColor(arr_u8, cv2.COLOR_BGR5652RGB)
 
         return image
 

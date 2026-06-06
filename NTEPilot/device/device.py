@@ -10,7 +10,6 @@ from .screenshot import Screenshot
 from utils.exceptions import (EmulatorNotRunningError, GameNotRunningError, GameStuckError, GameTooManyClickError,
                               RequestHumanTakeover)
 from utils.logger import logger
-from template import Template
 import config
 
 def show_function_call():
@@ -180,43 +179,3 @@ class Device(Screenshot, Control):
         else:
             self._prev_fingerprint = fp
             self._stuck_image_timer.reset()
-
-    def appear(self, template: Template, offset=10, similarity=0.85):
-        """
-        检测模板是否出现在当前截图上。
-
-        Args:
-            template: 待检测的 Template 或 xpath 字符串。
-            similarity: 模板匹配相似度阈值，0~1。
-
-        Returns:
-            bool: 元素是否出现。
-        """
-
-        appear = template.match(self.image, offset=offset, similarity=similarity)
-        return appear
-
-    def appear_then_click(self, template: Template, offset=10, similarity=0.85):
-        appear = self.appear(template, offset=offset, similarity=similarity)
-        if appear:
-            self.click(template)
-        return appear
-
-    def wait_until_appear(self, template: Template, offset=0, skip_first_screenshot=False):
-        while True:
-            if skip_first_screenshot:
-                skip_first_screenshot = False
-            else:
-                self.screenshot()
-            if self.appear(template, offset=offset):
-                break
-
-    def wait_until_appear_then_click(self, template: Template, offset=0):
-        self.wait_until_appear(template, offset=offset)
-        self.click(template)
-
-    def wait_until_disappear(self, template: Template, offset=0):
-        while True:
-            self.screenshot()
-            if not self.appear(template, offset=offset):
-                break

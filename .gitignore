@@ -164,3 +164,6 @@ pyrefly.toml
 
 # logs
 logs/
+
+# debug
+debug/

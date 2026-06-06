@@ -31,11 +31,7 @@ class Screenshot(DroidCast):
         self._screenshot_interval.reset()
 
         for _ in range(2):
-            try:
-                self.image = self.screenshot_droidcast()
-            except EmulatorNotRunningError:
-                logger.warning('DroidCast screenshot failed, fallback to adb screencap')
-                self.image = self.screenshot_adb()
+            self.image = self.screenshot_droidcast()
 
             width, height = image_size(self.image)
 
@@ -47,13 +43,6 @@ class Screenshot(DroidCast):
                 continue
 
         return self.image
-
-    def screenshot_adb(self):
-        data = self.adb_shell(['screencap', '-p'], stream=True)
-        image = cv2.imdecode(np.frombuffer(data, dtype=np.uint8), cv2.IMREAD_COLOR)
-        if image is None:
-            raise EmulatorNotRunningError('Failed to decode adb screencap')
-        return cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
 
     @property
     def has_cached_image(self):

@@ -34,10 +34,10 @@ class Control(Minitouch):
         """
         if isinstance(target, tuple):
             x, y = target[0], target[1]
-            logger.info(f'Click ({x}, {y}) @ {target}')
+            logger.info(f'Click ({x}, {y})')
         elif isinstance(target, Template):
             x, y = target.pos
-            logger.info(f'Click ({x}, {y})')
+            logger.info(f'Click ({x}, {y}) @ {target}')
         else:
             raise ScriptError(f'Unsupported target type: {type(target)}')
 
@@ -62,10 +62,10 @@ class Control(Minitouch):
         duration = self.random_time(duration)
         if isinstance(target, tuple):
             x, y = target[0], target[1]
-            logger.info(f'Long Click ({x}, {y}) @ {target} for {duration:.3f}s')
+            logger.info(f'Long Click ({x}, {y}) for {duration:.3f}s')
         elif isinstance(target, Template):
             x, y = target.pos
-            logger.info(f'Long Click ({x}, {y}) for {duration:.3f}s')
+            logger.info(f'Long Click ({x}, {y}) @ {target} for {duration:.3f}s')
         else:
             raise ScriptError(f'Unsupported target type: {type(target)}')
 
@@ -82,10 +82,10 @@ class Control(Minitouch):
     def press(self, target):
         if isinstance(target, tuple):
             x, y = target[0], target[1]
-            logger.info(f'Press ({x}, {y}) @ {target}')
+            logger.info(f'Press ({x}, {y})')
         elif isinstance(target, Template):
             x, y = target.pos
-            logger.info(f'Press ({x}, {y})')
+            logger.info(f'Press ({x}, {y}) @ {target}')
         else:
             raise ScriptError(f'Unsupported target type: {type(target)}')
         self.press_minitouch(x, y)

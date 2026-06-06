@@ -45,12 +45,8 @@ def load_image(file, area=None):
     with Image.open(file) as f:
         if area is not None:
             f = f.crop(area)
-
+        f = f.convert('RGB')
         image = np.array(f)
-
-    channel = image_channel(image)
-    if channel == 4:
-        image = cv2.cvtColor(image, cv2.COLOR_RGBA2RGB)
 
     return image
 
@@ -279,3 +275,42 @@ def get_bbox(image, threshold=0):
     else:
         # 正常情况下不应出现
         raise ImageNotSupported(f'Empty bbox {(min_x, min_y, max_x, max_y)}')
+
+def color_similar(color1, color2, threshold=10):
+    """
+    判断两个颜色是否相似，当容差小于等于阈值时视为相似。
+    容差 = Max(正差值_rgb) + Max(-负差值_rgb)
+    与 Photoshop 中的容差计算方式相同。
+
+    Args:
+        color1 (tuple): 颜色1 (r, g, b)。
+        color2 (tuple): 颜色2 (r, g, b)。
+        threshold (int): 容差阈值，默认为 10。
+
+    Returns:
+        bool: 两颜色相似返回 True。
+    """
+    # print(color1, color2)
+    # diff = np.array(color1).astype(int) - np.array(color2).astype(int)
+    # diff = np.max(np.maximum(diff, 0)) - np.min(np.minimum(diff, 0))
+    diff_r = color1[0] - color2[0]
+    diff_g = color1[1] - color2[1]
+    diff_b = color1[2] - color2[2]
+
+    max_positive = 0
+    max_negative = 0
+    if diff_r > max_positive:
+        max_positive = diff_r
+    elif diff_r < max_negative:
+        max_negative = diff_r
+    if diff_g > max_positive:
+        max_positive = diff_g
+    elif diff_g < max_negative:
+        max_negative = diff_g
+    if diff_b > max_positive:
+        max_positive = diff_b
+    elif diff_b < max_negative:
+        max_negative = diff_b
+
+    diff = max_positive - max_negative
+    return diff <= threshold
