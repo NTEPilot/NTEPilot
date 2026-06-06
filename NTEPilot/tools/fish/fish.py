@@ -1,14 +1,10 @@
-from template.fish import BUTTON_CHANGE_BAIT
-from template.fish import SHOP_MAX_BUTTON
-import os
 import time
-import cv2
 import threading
 import numpy as np
 
 from NTEPilot.ui.ui import UI
 from NTEPilot.device.control import Control
-from NTEPilot.ui.page import FISH_MAIN_PAGE, FISH_SHOP
+from NTEPilot.ui.page import FISH_MAIN_PAGE, FISH_SHOP, FISH_STORAGE_PAGE
 from template.fish import *
 from template.ui import GET_ITEM
 
@@ -40,6 +36,9 @@ class Fish(UI):
             if self.appear(NEED_BAIT):
                 self.buy_bait()
 
+            if self.appear(FULL_STORAGE):
+                self.sell_fish()
+
     def buy_bait(self):
         logger.hr('BUY BAIT')
         self.device.screenshot()
@@ -58,6 +57,23 @@ class Fish(UI):
         self.ui_goto(FISH_MAIN_PAGE)
         self.device.click(BUTTON_CHANGE_BAIT)
         self.wait_until_appear_then_click(CHANGE_BAIT_CONFIRM)
+
+    def sell_fish(self):
+        logger.hr('SELL FISH')
+        self.device.screenshot()
+        self.ui_goto(FISH_STORAGE_PAGE)
+        self.device.click(SELL_ALL)
+        self.wait_until_appear_then_click(SELL_CONFIRM)
+        self.device.screenshot()
+        self.wait_until_appear(SELL_SUCCESS)
+        while True:
+            self.device.click(SAFE_AREA)
+            self.device.screenshot()
+            if self.appear(SELL_SUCCESS):
+                time.sleep(Control.random_time((0.1, 0.2)))
+                continue
+            break
+        self.ui_goto(FISH_MAIN_PAGE)
 
     def _find_matching_cols(self, roi, target_rgb, threshold=30):
         diff = roi.astype(np.int16) - target_rgb

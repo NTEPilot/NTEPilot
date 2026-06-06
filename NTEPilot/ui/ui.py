@@ -11,6 +11,7 @@ class UI(InfoHandler):
         Page.init_connection(destination)
 
         logger.hr(f"UI goto {destination}")
+        self.device.screenshot_interval_set(1)
         while True:
             if skip_first_screenshot:
                 skip_first_screenshot = False
@@ -34,3 +35,4 @@ class UI(InfoHandler):
 
         # 重置页面连接
         Page.clear_connection()
+        self.device.screenshot_interval_set()
