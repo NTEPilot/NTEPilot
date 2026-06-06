@@ -11,5 +11,5 @@ class LoadTemplate(Template):
         if img is None:
             logger.error(f"Failed to load template: {filename}")
             raise FileNotFoundError(f"Template file not found: {filename}")
-        x1, y1, x2, y2 = get_bbox(img) if rect is None else rect
-        super().__init__(name, img[y1:y2, x1:x2], (x1, y1, x2, y2))
+        x1, y1, x2, y2 = get_bbox(img)
+        super().__init__(name, img[y1:y2, x1:x2], (x1, y1, x2, y2) if rect is None else rect)

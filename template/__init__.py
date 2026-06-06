@@ -8,8 +8,8 @@ class Template:
         x1, y1, x2, y2 = rect
         self.pos = ((x1 + x2) // 2, (y1 + y2) // 2)
         self.gray_image = cv2.cvtColor(self.image, cv2.COLOR_RGB2GRAY)
-        self.width = x2 - x1
-        self.height = y2 - y1
+        self.width = self.gray_image.shape[1]
+        self.height = self.gray_image.shape[0]
 
     def __str__(self):
         return self.name
@@ -27,7 +27,7 @@ class Template:
         y2 = min(h_img, y2 + offset)
         
         roi = screenshot[y1:y2, x1:x2]
-        roi_gray = cv2.cvtColor(roi, cv2.COLOR_BGR2GRAY)
+        roi_gray = cv2.cvtColor(roi, cv2.COLOR_RGB2GRAY)
         
         res = cv2.matchTemplate(roi_gray, self.gray_image, cv2.TM_CCOEFF_NORMED)
         _, max_val, _, max_loc = cv2.minMaxLoc(res)

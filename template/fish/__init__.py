@@ -1,8 +1,15 @@
 from template.load_template import LoadTemplate
 
+BAIT = LoadTemplate("./template/fish/assets/BAIT.png", rect=(32, 86, 453, 653))
+BUTTON_CHANGE_BAIT = LoadTemplate("./template/fish/assets/BUTTON_CHANGE_BAIT.png")
 BUTTON_LEFT = LoadTemplate("./template/fish/assets/BUTTON_LEFT.png")
 BUTTON_MARKET = LoadTemplate("./template/fish/assets/BUTTON_MARKET.png")
 BUTTON_RIGHT = LoadTemplate("./template/fish/assets/BUTTON_RIGHT.png")
 BUTTON_SHOP = LoadTemplate("./template/fish/assets/BUTTON_SHOP.png")
+BUY = LoadTemplate("./template/fish/assets/BUY.png")
+BUY_CONFIRM = LoadTemplate("./template/fish/assets/BUY_CONFIRM.png")
+CHANGE_BAIT_CONFIRM = LoadTemplate("./template/fish/assets/CHANGE_BAIT_CONFIRM.png")
 FISH_BAR_ICON = LoadTemplate("./template/fish/assets/FISH_BAR_ICON.png")
 HOOK = LoadTemplate("./template/fish/assets/HOOK.png")
+NEED_BAIT = LoadTemplate("./template/fish/assets/NEED_BAIT.png")
+SHOP_MAX_BUTTON = LoadTemplate("./template/fish/assets/SHOP_MAX_BUTTON.png")

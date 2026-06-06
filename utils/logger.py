@@ -36,7 +36,7 @@ class CustomLogger(logging.Logger):
 logging.setLoggerClass(CustomLogger)
 
 
-def setup_logger(name="ArkReCode", level=logging.DEBUG, log_dir="logs") -> CustomLogger:
+def setup_logger(name="NTEPilot", level=logging.DEBUG, log_dir="logs") -> CustomLogger:
     logger = logging.getLogger(name)
     logger.setLevel(level)
 

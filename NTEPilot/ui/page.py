@@ -1,6 +1,7 @@
 import traceback
 
 from template.fish import *
+from template.ui import *
 
 class Page:
     # 键: str, 页面名称如 "page_main"
@@ -43,10 +44,10 @@ class Page:
     @classmethod
     def iter_check_templates(cls):
         for page in cls.all_pages.values():
-            yield page.check_button
+            yield page.check_template
 
-    def __init__(self, check_templates):
-        self.check_templates = check_templates
+    def __init__(self, check_template):
+        self.check_template = check_template
         self.links = {}
         (filename, line_number, function_name, text) = traceback.extract_stack()[-2]
         self.name = text[:text.find('=')].strip()
@@ -67,3 +68,6 @@ class Page:
 
 # fish
 FISH_MAIN_PAGE = Page(HOOK)
+FISH_SHOP = Page(BAIT)
+FISH_MAIN_PAGE.link(BUTTON_SHOP, FISH_SHOP)
+FISH_SHOP.link(BUTTON_CROSS, FISH_MAIN_PAGE)

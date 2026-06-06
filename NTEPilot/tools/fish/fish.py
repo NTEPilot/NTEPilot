@@ -1,3 +1,5 @@
+from template.fish import BUTTON_CHANGE_BAIT
+from template.fish import SHOP_MAX_BUTTON
 import os
 import time
 import cv2
@@ -6,10 +8,14 @@ import numpy as np
 
 from NTEPilot.ui.ui import UI
 from NTEPilot.device.control import Control
-from template.fish import HOOK, FISH_BAR_ICON, BUTTON_LEFT, BUTTON_RIGHT
+from NTEPilot.ui.page import FISH_MAIN_PAGE, FISH_SHOP
+from template.fish import *
+from template.ui import GET_ITEM
 
 from utils.logger import logger
 import config
+
+SAFE_AREA = (600, 700)
 
 class Fish(UI):
     FISH_BAR_RECT = (404, 44, 880, 55)
@@ -30,6 +36,28 @@ class Fish(UI):
             
             if self.appear(FISH_BAR_ICON):
                 self.fish()
+
+            if self.appear(NEED_BAIT):
+                self.buy_bait()
+
+    def buy_bait(self):
+        logger.hr('BUY BAIT')
+        self.device.screenshot()
+        self.ui_goto(FISH_SHOP)
+        for _ in range(config.BUY_BAIT_STACK_COUNT):
+            self.device.click(BAIT)
+            self.device.click(SHOP_MAX_BUTTON)
+            self.device.click(BUY)
+            while True:
+                self.device.screenshot()
+                self.appear_then_click(BUY_CONFIRM)
+                if self.appear(GET_ITEM):
+                    self.device.click(SAFE_AREA)
+                    break
+            self.wait_until_appear(BAIT)
+        self.ui_goto(FISH_MAIN_PAGE)
+        self.device.click(BUTTON_CHANGE_BAIT)
+        self.wait_until_appear_then_click(CHANGE_BAIT_CONFIRM)
 
     def _find_matching_cols(self, roi, target_rgb, threshold=30):
         diff = roi.astype(np.int16) - target_rgb
