@@ -10,9 +10,12 @@
     "mock:server": "node scripts/mock-ws-server.mjs"
   },
   "dependencies": {
+    "@fontsource/material-symbols-outlined": "^5.2.45",
+    "@material/material-color-utilities": "^0.4.0",
+    "@material/web": "^2.4.1",
+    "lucide-react": "^0.562.0",
     "react": "^19.2.3",
-    "react-dom": "^19.2.3",
-    "lucide-react": "^0.562.0"
+    "react-dom": "^19.2.3"
   },
   "devDependencies": {
     "@types/react": "^19.2.7",

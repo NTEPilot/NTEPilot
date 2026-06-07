@@ -11,9 +11,18 @@ function valueFor(field: ConfigField, values: Record<string, string | number | b
   return values[field.key] ?? field.value;
 }
 
+function asTextFieldElement(target: EventTarget & Element) {
+  return target as HTMLElement & { value: string };
+}
+
 export function ConfigPanel({ fields, values, onChange }: ConfigPanelProps) {
   if (fields.length === 0) {
-    return <div className="empty-console-row">暂无配置项。</div>;
+    return (
+      <div className="empty-state">
+        <span className="empty-state-icon material-symbols-outlined" aria-hidden="true">tune</span>
+        <span>暂无配置项</span>
+      </div>
+    );
   }
 
   return (
@@ -24,9 +33,9 @@ export function ConfigPanel({ fields, values, onChange }: ConfigPanelProps) {
         if (field.type === 'boolean') {
           return (
             <div className="config-row" key={field.key}>
-              <div>
-                <span>{field.label}</span>
-                {field.description && <small>{field.description}</small>}
+              <div className="config-copy">
+                <span className="config-label">{field.label}</span>
+                {field.description && <small className="config-description">{field.description}</small>}
               </div>
               <Switch checked={Boolean(current)} onChange={(checked) => onChange(field.key, checked)} label={field.label} />
             </div>
@@ -34,23 +43,27 @@ export function ConfigPanel({ fields, values, onChange }: ConfigPanelProps) {
         }
 
         return (
-          <label className="config-row" key={field.key}>
-            <div>
-              <span>{field.label}</span>
-              {field.description && <small>{field.description}</small>}
+          <div className="config-row" key={field.key}>
+            <div className="config-copy">
+              <span className="config-label">{field.label}</span>
+              {field.description && <small className="config-description">{field.description}</small>}
             </div>
-            <input
+            <md-outlined-text-field
+              className="config-input"
+              label={field.label}
               type={field.type === 'number' ? 'number' : 'text'}
-              min={field.min}
-              max={field.max}
-              step={field.step}
+              min={field.min === undefined ? undefined : String(field.min)}
+              max={field.max === undefined ? undefined : String(field.max)}
+              step={field.step === undefined ? undefined : String(field.step)}
+              supportingText={field.description}
               value={String(current ?? '')}
               onChange={(event) => {
-                const next = field.type === 'number' ? Number(event.target.value) : event.target.value;
+                const rawValue = asTextFieldElement(event.currentTarget).value;
+                const next = field.type === 'number' ? Number(rawValue) : rawValue;
                 onChange(field.key, next);
               }}
             />
-          </label>
+          </div>
         );
       })}
     </div>

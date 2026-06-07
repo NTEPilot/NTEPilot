@@ -1,4 +1,5 @@
 import type { BackendInstance } from '../types/protocol';
+import { MaterialIcon } from './MaterialIcon';
 
 interface InstanceTabsProps {
   instances: BackendInstance[];
@@ -10,18 +11,19 @@ export function InstanceTabs({ instances, selectedInstance, onSelect }: Instance
   const visibleInstances = instances.length > 0 ? instances : [{ name: selectedInstance }];
 
   return (
-    <div className="instance-tabs">
+    <md-list className="instance-tabs">
       {visibleInstances.map((instance) => (
-        <button
+        <md-list-item
           className={instance.name === selectedInstance ? 'active' : ''}
           key={instance.name}
           type="button"
           onClick={() => onSelect(instance.name)}
           title={instance.name}
         >
+          <MaterialIcon name="devices" slot="start" filled={instance.name === selectedInstance} />
           {instance.name}
-        </button>
+        </md-list-item>
       ))}
-    </div>
+    </md-list>
   );
 }

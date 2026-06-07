@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { LogEvent } from '../types/protocol';
+import { MaterialIcon } from './MaterialIcon';
 import { Switch } from './Switch';
 
 interface ConsolePanelProps {
   logs: LogEvent[];
+  open: boolean;
+  onClose: () => void;
 }
 
 interface AnsiSegment {
@@ -152,7 +155,7 @@ function ConsoleLine({ log }: { log: LogEvent }) {
   );
 }
 
-export function ConsolePanel({ logs }: ConsolePanelProps) {
+export function ConsolePanel({ logs, open, onClose }: ConsolePanelProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [autoScroll, setAutoScroll] = useState(true);
 
@@ -163,19 +166,32 @@ export function ConsolePanel({ logs }: ConsolePanelProps) {
   }, [autoScroll, logs]);
 
   return (
-    <aside className="console-panel" aria-label="同步控制台日志">
-      <div className="console-title">
-        <span>同步控制台</span>
-        <div className="console-scroll-toggle">
-          <span>自动滚动</span>
-          <Switch checked={autoScroll} onChange={setAutoScroll} label="自动滚动" />
+    <>
+      <button
+        aria-label="关闭同步控制台"
+        className={`sheet-scrim${open ? ' is-visible' : ''}`}
+        onClick={onClose}
+        type="button"
+      />
+      <aside className={`console-panel${open ? ' is-open' : ''}`} aria-label="同步控制台日志" aria-hidden={!open}>
+        <div className="console-title">
+          <div className="console-heading">
+            <MaterialIcon name="terminal" />
+            <span>同步控制台</span>
+          </div>
+          <div className="console-actions">
+            <Switch checked={autoScroll} onChange={setAutoScroll} label="自动滚动" compact />
+            <md-icon-button aria-label="关闭同步控制台" onClick={onClose}>
+              <MaterialIcon name="close" />
+            </md-icon-button>
+          </div>
         </div>
-      </div>
-      <div className="console-output" ref={ref}>
-        {logs.map((log) => (
-          <ConsoleLine key={log.id} log={log} />
-        ))}
-      </div>
-    </aside>
+        <div className="console-output" ref={ref}>
+          {logs.map((log) => (
+            <ConsoleLine key={log.id} log={log} />
+          ))}
+        </div>
+      </aside>
+    </>
   );
 }

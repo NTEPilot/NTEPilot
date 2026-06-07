@@ -2,20 +2,19 @@ interface SwitchProps {
   checked: boolean;
   onChange: (checked: boolean) => void;
   label?: string;
+  compact?: boolean;
 }
 
-export function Switch({ checked, onChange, label }: SwitchProps) {
+export function Switch({ checked, onChange, label, compact = false }: SwitchProps) {
   return (
-    <button
-      className={`switch-control${checked ? ' checked' : ''}`}
-      type="button"
-      role="switch"
-      aria-checked={checked}
-      aria-label={label}
-      onClick={() => onChange(!checked)}
-    >
-      <span className="switch-thumb" />
-      <span className="switch-text">{checked ? '开启' : '关闭'}</span>
-    </button>
+    <label className={`switch-control${compact ? ' is-compact' : ''}`}>
+      <span className="switch-label">{label}</span>
+      <md-switch
+        aria-label={label}
+        icons
+        selected={checked}
+        onChange={(event) => onChange(Boolean((event.currentTarget as HTMLElement & { selected?: boolean }).selected))}
+      />
+    </label>
   );
 }
