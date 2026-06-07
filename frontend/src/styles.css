@@ -226,7 +226,27 @@ button {
 }
 
 .top-actions {
-  gap: 6px;
+  gap: 8px;
+}
+
+.top-actions md-icon-button {
+  --md-icon-button-icon-color: var(--md-sys-color-on-surface-variant);
+  --md-icon-button-hover-icon-color: var(--md-sys-color-on-surface);
+  --md-icon-button-pressed-icon-color: var(--md-sys-color-on-surface);
+}
+
+.save-action {
+  --md-filled-button-container-height: 40px;
+  --md-filled-button-container-shape: 20px;
+  --md-filled-button-leading-space: 16px;
+  --md-filled-button-trailing-space: 18px;
+  --md-filled-button-label-text-size: 14px;
+  --md-filled-button-label-text-weight: 600;
+  min-width: 92px;
+}
+
+.save-action .material-icon {
+  font-size: 20px;
 }
 
 .status-chip,
@@ -387,12 +407,16 @@ button {
 .tool-icon {
   display: grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 48px;
+  height: 48px;
   flex: 0 0 auto;
-  color: var(--md-sys-color-on-primary-container);
+  color: var(--md-sys-color-primary);
   background: var(--md-sys-color-primary-container);
   border-radius: var(--app-radius-large);
+}
+
+.tool-icon .material-icon {
+  font-size: 32px;
 }
 
 .tool-title h3 {
@@ -416,19 +440,36 @@ button {
 }
 
 .tool-config {
-  padding: 0 18px 18px;
+  padding: 10px 18px 18px;
 }
 
 .tool-config summary {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  min-height: 48px;
+  min-height: 40px;
+  padding: 0 12px;
   color: var(--md-sys-color-primary);
+  background: transparent;
+  border-radius: 20px;
   cursor: pointer;
   font-size: 14px;
   font-weight: 600;
   list-style: none;
+  transition: background-color 160ms var(--app-easing), color 160ms var(--app-easing);
+}
+
+.tool-config summary:hover {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 10%, transparent);
+}
+
+.tool-config summary:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.tool-config summary .material-icon {
+  font-size: 22px;
 }
 
 .tool-config summary::-webkit-details-marker {

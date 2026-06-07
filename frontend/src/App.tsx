@@ -128,7 +128,7 @@ export function App() {
             <md-icon-button aria-label="打开同步控制台" onClick={() => setConsoleOpen(true)}>
               <MaterialIcon name="terminal" />
             </md-icon-button>
-            <md-filled-button hasIcon onClick={bridge.saveConfig}>
+            <md-filled-button className="save-action" hasIcon onClick={bridge.saveConfig}>
               <MaterialIcon name="save" slot="icon" />
               保存
             </md-filled-button>
@@ -173,7 +173,7 @@ export function App() {
                 <div className="tool-row">
                   <div className="tool-title">
                     <span className="tool-icon">
-                      <MaterialIcon name="phishing" />
+                      <MaterialIcon name="water_drop" />
                     </span>
                     <div>
                       <h3>{fishTask?.title ?? '钓鱼'}</h3>
