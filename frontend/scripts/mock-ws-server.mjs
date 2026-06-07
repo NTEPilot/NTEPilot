@@ -41,6 +41,7 @@ const tasks = [
     id: 'fish',
     title: '钓鱼',
     description: '运行钓鱼工具',
+    configGroup: 'fish',
   },
 ];
 const activeTasks = {};
@@ -83,6 +84,10 @@ function status(instance = 'NTE', activeTask = 'idle') {
     packageName: config.general.package_name,
     activeTask,
   };
+}
+
+function taskTitle(taskId) {
+  return tasks.find((task) => task.id === taskId)?.title ?? taskId;
 }
 
 function send(ws, message) {
@@ -163,7 +168,7 @@ server.on('connection', (ws) => {
       send(ws, {
         type: 'task',
         instance,
-        task: { id: message.taskId, title: '钓鱼', status: 'running', detail: '任务已启动', updatedAt: new Date().toISOString() },
+        task: { id: message.taskId, title: taskTitle(message.taskId), status: 'running', detail: '任务已启动', updatedAt: new Date().toISOString() },
       });
       send(ws, { type: 'call.result', requestId: message.requestId, ok: true, result: { instance, taskId: message.taskId, status: 'running' } });
       return;
@@ -175,7 +180,7 @@ server.on('connection', (ws) => {
       send(ws, {
         type: 'task',
         instance,
-        task: { id: message.taskId, title: '钓鱼', status: 'cancelled', detail: '任务已停止', updatedAt: new Date().toISOString() },
+        task: { id: message.taskId, title: taskTitle(message.taskId), status: 'cancelled', detail: '任务已停止', updatedAt: new Date().toISOString() },
       });
       send(ws, { type: 'call.result', requestId: message.requestId, ok: true, result: { instance, taskId: message.taskId, status: 'aborted' } });
     }

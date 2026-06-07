@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ConfigPanel } from './components/ConfigPanel';
 import { InstanceTabs } from './components/InstanceTabs';
 import { ConsolePanel } from './components/ConsolePanel';
@@ -32,20 +32,23 @@ export function App() {
   const { isDark, toggleTheme } = useThemeMode();
   const [activePage, setActivePage] = useState<PageId>('general');
   const [consoleOpen, setConsoleOpen] = useState(false);
-  const [fishConfigOpen, setFishConfigOpen] = useState(false);
+  const [openToolConfigs, setOpenToolConfigs] = useState<Record<string, boolean>>({});
   const [newInstanceName, setNewInstanceName] = useState('');
   const [shellRef] = useMotionParent<HTMLDivElement>();
   const [topMetaRef] = useMotionParent<HTMLDivElement>();
   const [contentRef] = useMotionParent<HTMLElement>();
   const [toolListRef] = useMotionParent<HTMLDivElement>();
-  const [toolConfigRef] = useMotionParent<HTMLDivElement>();
   const dialogRef = useRef<MaterialDialogElement | null>(null);
   const newInstanceInputRef = useRef<TextFieldElement | null>(null);
   const tabsRef = useRef<MaterialTabsElement | null>(null);
-  const fishTask = bridge.tasks.find((task) => task.id === 'fish');
   const connected = bridge.status === 'open';
-  const fishRunning = bridge.backendStatus.activeTask === 'fish';
   const activePageIndex = PAGES.findIndex((page) => page.id === activePage);
+  const taskTitleById = useMemo(() => {
+    return bridge.tasks.reduce<Record<string, string>>((titles, task) => {
+      titles[task.id] = task.title;
+      return titles;
+    }, {});
+  }, [bridge.tasks]);
   const statusText = {
     idle: '未连接',
     connecting: '连接中',
@@ -53,11 +56,9 @@ export function App() {
     closed: '已断开',
     error: '连接错误',
   }[bridge.status];
-  const activeTaskText = bridge.backendStatus.activeTask === 'fish'
-    ? '钓鱼'
-    : bridge.backendStatus.activeTask && bridge.backendStatus.activeTask !== 'idle'
-      ? bridge.backendStatus.activeTask
-      : '空闲';
+  const activeTaskText = bridge.backendStatus.activeTask && bridge.backendStatus.activeTask !== 'idle'
+    ? (taskTitleById[bridge.backendStatus.activeTask] ?? bridge.backendStatus.activeTask)
+    : '空闲';
 
   useEffect(() => {
     if (tabsRef.current && tabsRef.current.activeTabIndex !== activePageIndex) {
@@ -176,46 +177,65 @@ export function App() {
             />
           ) : (
             <div className="tool-list" ref={toolListRef}>
-              <article className="tool-item">
-                <div className="tool-row">
-                  <div className="tool-title">
-                    <div>
-                      <h3>{fishTask?.title ?? '钓鱼'}</h3>
-                      <span>{fishTask?.description ?? '运行钓鱼工具'}</span>
+              {bridge.tasks.length === 0 && (
+                <div className="empty-state">
+                  <span className="empty-state-icon material-symbols-outlined" aria-hidden="true">construction</span>
+                  <span>暂无工具</span>
+                </div>
+              )}
+              {bridge.tasks.map((task) => {
+                const configGroup = task.configGroup ?? task.id;
+                const configFields = bridge.groupedFields[configGroup] ?? [];
+                const configOpen = Boolean(openToolConfigs[task.id]);
+                const running = bridge.backendStatus.activeTask === task.id;
+
+                return (
+                  <article className="tool-item" key={task.id}>
+                    <div className="tool-row">
+                      <div className="tool-title">
+                        <div>
+                          <h3>{task.title}</h3>
+                          {task.description && <span>{task.description}</span>}
+                        </div>
+                      </div>
+                      {running ? (
+                        <md-filled-tonal-button className="danger-action" hasIcon onClick={() => bridge.stopTask(task.id)}>
+                          <MaterialIcon name="stop" slot="icon" />
+                          停止
+                        </md-filled-tonal-button>
+                      ) : (
+                        <md-filled-button hasIcon onClick={() => bridge.startTask(task.id)}>
+                          <MaterialIcon name="play_arrow" slot="icon" filled />
+                          启动
+                        </md-filled-button>
+                      )}
                     </div>
-                  </div>
-                  {fishRunning ? (
-                    <md-filled-tonal-button className="danger-action" hasIcon onClick={() => bridge.stopTask(fishTask?.id ?? 'fish')}>
-                      <MaterialIcon name="stop" slot="icon" />
-                      停止
-                    </md-filled-tonal-button>
-                  ) : (
-                    <md-filled-button hasIcon onClick={() => bridge.startTask(fishTask?.id ?? 'fish')}>
-                      <MaterialIcon name="play_arrow" slot="icon" filled />
-                      启动
-                    </md-filled-button>
-                  )}
-                </div>
-                <md-divider />
-                <div className="tool-config" ref={toolConfigRef}>
-                  <button
-                    aria-expanded={fishConfigOpen}
-                    className="tool-config-toggle"
-                    onClick={() => setFishConfigOpen((current) => !current)}
-                    type="button"
-                  >
-                    <span>钓鱼配置</span>
-                    <MaterialIcon name={fishConfigOpen ? 'expand_less' : 'expand_more'} />
-                  </button>
-                  {fishConfigOpen && (
-                  <ConfigPanel
-                    fields={bridge.groupedFields.fish ?? []}
-                    values={bridge.values}
-                    onChange={bridge.updateValue}
-                  />
-                  )}
-                </div>
-              </article>
+                    {configFields.length > 0 && (
+                      <>
+                        <md-divider />
+                        <div className="tool-config">
+                          <button
+                            aria-expanded={configOpen}
+                            className="tool-config-toggle"
+                            onClick={() => setOpenToolConfigs((current) => ({ ...current, [task.id]: !configOpen }))}
+                            type="button"
+                          >
+                            <span>{task.title}配置</span>
+                            <MaterialIcon name={configOpen ? 'expand_less' : 'expand_more'} />
+                          </button>
+                          {configOpen && (
+                            <ConfigPanel
+                              fields={configFields}
+                              values={bridge.values}
+                              onChange={bridge.updateValue}
+                            />
+                          )}
+                        </div>
+                      </>
+                    )}
+                  </article>
+                );
+              })}
             </div>
           )}
         </section>

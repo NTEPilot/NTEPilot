@@ -10,6 +10,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[2]
 TEMPLATE_PATH = Path(__file__).with_name("template.json")
 INSTANCES_DIR = PROJECT_ROOT / "instances"
 DEFAULT_INSTANCE_NAME = "NTE"
+_MISSING = object()
 
 
 class Config:
@@ -102,7 +103,11 @@ class Config:
 
     @classmethod
     def load_template_data(cls) -> dict[str, Any]:
-        return json.loads(TEMPLATE_PATH.read_text(encoding="utf-8"))
+        data = json.loads(TEMPLATE_PATH.read_text(encoding="utf-8"))
+        from NTEPilot.tools.registry import get_tool_default_data
+
+        cls.deep_merge_defaults(data, get_tool_default_data())
+        return data
 
     @classmethod
     def merge_with_template(cls, data: dict[str, Any]) -> dict[str, Any]:
@@ -144,10 +149,13 @@ class Config:
             return float(value)
         return str(value)
 
-    def get_value(self, key: str) -> Any:
+    def get_value(self, key: str, default: Any = _MISSING) -> Any:
         aliases = self.alias_paths()
         path = aliases.get(key, key)
-        return self.get_from_data(self.data, path)
+        value = self.get_from_data(self.data, path)
+        if value is _MISSING:
+            return default
+        return value
 
     def set_value(self, key: str, value: Any) -> None:
         path = self.alias_paths().get(key, key)
@@ -199,6 +207,15 @@ class Config:
             elif not isinstance(target_value, dict):
                 target[key] = source_value
 
+    @classmethod
+    def deep_merge_defaults(cls, target: dict[str, Any], source: dict[str, Any]) -> None:
+        for key, source_value in source.items():
+            target_value = target.get(key)
+            if isinstance(target_value, dict) and isinstance(source_value, dict):
+                cls.deep_merge_defaults(target_value, source_value)
+            elif key not in target:
+                target[key] = source_value
+
     @staticmethod
     def migrate_flat_data(data: dict[str, Any]) -> dict[str, Any]:
         migrated: dict[str, Any] = {"general": {}, "tools": {"fish": {}}}
@@ -210,6 +227,3 @@ class Config:
             elif key in fish_keys:
                 migrated["tools"]["fish"][key] = value
         return migrated
-
-
-_MISSING = object()

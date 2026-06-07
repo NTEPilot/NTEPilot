@@ -94,7 +94,7 @@ config.green_bar_safe_proportion
 }
 ```
 
-第二步，在 `api/server.py` 的 `CONFIG_FIELDS` 中注册前端字段：
+第二步，在 `api/config.py` 的 `CONFIG_FIELDS` 中注册前端字段：
 
 ```python
 ConfigField(
@@ -326,37 +326,31 @@ if self.config.enable_debug_marker:
 NTEPilot/tools/example/example.py
 ```
 
-第二步，在 `NTEPilot/config/template.json` 下新增配置：
-
-```json
-{
-  "tools": {
-    "example": {
-      "enabled": true,
-      "interval": 1.0
-    }
-  }
-}
-```
-
-第三步，在 `api/server.py` 注册配置字段：
+第二步，新增工具 manifest：
 
 ```python
-ConfigField("tools.example.enabled", "启用示例工具", "boolean", "example"),
-ConfigField("tools.example.interval", "执行间隔", "number", "example", min=0.1, max=60, step=0.1)
+from NTEPilot.config.config_field import ConfigField
+from NTEPilot.tools.base import ToolSpec
+
+TOOL_SPEC = ToolSpec(
+    id="example",
+    title="示例工具",
+    description="运行示例工具",
+    runner="NTEPilot.tools.example.example:Example",
+    config_fields=(
+        ConfigField("tools.example.enabled", "启用示例工具", "boolean", "example", default=True),
+        ConfigField("tools.example.interval", "执行间隔", "number", "example", min=0.1, max=60, step=0.1, default=1.0),
+    ),
+)
 ```
 
-第四步，在 `TASKS` 中注册工具：
+文件路径为：
 
-```python
-{
-    "id": "example",
-    "title": "示例工具",
-    "description": "运行示例工具",
-}
+```text
+NTEPilot/tools/example/manifest.py
 ```
 
-第五步，扩展 `TaskRunner.start()`、`TaskRunner.stop()` 和任务线程函数，让 `taskId == "example"` 时运行你的工具。
+后端会自动发现 `NTEPilot/tools/*/manifest.py` 里的 `TOOL_SPEC`，并把工具目录、配置字段和默认值下发给前端。不需要修改 `api/config.py`、`api/task_runner.py` 或前端代码。
 
 停止逻辑由 `TaskRunner.stop()` 统一处理。新增工具不需要接收停止事件，也不需要在工具内部实现停止检查。工具线程被硬中止时，`TaskRunner` 会捕获内部 `TaskAbort` 并广播任务取消状态。
 
@@ -366,6 +360,6 @@ ConfigField("tools.example.interval", "执行间隔", "number", "example", min=0
 
 - 不要直接在 API 层创建 `Config`，统一通过 `Instance(...).config` 或 `Instance.create()`。
 - 配置 key 必须小写。
-- 新配置必须先进入 `template.json`，否则 `config.update` 会拒绝保存。
+- 新工具配置建议在 `ConfigField(..., default=...)` 提供默认值；后端会将这些默认值合并进配置模板和保存校验。
 - 前端和 WebSocket 共用端口，`/ws` 只能用于 WebSocket，静态文件走 `/`。
 - 工具线程不能直接操作前端连接对象，应通过 `broadcast_threadsafe()` 广播状态、任务和日志。

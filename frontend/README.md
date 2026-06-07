@@ -150,7 +150,7 @@ bridge.stopTask('fish')    // 硬中止钓鱼线程
 }
 ```
 
-第二步，后端 `api/server.py` 的 `CONFIG_FIELDS` 注册：
+第二步，后端 `api/config.py` 的 `CONFIG_FIELDS` 注册：
 
 ```python
 ConfigField("general.adb_timeout", "ADB 超时", "number", "general", "ADB 命令超时时间", min=1, max=120, step=1)
@@ -182,49 +182,26 @@ ConfigField("tools.fish.enable_debug_marker", "显示调试标记", "boolean", "
 
 ## 新增工具页面
 
-如果只是在后端新增配置字段，前端无需改动。如果要新增一个和“钓鱼”并列的工具，需要修改 `App.tsx`。
+工具页完全由后端 `task.catalog` 和 `config.schema` 驱动。新增一个和“钓鱼”并列的工具时，前端无需改动。
 
-示例：新增 `example` 工具。
-
-第一步，后端 `TASKS` 下发：
+后端下发的任务需要包含：
 
 ```json
 {
   "id": "example",
   "title": "示例工具",
-  "description": "运行示例工具"
+  "description": "运行示例工具",
+  "configGroup": "example"
 }
 ```
 
-第二步，后端配置字段使用新的 group：
+后端配置字段使用同一个 group：
 
 ```python
-ConfigField("tools.example.enabled", "启用示例工具", "boolean", "example")
+ConfigField("tools.example.enabled", "启用示例工具", "boolean", "example", default=True)
 ```
 
-第三步，在 `App.tsx` 的工具页中新增一个工具项：
-
-```tsx
-const exampleTask = bridge.tasks.find((task) => task.id === 'example');
-const exampleRunning = bridge.backendStatus.activeTask === 'example';
-```
-
-渲染时使用：
-
-```tsx
-<ConfigPanel
-  fields={bridge.groupedFields.example ?? []}
-  values={bridge.values}
-  onChange={bridge.updateValue}
-/>
-```
-
-按钮逻辑：
-
-```tsx
-if (exampleRunning) bridge.stopTask('example');
-else bridge.startTask('example');
-```
+`App.tsx` 会自动按任务渲染工具卡片，按 `configGroup` 找到配置字段并渲染配置下拉区。
 
 `stopTask()` 对应后端 `task.stop`，当前实现是硬中止任务线程，不依赖工具内部的停止事件。
 
@@ -305,7 +282,7 @@ mock 服务支持：
 
 - 前端不要硬编码配置项，优先依赖后端 `config.schema`。
 - 配置 key 使用路径式小写 key，例如 `tools.fish.buy_bait`。
-- 新配置必须先加入 `NTEPilot/config/template.json`，否则后端会拒绝保存。
-- 新工具如果要出现在工具页，需要后端 `TASKS` 注册，并在前端 `App.tsx` 添加对应工具项。
+- 新工具配置建议在后端 `ConfigField(..., default=...)` 提供默认值。
+- 新工具如果要出现在工具页，只需要后端工具 manifest 暴露到 `task.catalog`，不需要改前端。
 - `frontend/.static` 是构建产物，不应手动编辑。
 - 改完前端后至少运行一次 `npm run build`。

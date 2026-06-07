@@ -23,6 +23,7 @@ export interface BackendTask {
   id: string;
   title: string;
   description?: string;
+  configGroup?: string;
 }
 
 export interface BackendStatus {

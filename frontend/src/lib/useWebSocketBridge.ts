@@ -256,13 +256,13 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
     setValues({});
   }, [send]);
 
-  const startTask = useCallback((taskId = 'fish') => {
+  const startTask = useCallback((taskId: string) => {
     const requestId = crypto.randomUUID();
     send({ type: 'task.start', requestId, instance: selectedInstanceRef.current, taskId, values: valuesRef.current });
     appendLog({ level: 'info', source: '前端', message: `已请求启动任务：${selectedInstanceRef.current}/${taskId}` });
   }, [appendLog, send]);
 
-  const stopTask = useCallback((taskId = 'fish') => {
+  const stopTask = useCallback((taskId: string) => {
     const requestId = crypto.randomUUID();
     send({ type: 'task.stop', requestId, instance: selectedInstanceRef.current, taskId });
     appendLog({ level: 'info', source: '前端', message: `已请求停止任务：${selectedInstanceRef.current}/${taskId}` });
