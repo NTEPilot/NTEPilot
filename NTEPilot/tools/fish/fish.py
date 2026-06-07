@@ -9,7 +9,6 @@ from template.fish import *
 from template.ui import GET_ITEM
 
 from utils.logger import logger
-import config
 
 SAFE_AREA = (600, 700)
 
@@ -18,8 +17,13 @@ class Fish(UI):
 
     GREEN_BAR_RGB = (58, 240, 177)
     YELLOW_CURSOR_RGB = (255, 253, 160)
-    GREEN_BAR_LEFT = 0.5 - config.GREEN_BAR_SAFE_PROPORTION / 2
-    GREEN_BAR_RIGHT = 0.5 + config.GREEN_BAR_SAFE_PROPORTION / 2
+    @property
+    def green_bar_left(self):
+        return 0.5 - self.config.green_bar_safe_proportion / 2
+
+    @property
+    def green_bar_right(self):
+        return 0.5 + self.config.green_bar_safe_proportion / 2
 
     def run(self):
         logger.hr('FISH', level=1)
@@ -34,16 +38,22 @@ class Fish(UI):
                 self.fish()
 
             if self.appear(NEED_BAIT):
+                if not self.config.buy_bait:
+                    logger.info('Need bait, stopping because BUY_BAIT is disabled')
+                    break
                 self.buy_bait()
 
             if self.appear(FULL_STORAGE):
+                if not self.config.sell_fish:
+                    logger.info('Fish storage full, stopping because SELL_FISH is disabled')
+                    break
                 self.sell_fish()
 
     def buy_bait(self):
         logger.hr('BUY BAIT')
         self.device.screenshot()
         self.ui_goto(FISH_SHOP)
-        for _ in range(config.BUY_BAIT_STACK_COUNT):
+        for _ in range(self.config.buy_bait_stack_count):
             self.device.click(BAIT)
             self.device.click(SHOP_MAX_BUTTON)
             self.device.click(BUY)
@@ -91,7 +101,7 @@ class Fish(UI):
             return None
         left, right = cols[0], cols[-1]
         width = right - left
-        return (int(left + width * self.GREEN_BAR_LEFT), int(left + width * self.GREEN_BAR_RIGHT))
+        return (int(left + width * self.green_bar_left), int(left + width * self.green_bar_right))
     
     def _get_yellow_cursor(self, roi):
         cols = self._find_matching_cols(roi, self.YELLOW_CURSOR_RGB)
@@ -177,8 +187,8 @@ class Fish(UI):
             roi_width = self.FISH_BAR_RECT[2] - self.FISH_BAR_RECT[0]
             pred_green_center = max(w / 2.0, min(roi_width - w / 2.0, pred_green_center))
             
-            pred_left = pred_green_center - w * (config.GREEN_BAR_SAFE_PROPORTION / 2.0)
-            pred_right = pred_green_center + w * (config.GREEN_BAR_SAFE_PROPORTION / 2.0)
+            pred_left = pred_green_center - w * (self.config.green_bar_safe_proportion / 2.0)
+            pred_right = pred_green_center + w * (self.config.green_bar_safe_proportion / 2.0)
             
             # 2. 预测未来时刻光标的位置 (结合 0.25s 前开始直到当前的输入指令积分)
             displacement = self._integrate_input_velocity(latest_t_shot - 0.25, t_now)

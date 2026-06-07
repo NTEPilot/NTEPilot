@@ -1,0 +1,18 @@
+{
+  "general": {
+    "name": "NTE",
+    "serial": "127.0.0.1:16448",
+    "package_name": "com.pwrd.cloud.yh.laohu",
+    "activity_name": "com.pwrd.cloudgame.client_core.ui.HomeActivity",
+    "websocket_host": "127.0.0.1",
+    "websocket_port": 9150
+  },
+  "tools": {
+    "fish": {
+      "sell_fish": true,
+      "buy_bait": true,
+      "buy_bait_stack_count": 5,
+      "green_bar_safe_proportion": 0.4
+    }
+  }
+}

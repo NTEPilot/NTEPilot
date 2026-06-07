@@ -154,6 +154,15 @@ cython_debug/
 
 # Project Specific
 screenshots/
+instances/
+frontend/node_modules/
+frontend/.static/
+frontend/dist/
+frontend/*.tsbuildinfo
+frontend/npm-debug.log*
+frontend/yarn-debug.log*
+frontend/yarn-error.log*
+frontend/pnpm-debug.log*
 
 # Windows
 Thumbs.db

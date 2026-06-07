@@ -1,0 +1,520 @@
+:root {
+  color-scheme: dark;
+  font-family: Inter, "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+  color: #dce3ee;
+  background: #0d1118;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --bg: #0d1118;
+  --rail: #111722;
+  --panel: #151c28;
+  --panel-strong: #1b2432;
+  --soft: #202a3a;
+  --line: #2a3546;
+  --muted: #8e9caf;
+  --ink: #f2f5f9;
+  --green: #45c49a;
+  --green-soft: #18392f;
+  --red: #ff7b72;
+  --blue: #6ca4ff;
+  --amber: #f4c36d;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app-shell {
+  display: grid;
+  grid-template-columns: 168px minmax(480px, 1fr) minmax(420px, 38vw);
+  height: 100vh;
+  overflow: hidden;
+}
+
+.instance-rail {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 12px 10px;
+  color: var(--ink);
+  background: var(--rail);
+  border-right: 1px solid var(--line);
+}
+
+.rail-title {
+  padding: 6px 8px 12px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.instance-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+  overflow: auto;
+}
+
+.instance-tabs button,
+.rail-add {
+  min-height: 38px;
+  color: #dce5f3;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+}
+
+.instance-tabs button {
+  width: 100%;
+  overflow: hidden;
+  padding: 0 10px;
+  text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.instance-tabs button.active {
+  color: #07140f;
+  background: var(--green);
+}
+
+.rail-add {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  margin-top: 10px;
+  border-color: var(--line);
+}
+
+.workbench {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.run-bar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 64px;
+  padding: 12px 16px;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+
+.save-button,
+.page-tabs button,
+.tool-start {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 38px;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  font-weight: 700;
+}
+
+.save-button {
+  color: #07140f;
+  background: var(--green);
+  padding: 0 13px;
+}
+
+.run-meta {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.run-meta strong {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.run-meta span,
+.connection-state {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.connection-state {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.state-open {
+  color: var(--green);
+}
+
+.state-error {
+  color: var(--red);
+}
+
+.config-layout {
+  display: grid;
+  grid-template-columns: 150px minmax(0, 1fr);
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+
+.page-tabs {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 10px;
+  background: var(--rail);
+  border-right: 1px solid var(--line);
+}
+
+.page-tabs button {
+  justify-content: flex-start;
+  padding: 0 11px;
+  color: #c4cedd;
+  background: transparent;
+}
+
+.page-tabs button.active {
+  color: #07111e;
+  background: var(--blue);
+}
+
+.config-surface {
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  padding: 16px;
+}
+
+.surface-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.surface-heading h1 {
+  margin: 0;
+  font-size: 20px;
+  color: var(--ink);
+}
+
+.surface-heading .save-button {
+  margin-left: auto;
+}
+
+.config-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.config-row {
+  display: grid;
+  grid-template-columns: minmax(180px, 34%) minmax(220px, 1fr);
+  align-items: center;
+  gap: 14px;
+  min-height: 52px;
+  padding: 10px 12px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.config-row span {
+  display: block;
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.config-row small {
+  display: block;
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.config-row input[type="text"],
+.config-row input[type="number"],
+.config-row select {
+  width: 100%;
+  min-width: 0;
+  height: 36px;
+  padding: 0 10px;
+  color: var(--ink);
+  background: #101620;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  outline: none;
+}
+
+.config-row input[type="checkbox"] {
+  justify-self: start;
+  width: 20px;
+  height: 20px;
+  accent-color: var(--green);
+}
+
+.tool-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tool-item {
+  overflow: hidden;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.tool-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  padding: 14px;
+  background: var(--panel-strong);
+  border-bottom: 1px solid var(--line);
+}
+
+.tool-row h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 16px;
+}
+
+.tool-row span {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.tool-start {
+  min-width: 92px;
+  color: #07140f;
+  background: var(--green);
+}
+
+.tool-start.is-running {
+  color: #2b0706;
+  background: var(--red);
+}
+
+.tool-config {
+  padding: 0 14px 14px;
+}
+
+.tool-config summary {
+  padding: 13px 0;
+  color: var(--amber);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.empty-console-row {
+  padding: 12px;
+  color: var(--muted);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.switch-control {
+  display: inline-grid;
+  grid-template-columns: 42px auto;
+  align-items: center;
+  gap: 8px;
+  justify-self: start;
+  min-height: 30px;
+  padding: 0;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+}
+
+.switch-control .switch-thumb {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  background: #263244;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  transition: background 0.16s ease, border-color 0.16s ease;
+}
+
+.switch-control .switch-thumb::after {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  content: "";
+  background: #b8c2d1;
+  border-radius: 50%;
+  transition: transform 0.16s ease, background 0.16s ease;
+}
+
+.switch-control.checked .switch-thumb {
+  background: var(--green-soft);
+  border-color: var(--green);
+}
+
+.switch-control.checked .switch-thumb::after {
+  background: var(--green);
+  transform: translateX(18px);
+}
+
+.switch-text {
+  min-width: 28px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.console-panel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  color: #d8dee9;
+  background: #0b0f16;
+  border-left: 1px solid var(--line);
+}
+
+.console-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex: 0 0 auto;
+  padding: 12px 14px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--line);
+}
+
+.console-scroll-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-transform: none;
+}
+
+.console-scroll-toggle > span {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.console-scroll-toggle .switch-control {
+  grid-template-columns: 42px;
+}
+
+.console-scroll-toggle .switch-text {
+  display: none;
+}
+
+.console-output {
+  min-height: 0;
+  flex: 1;
+  overflow: auto;
+  padding: 10px 0 16px;
+  font-family: "Cascadia Mono", "Consolas", "SFMono-Regular", monospace;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.console-line {
+  display: grid;
+  grid-template-columns: 76px 92px minmax(0, 1fr);
+  gap: 8px;
+  padding: 1px 12px;
+  white-space: pre-wrap;
+}
+
+.console-time,
+.console-source {
+  color: #687386;
+  user-select: none;
+}
+
+.console-message {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.level-error .console-message {
+  color: #ffb4aa;
+}
+
+.level-warning .console-message {
+  color: #ffd28a;
+}
+
+.console-result {
+  margin: 10px 12px 0;
+  padding: 10px;
+  color: #d8dee9;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 1180px) {
+  .app-shell {
+    grid-template-columns: 150px minmax(420px, 1fr);
+  }
+
+  .console-panel {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    grid-template-columns: 1fr;
+    height: auto;
+    min-height: 100vh;
+    overflow: auto;
+  }
+
+  .instance-rail {
+    min-height: auto;
+  }
+
+  .config-layout,
+  .config-row {
+    grid-template-columns: 1fr;
+  }
+}
