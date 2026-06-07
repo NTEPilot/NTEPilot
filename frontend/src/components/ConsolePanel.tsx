@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { LogEvent } from '../types/protocol';
+import { useMotionParent } from '../lib/useMotionParent';
 import { MaterialIcon } from './MaterialIcon';
 import { Switch } from './Switch';
 
 interface ConsolePanelProps {
   logs: LogEvent[];
-  open: boolean;
   onClose: () => void;
 }
 
@@ -155,9 +155,14 @@ function ConsoleLine({ log }: { log: LogEvent }) {
   );
 }
 
-export function ConsolePanel({ logs, open, onClose }: ConsolePanelProps) {
+export function ConsolePanel({ logs, onClose }: ConsolePanelProps) {
   const ref = useRef<HTMLDivElement>(null);
+  const [logsRef] = useMotionParent<HTMLDivElement>();
   const [autoScroll, setAutoScroll] = useState(true);
+  const setConsoleOutputRef = useCallback((element: HTMLDivElement | null) => {
+    ref.current = element;
+    logsRef(element);
+  }, [logsRef]);
 
   useEffect(() => {
     if (autoScroll && ref.current) {
@@ -169,11 +174,11 @@ export function ConsolePanel({ logs, open, onClose }: ConsolePanelProps) {
     <>
       <button
         aria-label="关闭同步控制台"
-        className={`sheet-scrim${open ? ' is-visible' : ''}`}
+        className="sheet-scrim"
         onClick={onClose}
         type="button"
       />
-      <aside className={`console-panel${open ? ' is-open' : ''}`} aria-label="同步控制台日志" aria-hidden={!open}>
+      <aside className="console-panel" aria-label="同步控制台日志">
         <div className="console-title">
           <div className="console-heading">
             <MaterialIcon name="terminal" />
@@ -186,7 +191,10 @@ export function ConsolePanel({ logs, open, onClose }: ConsolePanelProps) {
             </md-icon-button>
           </div>
         </div>
-        <div className="console-output" ref={ref}>
+        <div
+          className="console-output"
+          ref={setConsoleOutputRef}
+        >
           {logs.map((log) => (
             <ConsoleLine key={log.id} log={log} />
           ))}

@@ -3,6 +3,7 @@ import { ConfigPanel } from './components/ConfigPanel';
 import { InstanceTabs } from './components/InstanceTabs';
 import { ConsolePanel } from './components/ConsolePanel';
 import { MaterialIcon } from './components/MaterialIcon';
+import { useMotionParent } from './lib/useMotionParent';
 import { useWebSocketBridge } from './lib/useWebSocketBridge';
 import { useThemeMode } from './lib/useThemeMode';
 
@@ -31,7 +32,13 @@ export function App() {
   const { isDark, toggleTheme } = useThemeMode();
   const [activePage, setActivePage] = useState<PageId>('general');
   const [consoleOpen, setConsoleOpen] = useState(false);
+  const [fishConfigOpen, setFishConfigOpen] = useState(false);
   const [newInstanceName, setNewInstanceName] = useState('');
+  const [shellRef] = useMotionParent<HTMLDivElement>();
+  const [topMetaRef] = useMotionParent<HTMLDivElement>();
+  const [contentRef] = useMotionParent<HTMLElement>();
+  const [toolListRef] = useMotionParent<HTMLDivElement>();
+  const [toolConfigRef] = useMotionParent<HTMLDivElement>();
   const dialogRef = useRef<MaterialDialogElement | null>(null);
   const newInstanceInputRef = useRef<TextFieldElement | null>(null);
   const tabsRef = useRef<MaterialTabsElement | null>(null);
@@ -83,7 +90,7 @@ export function App() {
   }, []);
 
   return (
-    <div className={`app-shell${consoleOpen ? ' console-open' : ''}`}>
+    <div className={`app-shell${consoleOpen ? ' console-open' : ''}`} ref={shellRef}>
       <aside className="instance-rail" aria-label="实例导航">
         <div className="brand-mark" aria-label="NTEPilot">
           <span className="brand-logo">N</span>
@@ -111,7 +118,7 @@ export function App() {
             <span className="eyebrow">当前实例</span>
             <h1>{bridge.selectedInstance}</h1>
           </div>
-          <div className="top-meta">
+          <div className="top-meta" ref={topMetaRef}>
             <div className="status-chip" title={bridge.url}>
               <MaterialIcon name={connected ? 'wifi' : 'wifi_off'} filled={connected} />
               <span>{statusText}</span>
@@ -153,7 +160,7 @@ export function App() {
           </md-tabs>
         </section>
 
-        <section className="content-surface">
+        <section className="content-surface" ref={contentRef}>
           <div className="surface-heading">
             <div>
               <span className="eyebrow">{activePage === 'general' ? 'General' : 'Tools'}</span>
@@ -168,13 +175,10 @@ export function App() {
               onChange={bridge.updateValue}
             />
           ) : (
-            <div className="tool-list">
+            <div className="tool-list" ref={toolListRef}>
               <article className="tool-item">
                 <div className="tool-row">
                   <div className="tool-title">
-                    <span className="tool-icon">
-                      <MaterialIcon name="water_drop" />
-                    </span>
                     <div>
                       <h3>{fishTask?.title ?? '钓鱼'}</h3>
                       <span>{fishTask?.description ?? '运行钓鱼工具'}</span>
@@ -193,24 +197,33 @@ export function App() {
                   )}
                 </div>
                 <md-divider />
-                <details className="tool-config">
-                  <summary>
-                    <MaterialIcon name="settings" />
+                <div className="tool-config" ref={toolConfigRef}>
+                  <button
+                    aria-expanded={fishConfigOpen}
+                    className="tool-config-toggle"
+                    onClick={() => setFishConfigOpen((current) => !current)}
+                    type="button"
+                  >
                     <span>钓鱼配置</span>
-                  </summary>
+                    <MaterialIcon name={fishConfigOpen ? 'expand_less' : 'expand_more'} />
+                  </button>
+                  {fishConfigOpen && (
                   <ConfigPanel
                     fields={bridge.groupedFields.fish ?? []}
                     values={bridge.values}
                     onChange={bridge.updateValue}
                   />
-                </details>
+                  )}
+                </div>
               </article>
             </div>
           )}
         </section>
       </main>
 
-      <ConsolePanel logs={bridge.logs} open={consoleOpen} onClose={() => setConsoleOpen(false)} />
+      {consoleOpen && (
+        <ConsolePanel logs={bridge.logs} onClose={() => setConsoleOpen(false)} />
+      )}
 
       <md-dialog
         ref={dialogRef}

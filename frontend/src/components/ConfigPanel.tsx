@@ -1,4 +1,5 @@
 import type { ConfigField } from '../types/protocol';
+import { useMotionParent } from '../lib/useMotionParent';
 import { Switch } from './Switch';
 
 interface ConfigPanelProps {
@@ -16,6 +17,8 @@ function asTextFieldElement(target: EventTarget & Element) {
 }
 
 export function ConfigPanel({ fields, values, onChange }: ConfigPanelProps) {
+  const [fieldsRef] = useMotionParent<HTMLDivElement>();
+
   if (fields.length === 0) {
     return (
       <div className="empty-state">
@@ -26,7 +29,7 @@ export function ConfigPanel({ fields, values, onChange }: ConfigPanelProps) {
   }
 
   return (
-    <div className="config-fields">
+    <div className="config-fields" ref={fieldsRef}>
       {fields.map((field) => {
         const current = valueFor(field, values);
 

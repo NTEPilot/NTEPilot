@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@fontsource/material-symbols-outlined": "^5.2.45",
+    "@formkit/auto-animate": "^0.9.0",
     "@material/material-color-utilities": "^0.4.0",
     "@material/web": "^2.4.1",
     "react": "^19.2.3",
