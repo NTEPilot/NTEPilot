@@ -1,21 +1,25 @@
 from __future__ import annotations
 
+import argparse
 import asyncio
 
 import uvicorn
 
 from api.server import create_app
-from NTEPilot.config.config import DEFAULT_INSTANCE_NAME
-from NTEPilot.instance import Instance
 
 
-async def async_main() -> None:
-    Instance.ensure_default_instance()
-    config = Instance(instance_name=DEFAULT_INSTANCE_NAME, create_device=False).config
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="Run the NTEPilot server.")
+    parser.add_argument("--host", default="127.0.0.1", help="Server listen host.")
+    parser.add_argument("--port", default=9150, type=int, help="Server listen port.")
+    return parser.parse_args()
+
+
+async def async_main(host: str, port: int) -> None:
     server_config = uvicorn.Config(
         create_app(),
-        host=config.websocket_host,
-        port=int(config.websocket_port),
+        host=host,
+        port=port,
         log_level="info",
     )
     server = uvicorn.Server(server_config)
@@ -23,7 +27,8 @@ async def async_main() -> None:
 
 
 def main() -> None:
-    asyncio.run(async_main())
+    args = parse_args()
+    asyncio.run(async_main(args.host, args.port))
 
 
 if __name__ == "__main__":

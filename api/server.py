@@ -14,8 +14,7 @@ from starlette.staticfiles import StaticFiles
 from starlette.routing import Mount, Match
 from starlette.types import Scope
 
-from NTEPilot.config.config import DEFAULT_INSTANCE_NAME, PROJECT_ROOT
-from NTEPilot.instance import Instance
+from NTEPilot.config.config import Config, DEFAULT_INSTANCE_NAME, PROJECT_ROOT
 from utils.logger import logger
 
 from api.config import CONFIG_FIELDS, TASKS
@@ -24,11 +23,25 @@ from api.task_runner import TaskRunner
 STATIC_DIR = PROJECT_ROOT / "frontend" / ".static"
 
 class ConfigStore:
+    def __init__(self):
+        self._configs = {item["name"]: Config.load(item["name"]) for item in Config.list_instances()}
+
     def list_instances(self) -> list[dict[str, Any]]:
-        return Instance.list_instances()
+        return [{"name": config.name, "path": str(config.path)} for config in self._configs.values()]
+
+    def get(self, instance: str) -> Config:
+        name = Config.normalize_name(instance)
+        if name not in self._configs:
+            self._configs[name] = Config.load(name)
+        return self._configs[name]
+
+    def create(self, instance: str) -> Config:
+        config = Config.create(instance)
+        self._configs[config.name] = config
+        return config
 
     def schema(self, instance: str) -> dict[str, Any]:
-        config = Instance(instance_name=instance, create_device=False).config
+        config = self.get(instance)
         return {
             "type": "config.schema",
             "instance": config.name,
@@ -36,7 +49,7 @@ class ConfigStore:
         }
 
     def update(self, instance: str, values: dict[str, Any]) -> dict[str, Any]:
-        config = Instance(instance_name=instance, create_device=False).config
+        config = self.get(instance)
         config.update(values, save=True)
         return self.schema(config.name)
 
@@ -95,7 +108,7 @@ class NTEPilotWebSocketApp:
         self.static_dir = static_dir
         self.clients: set[WebSocket] = set()
         self.config_store = ConfigStore()
-        self.task_runner = TaskRunner(self)
+        self.task_runner = TaskRunner(self, self.config_store)
         self.loop: asyncio.AbstractEventLoop | None = None
         self.log_handler = BroadcastLogHandler(self)
         logger.addHandler(self.log_handler)
@@ -157,7 +170,7 @@ class NTEPilotWebSocketApp:
                 return
             if message_type == "instance.create":
                 name = str(message.get("name") or DEFAULT_INSTANCE_NAME)
-                config = Instance.create(name, create_device=False).config
+                config = self.config_store.create(name)
                 await self.broadcast({"type": "instance.list", "instances": self.config_store.list_instances()})
                 await self.send(websocket, self.config_store.schema(config.name))
                 await self.send_result(websocket, request_id, True, {"instance": config.name})
@@ -211,10 +224,10 @@ class NTEPilotWebSocketApp:
         await self.send(websocket, payload)
 
     def status_payload(self, instance: str) -> dict[str, Any]:
-        config = Instance(instance_name=instance, create_device=False).config
+        config = self.config_store.get(instance)
         return {
-            "device": config.serial,
-            "packageName": config.package_name,
+            "device": config["general.serial"],
+            "packageName": config["general.package_name"],
             "activeTask": self.task_runner.active_task_id(config.name),
         }
 
@@ -249,14 +262,3 @@ class NTEPilotWebSocketApp:
 
 def create_app() -> FastAPI:
     return NTEPilotWebSocketApp().asgi_app()
-
-
-def main() -> None:
-    import uvicorn
-
-    config = Instance(instance_name=DEFAULT_INSTANCE_NAME, create_device=False).config
-    uvicorn.run(create_app(), host=config.websocket_host, port=int(config.websocket_port), log_level="info")
-
-
-if __name__ == "__main__":
-    main()

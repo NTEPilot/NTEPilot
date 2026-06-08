@@ -23,7 +23,6 @@ from .utils import (
     recv_all,
     random_port
 )
-from NTEPilot.instance import Instance
 
 IS_WINDOWS = sys.platform == 'win32'
 IS_MACINTOSH = sys.platform == 'darwin'
@@ -101,16 +100,16 @@ class AdbDeviceWithStatus:
         self.serial = serial
         self.status = status
 
-class Connection(Instance):
-    def __init__(self, config=None, instance_name=None):
-        super().__init__(config=config, instance_name=instance_name, create_device=False)
-        self.serial = self.config.serial
+class Connection:
+    def __init__(self, config):
+        self.config = config
+        self.serial = self.config["general.serial"]
         # 连接设备
         self.adb_connect(wait_device=False)
         logger.attr('AdbDevice', self.adb)
 
         # 检测包名
-        self.package = self.config.package_name
+        self.package = self.config["general.package_name"]
         logger.attr('PackageName', self.package)
 
         self.check_mumu_app_keep_alive()
@@ -661,7 +660,7 @@ class Connection(Instance):
         if not package_name:
             package_name = self.package
         if not activity_name:
-            activity_name = self.config.activity_name
+            activity_name = self.config["general.activity_name"]
 
         if activity_name:
             if self._app_start_adb_am(package_name, activity_name, allow_failure):

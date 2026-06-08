@@ -5,7 +5,7 @@
 - 前端静态页面：`http://127.0.0.1:9150/`
 - WebSocket API：`ws://127.0.0.1:9150/ws`
 
-默认端口来自实例配置中的 `general.websocket_port`，默认监听地址来自 `general.websocket_host`。
+默认监听地址为 `127.0.0.1`，默认端口为 `9150`，可通过 `main.py` 的启动参数修改。
 
 ## 启动方式
 
@@ -13,6 +13,12 @@
 
 ```powershell
 .venv\Scripts\python.exe main.py
+```
+
+也可以显式指定监听地址和端口：
+
+```powershell
+.venv\Scripts\python.exe main.py --host 127.0.0.1 --port 9150
 ```
 
 `main.py` 会创建默认实例、读取实例配置，然后启动 FastAPI + Uvicorn。前端静态文件来自 `frontend/.static`。
@@ -45,9 +51,7 @@ instances/NTE.json
     "name": "NTE",
     "serial": "127.0.0.1:16448",
     "package_name": "com.pwrd.cloud.yh.laohu",
-    "activity_name": "com.pwrd.cloudgame.client_core.ui.HomeActivity",
-    "websocket_host": "127.0.0.1",
-    "websocket_port": 9150
+    "activity_name": "com.pwrd.cloudgame.client_core.ui.HomeActivity"
   },
   "tools": {
     "fish": {
@@ -63,20 +67,18 @@ instances/NTE.json
 后端通信使用路径式 key，例如：
 
 - `general.serial`
-- `general.websocket_port`
 - `tools.fish.buy_bait`
 - `tools.fish.green_bar_safe_proportion`
 
-代码内部仍然可以通过短 key 访问：
+代码内部通过 `Config.__getitem__` 使用同样的路径式 key 访问：
 
 ```python
-config.serial
-config.package_name
-config.buy_bait
-config.green_bar_safe_proportion
+config["general.serial"]
+config["general.package_name"]
+config["tools.fish.buy_bait"]
+config["tools.fish.green_bar_safe_proportion"]
 ```
 
-短 key 到嵌套路径的映射由 `NTEPilot/config/config.py` 中的 `Config.alias_paths()` 自动生成。要求模板里不同分支不要出现重复叶子 key，否则短 key 只会映射到第一个路径。
 
 ## 新增配置项
 
@@ -118,7 +120,7 @@ ConfigField(
 第三步，在业务代码中读取：
 
 ```python
-if self.config.enable_debug_marker:
+if self.config["tools.fish.enable_debug_marker"]:
     ...
 ```
 
@@ -358,7 +360,7 @@ NTEPilot/tools/example/manifest.py
 
 ## 注意事项
 
-- 不要直接在 API 层创建 `Config`，统一通过 `Instance(...).config` 或 `Instance.create()`。
+- API 层通过 `ConfigStore` 管理配置对象；同一个实例只保留一个 `Config` 对象。
 - 配置 key 必须小写。
 - 新工具配置建议在 `ConfigField(..., default=...)` 提供默认值；后端会将这些默认值合并进配置模板和保存校验。
 - 前端和 WebSocket 共用端口，`/ws` 只能用于 WebSocket，静态文件走 `/`。

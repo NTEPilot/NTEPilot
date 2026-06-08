@@ -19,11 +19,11 @@ class Fish(UI):
     YELLOW_CURSOR_RGB = (255, 253, 160)
     @property
     def green_bar_left(self):
-        return 0.5 - self.config.green_bar_safe_proportion / 2
+        return 0.5 - self.config["tools.fish.green_bar_safe_proportion"] / 2
 
     @property
     def green_bar_right(self):
-        return 0.5 + self.config.green_bar_safe_proportion / 2
+        return 0.5 + self.config["tools.fish.green_bar_safe_proportion"] / 2
 
     def run(self):
         logger.hr('FISH', level=1)
@@ -31,20 +31,20 @@ class Fish(UI):
 
         while True:
             self.device.click(HOOK)
-            time.sleep(Control.random_time((0.1, 0.2)))
+            self.device.sleep((0.1, 0.2))
             self.device.screenshot()
             
             if self.appear(FISH_BAR_ICON):
                 self.fish()
 
             if self.appear(NEED_BAIT):
-                if not self.config.buy_bait:
+                if not self.config["tools.fish.buy_bait"]:
                     logger.info('Need bait, stopping because BUY_BAIT is disabled')
                     break
                 self.buy_bait()
 
             if self.appear(FULL_STORAGE):
-                if not self.config.sell_fish:
+                if not self.config["tools.fish.sell_fish"]:
                     logger.info('Fish storage full, stopping because SELL_FISH is disabled')
                     break
                 self.sell_fish()
@@ -53,7 +53,7 @@ class Fish(UI):
         logger.hr('BUY BAIT')
         self.device.screenshot()
         self.ui_goto(FISH_SHOP)
-        for _ in range(self.config.buy_bait_stack_count):
+        for _ in range(self.config["tools.fish.buy_bait_stack_count"]):
             self.device.click(BAIT)
             self.device.click(SHOP_MAX_BUTTON)
             self.device.click(BUY)
@@ -81,7 +81,7 @@ class Fish(UI):
             self.device.click(SAFE_AREA)
             self.device.screenshot()
             if self.appear(SELL_SUCCESS, offset=50):
-                time.sleep(Control.random_time((0.1, 0.2)))
+                self.device.sleep((0.1, 0.2))
                 count = 0
                 continue
             count += 1
@@ -191,8 +191,8 @@ class Fish(UI):
             roi_width = self.FISH_BAR_RECT[2] - self.FISH_BAR_RECT[0]
             pred_green_center = max(w / 2.0, min(roi_width - w / 2.0, pred_green_center))
             
-            pred_left = pred_green_center - w * (self.config.green_bar_safe_proportion / 2.0)
-            pred_right = pred_green_center + w * (self.config.green_bar_safe_proportion / 2.0)
+            pred_left = pred_green_center - w * (self.config["tools.fish.green_bar_safe_proportion"] / 2.0)
+            pred_right = pred_green_center + w * (self.config["tools.fish.green_bar_safe_proportion"] / 2.0)
             
             # 2. 预测未来时刻光标的位置 (结合 0.25s 前开始直到当前的输入指令积分)
             displacement = self._integrate_input_velocity(latest_t_shot - 0.25, t_now)

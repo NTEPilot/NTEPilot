@@ -3,7 +3,6 @@ import threading
 import traceback
 from typing import Any
 
-from NTEPilot.instance import Instance
 from NTEPilot.tools.base import ToolSpec
 from NTEPilot.tools.registry import get_tool
 from utils.logger import logger
@@ -28,8 +27,9 @@ def raise_thread_exception(thread: threading.Thread, exception: type[BaseExcepti
 
 
 class TaskRunner:
-    def __init__(self, app):
+    def __init__(self, app, config_store):
         self.app = app
+        self.config_store = config_store
         self._threads: dict[str, tuple[str, threading.Thread]] = {}
         self._lock = threading.Lock()
 
@@ -44,7 +44,7 @@ class TaskRunner:
     def start(self, instance: str, task_id: str, values: dict[str, Any] | None = None) -> dict[str, Any]:
         tool = get_tool(task_id)
 
-        config = Instance(instance_name=instance, create_device=False).config
+        config = self.config_store.get(instance)
         if values:
             config.update(values, save=True)
 
@@ -69,7 +69,7 @@ class TaskRunner:
     def stop(self, instance: str, task_id: str) -> dict[str, Any]:
         tool = get_tool(task_id)
 
-        config = Instance(instance_name=instance, create_device=False).config
+        config = self.config_store.get(instance)
         with self._lock:
             running = self._threads.get(config.name)
             if running is None:
@@ -117,13 +117,13 @@ class TaskRunner:
         }
 
     def status_event(self, instance: str) -> dict[str, Any]:
-        config = Instance(instance_name=instance, create_device=False).config
+        config = self.config_store.get(instance)
         return {
             "type": "status",
             "instance": config.name,
             "status": {
-                "device": config.serial,
-                "packageName": config.package_name,
+                "device": config["general.serial"],
+                "packageName": config["general.package_name"],
                 "activeTask": self.active_task_id(config.name),
             },
         }

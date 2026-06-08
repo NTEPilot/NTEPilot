@@ -26,6 +26,10 @@ class Control(Minitouch):
         for _ in range(3):
             total += random.uniform(a, b)
         return total / 3
+    
+    @classmethod
+    def sleep(cls, duration):
+        time.sleep(cls.random_time(duration))
 
     def click(self, target, control_check=True):
         """点击按钮。

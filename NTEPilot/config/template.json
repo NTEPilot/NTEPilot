@@ -3,9 +3,7 @@
     "name": "NTE",
     "serial": "127.0.0.1:16448",
     "package_name": "com.pwrd.cloud.yh.laohu",
-    "activity_name": "com.pwrd.cloudgame.client_core.ui.HomeActivity",
-    "websocket_host": "127.0.0.1",
-    "websocket_port": 9150
+    "activity_name": "com.pwrd.cloudgame.client_core.ui.HomeActivity"
   },
   "tools": {
     "fish": {
@@ -14,5 +12,12 @@
       "buy_bait_stack_count": 5,
       "green_bar_safe_proportion": 0.4
     }
+  },
+  "team": {
+    "chara_1": "零",
+    "chara_2": "九原",
+    "chara_3": "哈索尔",
+    "chara_4": "法帝娅",
+    "skill_order": "1E>2E>3E>4E>1A"
   }
 }
