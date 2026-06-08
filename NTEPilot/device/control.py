@@ -1,12 +1,14 @@
-# from module.base.button import Button
-import numpy as np
 import time
 import random
+import math
 
 from utils.exceptions import ScriptError
 from .minitouch import Minitouch
 from utils.logger import logger
 from template import Template
+
+JOYSTICK_CENTER = (198, 565)
+JOYSTICK_OFFSET = 100
 
 class Control(Minitouch):
     @staticmethod
@@ -75,9 +77,9 @@ class Control(Minitouch):
         logger.info(f'Swipe {p1} -> {p2}')
         self.swipe_minitouch(p1, p2)
 
-    def drag(self, p1, p2, point_random=(-10, -10, 10, 10)):
+    def drag(self, p1, p2):
         logger.info(f'Drag {p1} -> {p2}')
-        self.drag_minitouch(p1, p2, point_random=point_random)
+        self.drag_minitouch(p1, p2)
 
     def press(self, target):
         if isinstance(target, tuple):
@@ -93,3 +95,43 @@ class Control(Minitouch):
     def release(self):
         logger.info('Release')
         self.release_minitouch()
+
+    def move(self, angle, until):
+        end_point = (JOYSTICK_CENTER[0] + math.sin(math.radians(angle)) * JOYSTICK_OFFSET, JOYSTICK_CENTER[1] - math.cos(math.radians(angle)) * JOYSTICK_OFFSET)
+        self.keep_drag_minitouch(JOYSTICK_CENTER, end_point, contact=1)
+
+        if isinstance(until, (int, float)):
+            logger.info(f'Move at {angle} degrees for {until} seconds')
+            time.sleep(until)
+        elif callable(until):
+            logger.info(f'Move at {angle} degrees until {until.__name__}')
+            until()
+            logger.info('Move stop')
+        else:
+            raise ScriptError(f'Unsupported until type: {type(until)}')
+
+        self.release_minitouch(contact=1)
+
+    def move_forward(self, until):
+        self.move(0, until)
+
+    def move_backward(self, until):
+        self.move(180, until)
+
+    def move_left(self, until):
+        self.move(270, until)
+
+    def move_right(self, until):
+        self.move(90, until)
+
+    def move_forward_right(self, until):
+        self.move(45, until)
+        
+    def move_backward_right(self, until):
+        self.move(135, until)
+        
+    def move_backward_left(self, until):
+        self.move(225, until)
+        
+    def move_forward_left(self, until):
+        self.move(315, until)

@@ -75,14 +75,18 @@ class Fish(UI):
         self.device.click(SELL_ALL)
         self.wait_until_appear_then_click(SELL_CONFIRM)
         self.device.screenshot()
-        self.wait_until_appear(SELL_SUCCESS)
+        self.wait_until_appear(SELL_SUCCESS, offset=50)
+        count = 0
         while True:
             self.device.click(SAFE_AREA)
             self.device.screenshot()
-            if self.appear(SELL_SUCCESS):
+            if self.appear(SELL_SUCCESS, offset=50):
                 time.sleep(Control.random_time((0.1, 0.2)))
+                count = 0
                 continue
-            break
+            count += 1
+            if count >= 3:
+                break
         self.ui_goto(FISH_MAIN_PAGE)
 
     def _find_matching_cols(self, roi, target_rgb, threshold=30):

@@ -225,7 +225,6 @@ class CommandBuilder:
     def __init__(
             self,
             device,
-            contact=0,
             handle_orientation=True,
     ):
         """
@@ -235,7 +234,6 @@ class CommandBuilder:
         self.device = device
         self.commands = []
         self.delay = 0
-        self.contact = contact
         self.handle_orientation = handle_orientation
 
     @property
@@ -288,26 +286,26 @@ class CommandBuilder:
         self.delay += ms
         return self
 
-    def up(self, mode=0):
+    def up(self, contact=0, mode=0):
         """添加 minitouch 命令：'u <contact>\n'。"""
         self.commands.append(Command(
-            'u', contact=self.contact, mode=mode
+            'u', contact=contact, mode=mode
         ))
         return self
 
-    def down(self, x, y, pressure=100, mode=0):
+    def down(self, x, y, contact=0, pressure=100, mode=0):
         """添加 minitouch 命令：'d <contact> <x> <y> <pressure>\n'。"""
         x, y = self.convert(x, y)
         self.commands.append(Command(
-            'd', x=x, y=y, contact=self.contact, pressure=pressure, mode=mode
+            'd', x=x, y=y, contact=contact, pressure=pressure, mode=mode
         ))
         return self
 
-    def move(self, x, y, pressure=100, mode=0):
+    def move(self, x, y, contact=0, pressure=100, mode=0):
         """添加 minitouch 命令：'m <contact> <x> <y> <pressure>\n'。"""
         x, y = self.convert(x, y)
         self.commands.append(Command(
-            'm', x=x, y=y, contact=self.contact, pressure=pressure, mode=mode
+            'm', x=x, y=y, contact=contact, pressure=pressure, mode=mode
         ))
         return self
 
@@ -635,13 +633,17 @@ class Minitouch(Connection):
         )
 
     def minitouch_send(self, builder: CommandBuilder):
-        content = builder.to_minitouch()
-        # logger.info("send operation: {}".format(content.replace("\n", "\\n")))
-        byte_content = content.encode('utf-8')
-        self._minitouch_client.sendall(byte_content)
-        self._minitouch_client.recv(0)
-        time.sleep(self.minitouch_builder.delay / 1000 + builder.DEFAULT_DELAY)
-        builder.clear()
+        if not hasattr(self, '_minitouch_lock'):
+            self._minitouch_lock = threading.Lock()
+        with self._minitouch_lock:
+            content = builder.to_minitouch()
+            # logger.info("send operation: {}".format(content.replace("\n", "\\n")))
+            byte_content = content.encode('utf-8')
+            self._minitouch_client.sendall(byte_content)
+            self._minitouch_client.recv(0)
+            delay = builder.delay / 1000 + builder.DEFAULT_DELAY
+            builder.clear()
+        time.sleep(delay)
 
     @cached_property
     def _minitouch_loop(self):
@@ -669,62 +671,102 @@ class Minitouch(Connection):
             )
 
     @retry
-    def click_minitouch(self, x, y):
+    def click_minitouch(self, x, y, contact=0):
         builder = self.minitouch_builder
-        builder.down(x, y).commit()
-        builder.up().commit()
+        builder.down(x, y, contact).commit()
+        builder.up(contact).commit()
         builder.send()
 
     @retry
-    def long_click_minitouch(self, x, y, duration=1.0):
+    def long_click_minitouch(self, x, y, duration=1.0, contact=0):
         duration = int(duration * 1000)
         builder = self.minitouch_builder
-        builder.down(x, y).commit().wait(duration)
-        builder.up().commit()
+        builder.down(x, y, contact).commit().wait(duration)
+        builder.up(contact).commit()
         builder.send()
 
     @retry
-    def swipe_minitouch(self, p1, p2):
+    def swipe_minitouch(self, p1, p2, contact=0):
         points = insert_swipe(p0=p1, p3=p2)
         builder = self.minitouch_builder
 
-        builder.down(*points[0]).commit().wait(10)
+        builder.down(*points[0], contact).commit().wait(10)
         builder.send()
 
         for point in points[1:]:
-            builder.move(*point).commit().wait(10)
+            builder.move(*point, contact).commit().wait(10)
         builder.send()
 
-        builder.up().commit()
+        builder.up(contact).commit()
         builder.send()
 
     @retry
-    def drag_minitouch(self, p1, p2, point_random=(-10, -10, 10, 10)):
+    def drag_minitouch(self, p1, p2, contact=0):
         points = insert_swipe(p0=p1, p3=p2, speed=20)
         builder = self.minitouch_builder
 
-        builder.down(*points[0]).commit().wait(10)
+        builder.down(*points[0], contact).commit().wait(10)
         builder.send()
 
         for point in points[1:]:
-            builder.move(*point).commit().wait(10)
+            builder.move(*point, contact).commit().wait(10)
         builder.send()
 
-        builder.move(*p2).commit().wait(140)
-        builder.move(*p2).commit().wait(140)
+        builder.move(*p2, contact).commit().wait(140)
+        builder.move(*p2, contact).commit().wait(140)
         builder.send()
 
-        builder.up().commit()
+        builder.up(contact).commit()
+        builder.send()
+
+    def _start_keep_thread(self, p, contact):
+        self._stop_keep_thread(contact)
+
+        if not hasattr(self, '_minitouch_keep_threads'):
+            self._minitouch_keep_threads = {}
+
+        stop_event = threading.Event()
+        self._minitouch_keep_threads[contact] = stop_event
+
+        def keep_thread():
+            while not stop_event.is_set():
+                builder = CommandBuilder(self)
+                builder.move(*p, contact).commit().wait(140)
+                self.minitouch_send(builder)
+
+        thread = threading.Thread(target=keep_thread, daemon=True)
+        thread.start()
+
+    def _stop_keep_thread(self, contact):
+        if not hasattr(self, '_minitouch_keep_threads'):
+            return
+        stop_event = self._minitouch_keep_threads.pop(contact, None)
+        if stop_event is not None:
+            stop_event.set()
+
+    @retry
+    def press_minitouch(self, x, y, contact=0):
+        builder = self.minitouch_builder
+        builder.down(x, y, contact).commit()
+        builder.send()
+        self._start_keep_thread((x, y), contact)
+
+    @retry
+    def release_minitouch(self, contact=0):
+        self._stop_keep_thread(contact)
+        builder = self.minitouch_builder
+        builder.up(contact).commit()
         builder.send()
 
     @retry
-    def press_minitouch(self, x, y):
+    def keep_drag_minitouch(self, p1, p2, contact=0):
+        points = insert_swipe(p0=p1, p3=p2, speed=20)
         builder = self.minitouch_builder
-        builder.down(x, y).commit()
+
+        builder.down(*points[0], contact).commit().wait(10)
         builder.send()
 
-    @retry
-    def release_minitouch(self):
-        builder = self.minitouch_builder
-        builder.up().commit()
+        for point in points[1:]:
+            builder.move(*point, contact).commit().wait(10)
         builder.send()
+        self._start_keep_thread(p2, contact)
