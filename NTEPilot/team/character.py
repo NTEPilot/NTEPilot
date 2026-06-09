@@ -9,8 +9,8 @@ class Character:
         self.e_cd = e_cd
         self.q_cd = q_cd
 
-        self.e_timer = Timer(self.e_cd)
-        self.q_timer = Timer(self.q_cd)
+        self.e_timer = Timer(self.e_cd).force_reached()
+        self.q_timer = Timer(self.q_cd).force_reached()
 
     @property
     def is_e_ready(self):

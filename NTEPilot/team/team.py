@@ -26,7 +26,7 @@ class Team(Instance):
             3: Timer(1),
             4: Timer(1)
         }
-        self.skill_order = self.config["team.skill_order"].split(">")
+        self.skill_order = [a.strip() for a in self.config["team.skill_order"].split(">")]
     
     def switch_chara(self, target):
         if target == self.current_chara:
@@ -35,6 +35,7 @@ class Team(Instance):
         self.switch_timer[t].wait()
         self.device.click(SWITCH[t])
         self.switch_timer[t].reset()
+        self._current_chara = target
         self.device.sleep((0.2, 0.3))
 
     def init_team(self):
