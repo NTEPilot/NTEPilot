@@ -3,7 +3,7 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   --app-rail-width: 280px;
-  --app-console-width: min(440px, 36vw);
+  --app-console-width: 440px;
   --app-radius-extra-small: 4px;
   --app-radius-small: 8px;
   --app-radius-medium: 12px;
@@ -281,7 +281,7 @@ button {
 }
 
 .page-strip md-tabs {
-  max-width: 480px;
+  max-width: 640px;
 }
 
 .content-surface {
@@ -507,6 +507,36 @@ button {
   box-shadow: var(--app-shadow-2);
 }
 
+.console-resizer {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -4px;
+  z-index: 1;
+  width: 8px;
+  cursor: col-resize;
+  touch-action: none;
+}
+
+.console-resizer::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 3px;
+  width: 2px;
+  content: "";
+  background: transparent;
+}
+
+.console-resizer:hover::after,
+.console-resizer:focus-visible::after {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 72%, transparent);
+}
+
+.console-resizer:focus-visible {
+  outline: 0;
+}
+
 .console-title {
   display: flex;
   align-items: center;
@@ -598,7 +628,8 @@ md-dialog [slot="actions"] {
   color: var(--md-sys-color-primary);
 }
 
-md-outlined-text-field {
+md-outlined-text-field,
+md-outlined-select {
   --md-outlined-text-field-caret-color: var(--md-sys-color-primary);
   --md-outlined-text-field-focus-caret-color: var(--md-sys-color-primary);
   --md-outlined-text-field-input-text-color: var(--md-sys-color-on-surface);
@@ -613,6 +644,12 @@ md-outlined-text-field {
   --md-outlined-text-field-supporting-text-color: var(--md-sys-color-on-surface-variant);
   --md-outlined-text-field-focus-supporting-text-color: var(--md-sys-color-on-surface-variant);
   --md-outlined-text-field-hover-supporting-text-color: var(--md-sys-color-on-surface-variant);
+  --md-outlined-select-text-field-container-color: transparent;
+  --md-outlined-select-text-field-input-text-color: var(--md-sys-color-on-surface);
+  --md-outlined-select-text-field-label-text-color: var(--md-sys-color-on-surface-variant);
+  --md-outlined-select-text-field-focus-label-text-color: var(--md-sys-color-primary);
+  --md-outlined-select-text-field-outline-color: var(--md-sys-color-outline);
+  --md-outlined-select-text-field-focus-outline-color: var(--md-sys-color-primary);
 }
 
 .dialog-content md-outlined-text-field {
@@ -705,7 +742,7 @@ md-outlined-text-field {
   .console-panel,
   .app-shell.console-open .console-panel {
     position: fixed;
-    width: min(100vw, 420px);
+    width: min(100vw, var(--app-console-width));
     min-width: 0;
   }
 

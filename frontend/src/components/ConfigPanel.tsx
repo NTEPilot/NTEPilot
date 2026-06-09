@@ -16,8 +16,12 @@ function asTextFieldElement(target: EventTarget & Element) {
   return target as HTMLElement & { value: string };
 }
 
+function asSelectElement(target: EventTarget & Element) {
+  return target as HTMLElement & { value: string };
+}
+
 export function ConfigPanel({ fields, values, onChange }: ConfigPanelProps) {
-  const [fieldsRef] = useMotionParent<HTMLDivElement>();
+  const [fieldsRef] = useMotionParent<HTMLDivElement>({ duration: 140 });
 
   if (fields.length === 0) {
     return (
@@ -41,6 +45,31 @@ export function ConfigPanel({ fields, values, onChange }: ConfigPanelProps) {
                 {field.description && <small className="config-description">{field.description}</small>}
               </div>
               <Switch checked={Boolean(current)} onChange={(checked) => onChange(field.key, checked)} label={field.label} />
+            </div>
+          );
+        }
+
+        if (field.type === 'select') {
+          return (
+            <div className="config-row" key={field.key}>
+              <div className="config-copy">
+                <span className="config-label">{field.label}</span>
+                {field.description && <small className="config-description">{field.description}</small>}
+              </div>
+              <md-outlined-select
+                className="config-input"
+                label={field.label}
+                value={String(current ?? '')}
+                onChange={(event) => {
+                  onChange(field.key, asSelectElement(event.currentTarget).value);
+                }}
+              >
+                {(field.options ?? []).map((option) => (
+                  <md-select-option key={option} value={option}>
+                    <div slot="headline">{option}</div>
+                  </md-select-option>
+                ))}
+              </md-outlined-select>
             </div>
           );
         }

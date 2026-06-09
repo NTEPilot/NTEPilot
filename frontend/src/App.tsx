@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 import { ConfigPanel } from './components/ConfigPanel';
 import { InstanceTabs } from './components/InstanceTabs';
 import { ConsolePanel } from './components/ConsolePanel';
@@ -7,7 +8,7 @@ import { useMotionParent } from './lib/useMotionParent';
 import { useWebSocketBridge } from './lib/useWebSocketBridge';
 import { useThemeMode } from './lib/useThemeMode';
 
-type PageId = 'general' | 'tools';
+type PageId = 'general' | 'team' | 'tools';
 
 interface MaterialDialogElement extends HTMLElement {
   show: () => Promise<void>;
@@ -24,14 +25,30 @@ interface TextFieldElement extends HTMLElement {
 
 const PAGES: Array<{ id: PageId; label: string; icon: string }> = [
   { id: 'general', label: '通用配置', icon: 'tune' },
+  { id: 'team', label: '队伍', icon: 'groups' },
   { id: 'tools', label: '工具', icon: 'construction' },
 ];
+const CONSOLE_WIDTH_KEY = 'ntepilot.logPanelWidth';
+const DEFAULT_CONSOLE_WIDTH = 440;
+const MIN_CONSOLE_WIDTH = 320;
+const MAX_CONSOLE_WIDTH = 960;
+
+function clampConsoleWidth(width: number) {
+  const viewportLimit = typeof window === 'undefined' ? MAX_CONSOLE_WIDTH : Math.max(MIN_CONSOLE_WIDTH, window.innerWidth - 48);
+  return Math.min(Math.max(width, MIN_CONSOLE_WIDTH), Math.min(MAX_CONSOLE_WIDTH, viewportLimit));
+}
+
+function readConsoleWidth() {
+  const saved = Number(localStorage.getItem(CONSOLE_WIDTH_KEY));
+  return Number.isFinite(saved) && saved > 0 ? clampConsoleWidth(saved) : DEFAULT_CONSOLE_WIDTH;
+}
 
 export function App() {
   const bridge = useWebSocketBridge();
   const { isDark, toggleTheme } = useThemeMode();
   const [activePage, setActivePage] = useState<PageId>('general');
   const [consoleOpen, setConsoleOpen] = useState(false);
+  const [consoleWidth, setConsoleWidth] = useState(readConsoleWidth);
   const [openToolConfigs, setOpenToolConfigs] = useState<Record<string, boolean>>({});
   const [newInstanceName, setNewInstanceName] = useState('');
   const [shellRef] = useMotionParent<HTMLDivElement>();
@@ -43,6 +60,8 @@ export function App() {
   const tabsRef = useRef<MaterialTabsElement | null>(null);
   const connected = bridge.status === 'open';
   const activePageIndex = PAGES.findIndex((page) => page.id === activePage);
+  const activePageMeta = PAGES[activePageIndex] ?? PAGES[0];
+  const shellStyle = { '--app-console-width': `${consoleWidth}px` } as CSSProperties;
   const taskTitleById = useMemo(() => {
     return bridge.tasks.reduce<Record<string, string>>((titles, task) => {
       titles[task.id] = task.title;
@@ -65,6 +84,10 @@ export function App() {
       tabsRef.current.activeTabIndex = activePageIndex;
     }
   }, [activePageIndex]);
+
+  useEffect(() => {
+    localStorage.setItem(CONSOLE_WIDTH_KEY, String(consoleWidth));
+  }, [consoleWidth]);
 
   function openCreateDialog() {
     setNewInstanceName('');
@@ -91,7 +114,7 @@ export function App() {
   }, []);
 
   return (
-    <div className={`app-shell${consoleOpen ? ' console-open' : ''}`} ref={shellRef}>
+    <div className={`app-shell${consoleOpen ? ' console-open' : ''}`} ref={shellRef} style={shellStyle}>
       <aside className="instance-rail" aria-label="实例导航">
         <div className="brand-mark" aria-label="NTEPilot">
           <span className="brand-logo">N</span>
@@ -133,7 +156,7 @@ export function App() {
             <md-icon-button aria-label={isDark ? '切换到亮色主题' : '切换到暗色主题'} onClick={toggleTheme}>
               <MaterialIcon name={isDark ? 'light_mode' : 'dark_mode'} />
             </md-icon-button>
-            <md-icon-button aria-label="打开同步控制台" onClick={() => setConsoleOpen(true)}>
+            <md-icon-button aria-label="打开日志" onClick={() => setConsoleOpen(true)}>
               <MaterialIcon name="terminal" />
             </md-icon-button>
             <md-filled-button className="save-action" hasIcon onClick={bridge.saveConfig}>
@@ -164,14 +187,20 @@ export function App() {
         <section className="content-surface" ref={contentRef}>
           <div className="surface-heading">
             <div>
-              <span className="eyebrow">{activePage === 'general' ? 'General' : 'Tools'}</span>
-              <h2>{activePage === 'general' ? '通用配置' : '工具'}</h2>
+              <span className="eyebrow">{activePageMeta.id === 'general' ? 'General' : activePageMeta.id === 'team' ? 'Team' : 'Tools'}</span>
+              <h2>{activePageMeta.label}</h2>
             </div>
           </div>
 
           {activePage === 'general' ? (
             <ConfigPanel
               fields={bridge.groupedFields.general ?? []}
+              values={bridge.values}
+              onChange={bridge.updateValue}
+            />
+          ) : activePage === 'team' ? (
+            <ConfigPanel
+              fields={bridge.groupedFields.team ?? []}
               values={bridge.values}
               onChange={bridge.updateValue}
             />
@@ -242,7 +271,12 @@ export function App() {
       </main>
 
       {consoleOpen && (
-        <ConsolePanel logs={bridge.logs} onClose={() => setConsoleOpen(false)} />
+        <ConsolePanel
+          logs={bridge.logs}
+          width={consoleWidth}
+          onClose={() => setConsoleOpen(false)}
+          onWidthChange={(width) => setConsoleWidth(clampConsoleWidth(width))}
+        />
       )}
 
       <md-dialog

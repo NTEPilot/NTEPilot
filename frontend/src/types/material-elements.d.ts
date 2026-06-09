@@ -31,9 +31,11 @@ declare module 'react' {
       'md-list': MaterialElementProps;
       'md-list-item': MaterialElementProps;
       'md-outlined-button': MaterialElementProps;
+      'md-outlined-select': MaterialElementProps;
       'md-outlined-icon-button': MaterialElementProps;
       'md-outlined-text-field': MaterialElementProps;
       'md-primary-tab': MaterialElementProps;
+      'md-select-option': MaterialElementProps;
       'md-switch': MaterialElementProps;
       'md-tabs': MaterialElementProps;
       'md-text-button': MaterialElementProps;

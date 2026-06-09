@@ -5,6 +5,6 @@ const MOTION = {
   easing: 'cubic-bezier(0.2, 0, 0, 1)',
 };
 
-export function useMotionParent<T extends Element>() {
-  return useAutoAnimate<T>(MOTION);
+export function useMotionParent<T extends Element>(options: Partial<typeof MOTION> = {}) {
+  return useAutoAnimate<T>({ ...MOTION, ...options });
 }

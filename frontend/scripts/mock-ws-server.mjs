@@ -2,6 +2,25 @@ import { WebSocketServer } from 'ws';
 
 const port = Number(process.env.NTEPILOT_WS_PORT ?? 9150);
 const server = new WebSocketServer({ host: '127.0.0.1', port });
+const characterOptions = [
+  '零',
+  '早雾',
+  '九原',
+  '哈索尔',
+  '法帝娅',
+  '达芙蒂尔',
+  '白藏',
+  '小吱',
+  '阿德勒',
+  '海月',
+  '埃德嘉',
+  '哈尼娅',
+  '薄荷',
+  '翳',
+  '娜娜莉',
+  '浔',
+  '安魂曲',
+];
 
 const instances = {
   NTE: {
@@ -21,6 +40,13 @@ const instances = {
         green_bar_safe_proportion: 0.4,
       },
     },
+    team: {
+      chara_1: '零',
+      chara_2: '九原',
+      chara_3: '哈索尔',
+      chara_4: '法帝娅',
+      skill_order: '1E>2E>3E>4E>1A',
+    },
   },
 };
 
@@ -30,6 +56,11 @@ const fields = [
   { key: 'general.activity_name', label: '启动 Activity', type: 'text', group: 'general' },
   { key: 'general.websocket_host', label: '监听地址', type: 'text', group: 'general' },
   { key: 'general.websocket_port', label: '监听端口', type: 'number', group: 'general', min: 1, max: 65535, step: 1 },
+  { key: 'team.chara_1', label: '一号角色', type: 'select', group: 'team', description: '队伍一号位角色', options: characterOptions },
+  { key: 'team.chara_2', label: '二号角色', type: 'select', group: 'team', description: '队伍二号位角色', options: characterOptions },
+  { key: 'team.chara_3', label: '三号角色', type: 'select', group: 'team', description: '队伍三号位角色', options: characterOptions },
+  { key: 'team.chara_4', label: '四号角色', type: 'select', group: 'team', description: '队伍四号位角色', options: characterOptions },
+  { key: 'team.skill_order', label: '技能顺序', type: 'text', group: 'team', description: '按 1E>2E>3E>4E>1A 格式填写队伍技能循环' },
   { key: 'tools.fish.sell_fish', label: '自动卖鱼', type: 'boolean', group: 'fish' },
   { key: 'tools.fish.buy_bait', label: '自动买鱼饵', type: 'boolean', group: 'fish' },
   { key: 'tools.fish.buy_bait_stack_count', label: '鱼饵购买组数', type: 'number', group: 'fish', min: 1, max: 20, step: 1 },

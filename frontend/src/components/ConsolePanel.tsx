@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import type { CSSProperties } from 'react';
+import type { CSSProperties, PointerEvent as ReactPointerEvent } from 'react';
 import type { LogEvent } from '../types/protocol';
 import { useMotionParent } from '../lib/useMotionParent';
 import { MaterialIcon } from './MaterialIcon';
@@ -7,7 +7,9 @@ import { Switch } from './Switch';
 
 interface ConsolePanelProps {
   logs: LogEvent[];
+  width: number;
   onClose: () => void;
+  onWidthChange: (width: number) => void;
 }
 
 interface AnsiSegment {
@@ -155,7 +157,7 @@ function ConsoleLine({ log }: { log: LogEvent }) {
   );
 }
 
-export function ConsolePanel({ logs, onClose }: ConsolePanelProps) {
+export function ConsolePanel({ logs, width, onClose, onWidthChange }: ConsolePanelProps) {
   const ref = useRef<HTMLDivElement>(null);
   const [logsRef] = useMotionParent<HTMLDivElement>();
   const [autoScroll, setAutoScroll] = useState(true);
@@ -170,23 +172,50 @@ export function ConsolePanel({ logs, onClose }: ConsolePanelProps) {
     }
   }, [autoScroll, logs]);
 
+  const startResize = useCallback((event: ReactPointerEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    const handlePointerMove = (moveEvent: PointerEvent) => {
+      onWidthChange(window.innerWidth - moveEvent.clientX);
+    };
+    const stopResize = () => {
+      document.removeEventListener('pointermove', handlePointerMove);
+      document.removeEventListener('pointerup', stopResize);
+    };
+
+    document.addEventListener('pointermove', handlePointerMove);
+    document.addEventListener('pointerup', stopResize);
+  }, [onWidthChange]);
+
   return (
     <>
       <button
-        aria-label="关闭同步控制台"
+        aria-label="关闭日志"
         className="sheet-scrim"
         onClick={onClose}
         type="button"
       />
-      <aside className="console-panel" aria-label="同步控制台日志">
+      <aside className="console-panel" aria-label="日志">
+        <div
+          aria-label="调节日志宽度"
+          aria-orientation="vertical"
+          aria-valuenow={width}
+          className="console-resizer"
+          onKeyDown={(event) => {
+            if (event.key === 'ArrowLeft') onWidthChange(width + 24);
+            if (event.key === 'ArrowRight') onWidthChange(width - 24);
+          }}
+          onPointerDown={startResize}
+          role="separator"
+          tabIndex={0}
+        />
         <div className="console-title">
           <div className="console-heading">
             <MaterialIcon name="terminal" />
-            <span>同步控制台</span>
+            <span>日志</span>
           </div>
           <div className="console-actions">
             <Switch checked={autoScroll} onChange={setAutoScroll} label="自动滚动" compact />
-            <md-icon-button aria-label="关闭同步控制台" onClick={onClose}>
+            <md-icon-button aria-label="关闭日志" onClick={onClose}>
               <MaterialIcon name="close" />
             </md-icon-button>
           </div>

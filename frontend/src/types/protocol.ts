@@ -1,6 +1,6 @@
 export type ConnectionStatus = 'idle' | 'connecting' | 'open' | 'closed' | 'error';
 
-export type ConfigFieldType = 'text' | 'number' | 'boolean';
+export type ConfigFieldType = 'text' | 'number' | 'boolean' | 'select';
 
 export interface BackendInstance {
   name: string;
@@ -17,6 +17,7 @@ export interface ConfigField {
   min?: number;
   max?: number;
   step?: number;
+  options?: string[];
 }
 
 export interface BackendTask {

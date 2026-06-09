@@ -17,6 +17,7 @@ class ConfigField:
     min: int | float | None = None
     max: int | float | None = None
     step: int | float | None = None
+    options: tuple[str, ...] | None = None
     default: Any = dataclass_field(default=NO_DEFAULT, repr=False)
 
     @property
@@ -38,4 +39,6 @@ class ConfigField:
             data["max"] = self.max
         if self.step is not None:
             data["step"] = self.step
+        if self.options is not None:
+            data["options"] = list(self.options)
         return data
