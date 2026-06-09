@@ -1,5 +1,3 @@
-import time
-
 from template.control import *
 from utils.timer import Timer
 
@@ -28,15 +26,39 @@ class Character:
 
     def use_e(self):
         self.device.click(SKILL_E)
+        self.e_timer.reset()
         self.device.sleep((0.4, 0.6))
 
     def use_q(self):
         self.device.click(SKILL_Q)
+        self.q_timer.reset()
         self.device.sleep((5.9, 6.1))
 
     def use_a(self):
         self.device.click(BA)
         self.device.sleep((0.1, 0.2))
+
+    def use(self, type):
+        type = type.upper()
+        if type == 'E':
+            self.use_e()
+        elif type == 'Q':
+            self.use_q()
+        elif type == 'A':
+            self.use_a()
+        else:
+            raise ValueError('Illegal type')
+
+    def is_ready(self, type):
+        type = type.upper()
+        if type == 'E':
+            return self.is_e_ready
+        elif type == 'Q':
+            return self.is_q_ready
+        elif type == 'A':
+            return self.is_a_ready
+        else:
+            raise ValueError('Illegal type')
 
 
 class Zero(Character):

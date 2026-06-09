@@ -35,6 +35,7 @@ class Team(Instance):
         self.switch_timer[t].wait()
         self.device.click(SWITCH[t])
         self.switch_timer[t].reset()
+        self.device.sleep((0.2, 0.3))
 
     def init_team(self):
         self.device.click(SWITCH_2)
@@ -47,3 +48,12 @@ class Team(Instance):
         if not hasattr(self, '_current_chara'):
             self.init_team()
         return self._current_chara
+
+    def combat_once(self):
+        for act in self.skill_order:
+            chara = int(act[0])
+            skill = act[1]
+            if self.team[chara].is_ready(skill):
+                self.switch_chara(chara)
+                self.team[self.current_chara].use(skill)
+                break

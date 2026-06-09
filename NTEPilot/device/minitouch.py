@@ -364,7 +364,7 @@ def retry(func):
                 return func(self, *args, **kwargs)
             # 无法处理
             except RequestHumanTakeover:
-                break
+                raise
             # ADB 服务被终止时
             except ConnectionResetError as e:
                 logger.error(e)
