@@ -701,7 +701,7 @@ class Minitouch(Connection):
         builder.send()
 
     @retry
-    def drag_minitouch(self, p1, p2, contact=0):
+    def drag_minitouch(self, p1, p2, contact=0, disturbance=False):
         points = insert_swipe(p0=p1, p3=p2, speed=20)
         builder = self.minitouch_builder
 
@@ -714,10 +714,15 @@ class Minitouch(Connection):
 
         builder.move(*p2, contact).commit().wait(140)
         builder.move(*p2, contact).commit().wait(140)
+        if disturbance:
+            builder.move(p2[0] + 1, p2[1] + 1, contact).commit().wait(140)
         builder.send()
 
         builder.up(contact).commit()
         builder.send()
+
+        if disturbance:
+            time.sleep(0.2)
 
     def _start_keep_thread(self, p, contact):
         self._stop_keep_thread(contact)

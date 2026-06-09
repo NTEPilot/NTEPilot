@@ -81,9 +81,9 @@ class Control(Minitouch):
         logger.info(f'Swipe {p1} -> {p2}')
         self.swipe_minitouch(p1, p2)
 
-    def drag(self, p1, p2):
+    def drag(self, p1, p2, disturbance=False):
         logger.info(f'Drag {p1} -> {p2}')
-        self.drag_minitouch(p1, p2)
+        self.drag_minitouch(p1, p2, disturbance=disturbance)
 
     def press(self, target):
         if isinstance(target, tuple):

@@ -2,6 +2,7 @@ import traceback
 
 from template.fish import *
 from template.ui import *
+from template.map import *
 
 class Page:
     # 键: str, 页面名称如 "page_main"
@@ -66,6 +67,8 @@ class Page:
     def link(self, template, destination):
         self.links[destination] = template
 
+MAIN_PAGE = Page(CHAT)
+
 # fish
 FISH_MAIN_PAGE = Page(HOOK)
 FISH_SHOP = Page(BAIT)
@@ -77,3 +80,7 @@ FISH_MAIN_PAGE.link(BUTTON_MARKET, FISH_MARKET_PAGE)
 FISH_MARKET_PAGE.link(BUTTON_CROSS, FISH_MAIN_PAGE)
 FISH_MARKET_PAGE.link(FISH_STORAGE, FISH_STORAGE_PAGE)
 FISH_STORAGE_PAGE.link(BUTTON_CROSS, FISH_MAIN_PAGE)
+
+# map
+MAP_PAGE = Page(MAP_SETTING)
+MAIN_PAGE.link(MAP, MAP_PAGE)
