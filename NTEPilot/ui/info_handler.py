@@ -23,21 +23,21 @@ class InfoHandler(Instance):
             self.device.click(template)
         return appear
 
-    def wait_until_appear(self, template: Template, offset=0, skip_first_screenshot=False):
+    def wait_until_appear(self, template: Template, offset=0, similarity=0.85, skip_first_screenshot=False):
         while True:
             if skip_first_screenshot:
                 skip_first_screenshot = False
             else:
                 self.device.screenshot()
-            if self.appear(template, offset=offset):
+            if self.appear(template, offset=offset, similarity=similarity):
                 break
 
-    def wait_until_appear_then_click(self, template: Template, offset=0):
-        self.wait_until_appear(template, offset=offset)
+    def wait_until_appear_then_click(self, template: Template, offset=0, similarity=0.85):
+        self.wait_until_appear(template, offset=offset, similarity=similarity)
         self.device.click(template)
 
-    def wait_until_disappear(self, template: Template, offset=0):
+    def wait_until_disappear(self, template: Template, offset=0, similarity=0.85):
         while True:
             self.device.screenshot()
-            if not self.appear(template, offset=offset):
+            if not self.appear(template, offset=offset, similarity=similarity):
                 break
