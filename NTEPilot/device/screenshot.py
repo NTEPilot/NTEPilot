@@ -1,5 +1,6 @@
 import os
 import time
+from contextlib import contextmanager
 from collections import deque
 from datetime import datetime
 from PIL import Image
@@ -125,6 +126,15 @@ class Screenshot(DroidCast):
         if interval != self._screenshot_interval.duration:
             logger.info(f'Screenshot interval set to {interval}s')
             self._screenshot_interval.duration = interval
+
+    @contextmanager
+    def temporary_screenshot_interval(self, interval):
+        old_interval = self._screenshot_interval.duration
+        self.screenshot_interval_set(interval)
+        try:
+            yield
+        finally:
+            self.screenshot_interval_set(old_interval)
 
     def image_show(self, image=None):
         if image is None:

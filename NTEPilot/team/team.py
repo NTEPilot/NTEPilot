@@ -21,34 +21,34 @@ class Team(Instance):
             4: CHINESE_TO_CHARA[self.config["team.chara_4"]](4, self.device)
         }
         self.switch_timer = {
-            1: Timer(1),
-            2: Timer(1),
-            3: Timer(1),
-            4: Timer(1)
+            1: Timer(1.1),
+            2: Timer(1.1),
+            3: Timer(1.1),
+            4: Timer(1.1)
         }
         self.skill_order = [a.strip() for a in self.config["team.skill_order"].split(">")]
     
     def switch_chara(self, target):
-        if target == self.current_chara:
+        if target == self._current_chara:
             return
-        t = target if target < self.current_chara else target - 1
+        t = target if target < self._current_chara else target - 1
         self.switch_timer[t].wait()
         self.device.click(SWITCH[t])
         self.switch_timer[t].reset()
         self._current_chara = target
-        self.device.sleep((0.2, 0.3))
+        self.device.sleep((0.6, 0.8))
 
     def init_team(self):
         self.device.click(SWITCH_2)
-        time.sleep(1)
+        time.sleep(1.1)
         self._current_chara = 2 # 临时设置成不为1的角色以便switch_chara切换
         self.switch_chara(1)
 
     @property
-    def current_chara(self):
+    def current_chara(self) -> Character:
         if not hasattr(self, '_current_chara'):
             self.init_team()
-        return self._current_chara
+        return self.team[self._current_chara]
 
     def combat_once(self):
         for act in self.skill_order:
@@ -56,5 +56,5 @@ class Team(Instance):
             skill = act[1]
             if self.team[chara].is_ready(skill):
                 self.switch_chara(chara)
-                self.team[self.current_chara].use(skill)
+                self.current_chara.use(skill)
                 break

@@ -6,5 +6,8 @@
             1280,
             70
         ]
+    },
+    "INTERACT.png": {
+        "method": "avg_color"
     }
 }

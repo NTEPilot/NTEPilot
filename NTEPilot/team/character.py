@@ -27,7 +27,7 @@ class Character:
     def use_e(self):
         self.device.click(SKILL_E)
         self.e_timer.reset()
-        self.device.sleep((0.4, 0.6))
+        self.device.sleep((0.8, 1))
 
     def use_q(self):
         self.device.click(SKILL_Q)
