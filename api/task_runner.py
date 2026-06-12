@@ -123,7 +123,6 @@ class TaskRunner:
             "instance": config.name,
             "status": {
                 "device": config["general.serial"],
-                "packageName": config["general.package_name"],
                 "activeTask": self.active_task_id(config.name),
             },
         }

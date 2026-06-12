@@ -6,8 +6,7 @@ CHARACTER_OPTIONS = tuple(CHINESE_TO_CHARA.keys())
 
 GENERAL_CONFIG_FIELDS = [
     ConfigField("general.serial", "设备序列号", "text", "general", "ADB 设备或模拟器序列号"),
-    ConfigField("general.package_name", "应用包名", "text", "general", "目标 Android 应用包名"),
-    ConfigField("general.activity_name", "启动 Activity", "text", "general", "目标 Android Activity"),
+    ConfigField("general.client", "客户端", "select", "general", "游戏客户端类型", options=("异环", "云·异环")),
 ]
 
 TEAM_CONFIG_FIELDS = [

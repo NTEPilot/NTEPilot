@@ -13,7 +13,7 @@ NTEPilot 是一个游戏自动化工具，通过 ADB 连接 Android 模拟器，
 
 ## 系统要求
 
-- Python 3.10+
+- Python 3.14+
 - Node.js 18+
 - ADB（Android Debug Bridge）
 - Android 模拟器（如雷电、MuMu、BlueStacks）
@@ -30,12 +30,8 @@ cd NTEPilot
 ### 2. 安装后端依赖
 
 ```powershell
-# 创建并激活虚拟环境（如果还没有）
-python -m venv .venv
-.venv\Scripts\activate
-
-# 安装依赖
-pip install -r requirements.txt
+# 使用 uv 安装依赖并创建/同步虚拟环境
+uv sync
 ```
 
 ### 3. 安装前端依赖
@@ -59,7 +55,7 @@ cd ..
 ### 5. 启动服务
 
 ```powershell
-.venv\Scripts\python.exe main.py
+uv run main.py
 ```
 
 服务启动后访问 http://127.0.0.1:9150/ 即可打开控制台。
@@ -74,7 +70,7 @@ cd ..
 
 ```powershell
 # 终端 1：启动后端
-.venv\Scripts\python.exe main.py
+uv run main.py
 
 # 终端 2：启动前端开发服务器
 cd frontend
@@ -99,7 +95,8 @@ npm run dev
 ```
 NTEPilot/
 ├── main.py                 # 应用入口（FastAPI + Uvicorn）
-├── requirements.txt        # Python 依赖
+├── pyproject.toml          # Python 项目配置及依赖声明
+├── uv.lock                 # uv 锁文件
 │
 ├── api/                    # WebSocket API 服务器
 │   ├── server.py           # FastAPI 应用，WebSocket 端点
@@ -291,8 +288,7 @@ CHINESE_TO_CHARA['新角色'] = NewChara
 |------|------|------|
 | `general.name` | text | 实例名称 |
 | `general.serial` | text | ADB 设备序列号 |
-| `general.package_name` | text | 游戏包名 |
-| `general.activity_name` | text | 游戏 Activity 名 |
+| `general.client` | select | 客户端类型，可选 "异环" 或 "云·异环" |
 
 ### 钓鱼配置
 

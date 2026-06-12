@@ -29,7 +29,6 @@ export interface BackendTask {
 
 export interface BackendStatus {
   device?: string;
-  packageName?: string;
   activeTask?: string;
 }
 

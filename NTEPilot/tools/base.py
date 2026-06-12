@@ -5,6 +5,8 @@ from dataclasses import dataclass
 from typing import Any
 
 from NTEPilot.config.config_field import ConfigField
+from utils.exceptions import GameStuckError
+from utils.logger import logger
 
 
 @dataclass(frozen=True)
@@ -35,4 +37,13 @@ class ToolSpec:
 
         module = importlib.import_module(module_name)
         runner_class = getattr(module, class_name)
-        runner_class(config=config).run()
+        runner = runner_class(config=config)
+        if not runner.device.app_is_running():
+            runner.restart_app()
+        while True:
+            try:
+                runner.run()
+                break
+            except GameStuckError:
+                logger.warning("Game stuck error detected, restarting game")
+                runner.restart_app()

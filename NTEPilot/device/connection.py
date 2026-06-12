@@ -101,6 +101,10 @@ class AdbDeviceWithStatus:
         self.status = status
 
 class Connection:
+    CLIENT = {
+        '异环': ('com.hottagames.yh.laohu', 'com.epicgames.ue.LaunchActivity'),
+        '云·异环': ('com.pwrd.cloud.yh.laohu', 'com.pwrd.cloudgame.client_core.LaunchActivity')
+    }
     def __init__(self, config):
         self.config = config
         self.serial = self.config["general.serial"]
@@ -108,9 +112,11 @@ class Connection:
         self.adb_connect(wait_device=False)
         logger.attr('AdbDevice', self.adb)
 
-        # 检测包名
-        self.package = self.config["general.package_name"]
+        # 检测包名和Activity
+        self.package = self.CLIENT[self.config["general.client"]][0]
+        self.activity = self.CLIENT[self.config["general.client"]][1]
         logger.attr('PackageName', self.package)
+        logger.attr('ActivityName', self.activity)
 
         self.check_mumu_app_keep_alive()
 
@@ -660,7 +666,7 @@ class Connection:
         if not package_name:
             package_name = self.package
         if not activity_name:
-            activity_name = self.config["general.activity_name"]
+            activity_name = self.activity
 
         if activity_name:
             if self._app_start_adb_am(package_name, activity_name, allow_failure):

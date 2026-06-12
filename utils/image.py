@@ -314,3 +314,77 @@ def color_similar(color1, color2, threshold=10):
 
     diff = max_positive - max_negative
     return diff <= threshold
+
+def extract_letters(image, letter=(255, 255, 255), threshold=128):
+    """将字母颜色设为黑色，背景颜色设为白色。
+
+    Args:
+        image (np.ndarray): 图像数组，形状 (height, width, channel)。
+        letter (tuple): 字母 RGB 颜色。
+        threshold (int): 颜色差异阈值。
+
+    Returns:
+        np.ndarray: 灰度图，形状 (height, width)。
+    """
+    # r, g, b = cv2.split(cv2.subtract(image, (*letter, 0)))
+    # positive = cv2.max(cv2.max(r, g), b)
+    # r, g, b = cv2.split(cv2.subtract((*letter, 0), image))
+    # negative = cv2.max(cv2.max(r, g), b)
+    # return cv2.multiply(cv2.add(positive, negative), 255.0 / threshold)
+    diff = cv2.subtract(image, letter)
+    r, g, b = cv2.split(diff)
+    cv2.max(r, g, dst=r)
+    cv2.max(r, b, dst=r)
+    positive = r
+    cv2.subtract(letter, image, dst=diff)
+    r, g, b = cv2.split(diff)
+    cv2.max(r, g, dst=r)
+    cv2.max(r, b, dst=r)
+    negative = r
+    cv2.add(positive, negative, dst=positive)
+    if threshold != 255:
+        cv2.convertScaleAbs(positive, alpha=255.0 / threshold, dst=positive)
+    return positive
+
+def crop_to_text(image, threshold=120, padding=2):
+    """裁剪图像宽高以紧密贴合文本内容。
+
+    专为 OCR 预处理后的灰度图设计（extract_letters 的输出），
+    其中文本像素值较低，背景像素值为 255。
+    查找包含文本的最左、最右、最上、最下的行/列，
+    然后裁剪图像到该范围并保留小的安全边距。
+
+    Args:
+        image (np.ndarray): 灰度图，形状 (height, width)。
+            像素值范围 0~255，较低值表示文本。
+        threshold (int): 像素值 < threshold 视为文本。
+            默认 120，可安全捕获抗锯齿边缘。
+        padding (int): 每边保留的额外像素作为安全边距。
+            默认 2。如果文本被裁剪可增大此值。
+
+    Returns:
+        np.ndarray: 裁剪后的图像。
+            如果未检测到文本，返回原图。
+    """
+    # 创建文本像素掩码（值 < threshold）
+    # 检测灰度图（2D）或多通道图（3D）中的文本
+    mask = np.any(image < threshold, axis=2) if image.ndim == 3 else image < threshold
+
+    # 查找包含文本的行和列
+    rows = np.any(mask, axis=1)
+    cols = np.any(mask, axis=0)
+
+    if not rows.any() or not cols.any():
+        return image
+
+    # 边界索引
+    row_idx = np.where(rows)[0]
+    col_idx = np.where(cols)[0]
+
+    h, w = image.shape[:2]
+    top = max(row_idx[0] - padding, 0)
+    bottom = min(row_idx[-1] + padding + 1, h)
+    left = max(col_idx[0] - padding, 0)
+    right = min(col_idx[-1] + padding + 1, w)
+
+    return image[top:bottom, left:right]

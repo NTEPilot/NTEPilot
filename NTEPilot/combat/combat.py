@@ -15,8 +15,54 @@ class Combat(Map, Team):
         2: SELECTION_2,
         3: SELECTION_3,
         4: SELECTION_4,
-        5: SELECTION_5
-    }
+        5: SELECTION_5,
+        6: SELECTION_6
+    },
+    CHINESE_INFO = {
+        '经验本': {
+            'teleport_id': 7,
+            'cost': 40,
+            'selections': {
+                '合订本': 1,
+                '万花筒': 2,
+                '硬币记': 3
+            }
+        },
+        '卡牌本': {
+            'teleport_id': 8,
+            'cost': 40,
+            'selections': {
+                '小心鸽子': 1,
+                '扑克茶会': 2,
+                '惊喜派对': 3,
+                '心电感应': 4,
+                '越狱艺术': 5
+            }
+        },
+        '罐头本': {
+            'teleport_id': 9,
+            'cost': 40,
+            'selections': {
+                '泡影罐头·苹果核': 1,
+                '泡影罐头·螺旋乐': 2,
+                '泡影罐头·液态梦': 3,
+                '泡影罐头·冷甜点': 4,
+                '泡影罐头·戏剧芯': 5
+            }
+        },
+        '兔子洞': {
+            'teleport_id': 10,
+            'cost': 40,
+            'selections': {
+                '钟表把戏': 1,
+                '雕塑展馆': 2,
+                '纬线织机': 3,
+                '守卫萝卜': 4,
+                '精神图谱': 5,
+                '轨道之夜': 6
+            }
+        }
+    },
 
     def combat(self, teleport_target, selection):
         self.teleport_to(teleport_target)

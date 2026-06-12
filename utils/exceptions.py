@@ -17,10 +17,6 @@ class GameBugError(Exception):
     pass
 
 
-class GameTooManyClickError(Exception):
-    pass
-
-
 class EmulatorNotRunningError(Exception):
     pass
 

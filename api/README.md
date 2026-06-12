@@ -50,8 +50,7 @@ instances/NTE.json
   "general": {
     "name": "NTE",
     "serial": "127.0.0.1:16448",
-    "package_name": "com.pwrd.cloud.yh.laohu",
-    "activity_name": "com.pwrd.cloudgame.client_core.ui.HomeActivity"
+    "client": "异环"
   },
   "tools": {
     "fish": {
@@ -74,7 +73,7 @@ instances/NTE.json
 
 ```python
 config["general.serial"]
-config["general.package_name"]
+config["general.client"]
 config["tools.fish.buy_bait"]
 config["tools.fish.green_bar_safe_proportion"]
 ```
@@ -143,7 +142,6 @@ if self.config["tools.fish.enable_debug_marker"]:
   "instances": [{ "name": "NTE" }],
   "status": {
     "device": "127.0.0.1:16448",
-    "packageName": "com.pwrd.cloud.yh.laohu",
     "activeTask": "idle"
   }
 }

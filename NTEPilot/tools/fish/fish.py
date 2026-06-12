@@ -1,3 +1,4 @@
+from template.fish import START_TO_FISH
 import time
 import threading
 import numpy as np
@@ -6,7 +7,7 @@ from NTEPilot.ui.ui import UI
 from NTEPilot.device.control import Control
 from NTEPilot.ui.page import FISH_MAIN_PAGE, FISH_SHOP, FISH_STORAGE_PAGE
 from template.fish import *
-from template.ui import GET_ITEM
+from template.ui import GET_ITEM, INTERACT
 
 from utils.logger import logger
 
@@ -27,7 +28,18 @@ class Fish(UI):
 
     def run(self):
         logger.hr('FISH', level=1)
-        self.wait_until_appear(HOOK)
+        
+        with self.device.temporary_screenshot_interval(0.5):
+            while True:
+                self.device.screenshot()
+                if self.appear(HOOK):
+                    break
+                if self.appear(INTERACT):
+                    self.device.click(INTERACT)
+                    continue
+                if self.appear(FISH_READY):
+                    self.device.click(START_TO_FISH)
+                    continue
 
         while True:
             self.device.click(HOOK)
@@ -310,7 +322,3 @@ class Fish(UI):
                 self._fishing_active = False
             control_thread.join()
             self._release()
-
-if __name__ == "__main__":
-    fish = Fish(None)
-    fish.run()

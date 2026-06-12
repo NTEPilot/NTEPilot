@@ -27,8 +27,7 @@ const instances = {
     general: {
       name: 'NTE',
       serial: '127.0.0.1:16448',
-      package_name: 'com.pwrd.cloud.yh.laohu',
-      activity_name: 'com.pwrd.cloudgame.client_core.ui.HomeActivity',
+      client: '云·异环',
       websocket_host: '127.0.0.1',
       websocket_port: 9150,
     },
@@ -52,8 +51,7 @@ const instances = {
 
 const fields = [
   { key: 'general.serial', label: '设备序列号', type: 'text', group: 'general', description: 'ADB 设备或模拟器序列号' },
-  { key: 'general.package_name', label: '应用包名', type: 'text', group: 'general' },
-  { key: 'general.activity_name', label: '启动 Activity', type: 'text', group: 'general' },
+  { key: 'general.client', label: '客户端', type: 'select', group: 'general', options: ['异环', '云·异环'] },
   { key: 'general.websocket_host', label: '监听地址', type: 'text', group: 'general' },
   { key: 'general.websocket_port', label: '监听端口', type: 'number', group: 'general', min: 1, max: 65535, step: 1 },
   { key: 'team.chara_1', label: '一号角色', type: 'select', group: 'team', description: '队伍一号位角色', options: characterOptions },
@@ -112,7 +110,6 @@ function status(instance = 'NTE', activeTask = 'idle') {
   const config = instances[instance] ?? instances.NTE;
   return {
     device: config.general.serial,
-    packageName: config.general.package_name,
     activeTask,
   };
 }

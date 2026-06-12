@@ -11,13 +11,13 @@ NTEPilot is a game automation tool for a mobile game, automating tasks like fish
 ### Backend
 ```powershell
 # Install dependencies (from project root)
-.venv\Scripts\pip install -r requirements.txt
+uv sync
 
 # Run the server (default: 127.0.0.1:9150)
-.venv\Scripts\python.exe main.py
+uv run main.py
 
 # With custom host/port
-.venv\Scripts\python.exe main.py --host 127.0.0.1 --port 9150
+uv run main.py --host 127.0.0.1 --port 9150
 ```
 
 ### Frontend

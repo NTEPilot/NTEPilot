@@ -227,7 +227,6 @@ class NTEPilotWebSocketApp:
         config = self.config_store.get(instance)
         return {
             "device": config["general.serial"],
-            "packageName": config["general.package_name"],
             "activeTask": self.task_runner.active_task_id(config.name),
         }
 

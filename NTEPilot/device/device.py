@@ -7,7 +7,7 @@ import cv2
 from utils.timer import Timer
 from .control import Control
 from .screenshot import Screenshot
-from utils.exceptions import (EmulatorNotRunningError, GameNotRunningError, GameStuckError, GameTooManyClickError,
+from utils.exceptions import (EmulatorNotRunningError, GameNotRunningError, GameStuckError,
                               RequestHumanTakeover)
 from utils.logger import logger
 
@@ -92,7 +92,7 @@ class Device(Screenshot, Control):
         # AppControl.app_is_running() 会用到此属性
         if not hasattr(self, 'package'):
             # 回退到配置值；如果是 'auto'，后续检测会更新它
-            self.package = self.config["general.package_name"]
+            self.package = self.CLIENT[self.config["general.client"]][0]
 
         # # 自动填充模拟器信息
         # if IS_WINDOWS and self.config.EmulatorInfo_Emulator == 'auto':

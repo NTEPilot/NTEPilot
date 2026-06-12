@@ -2,8 +2,7 @@
   "general": {
     "name": "NTE",
     "serial": "127.0.0.1:16448",
-    "package_name": "com.pwrd.cloud.yh.laohu",
-    "activity_name": "com.pwrd.cloudgame.client_core.ui.HomeActivity"
+    "client": "异环"
   },
   "tools": {
     "fish": {
@@ -19,5 +18,13 @@
     "chara_3": "哈索尔",
     "chara_4": "法帝娅",
     "skill_order": "1E>2E>3E>4E>1A"
+  },
+  "schedule": {
+    "combat": {
+      "next": 0,
+      "interval": 86400,
+      "position": "经验本",
+      "selection": "合订本"
+    }
   }
 }

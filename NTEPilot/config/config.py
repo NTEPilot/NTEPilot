@@ -59,13 +59,39 @@ class Config:
     @classmethod
     def load(cls, name: str = DEFAULT_INSTANCE_NAME) -> "Config":
         cls.ensure_default_instance()
-        normalized = cls.normalize_name(name)
-        path = INSTANCES_DIR / f"{normalized}.json"
+        normalized_name = cls.normalize_name(name)
+        path = INSTANCES_DIR / f"{normalized_name}.json"
         if not path.exists():
-            raise FileNotFoundError(f"Instance config not found: {normalized}")
+            raise FileNotFoundError(f"Instance config not found: {normalized_name}")
 
         data = json.loads(path.read_text(encoding="utf-8"))
-        return cls(normalized, cls.merge_with_template(data))
+        normalized_data = cls.normalize_keys(data)
+        if "general" not in normalized_data and "tools" not in normalized_data:
+            normalized_data = cls.migrate_flat_data(normalized_data)
+
+        # Get flat keys of input data
+        input_paths = {}
+        cls.walk_paths(normalized_data, "", input_paths)
+        
+        # Get template keys
+        template_paths = cls.template_paths()
+        
+        has_incompatibility = False
+        for key in input_paths:
+            if key not in template_paths:
+                has_incompatibility = True
+                break
+        
+        if not has_incompatibility:
+            for key in template_paths:
+                if key != "general.name" and key not in input_paths:
+                    has_incompatibility = True
+                    break
+
+        config = cls(normalized_name, cls.merge_with_template(data))
+        if has_incompatibility:
+            config.save()
+        return config
 
     @classmethod
     def create(cls, name: str = DEFAULT_INSTANCE_NAME, values: dict[str, Any] | None = None) -> "Config":
@@ -192,7 +218,7 @@ class Config:
     @staticmethod
     def migrate_flat_data(data: dict[str, Any]) -> dict[str, Any]:
         migrated: dict[str, Any] = {"general": {}, "tools": {"fish": {}}, "team": {}}
-        general_keys = {"name", "serial", "package_name", "activity_name"}
+        general_keys = {"name", "serial", "client"}
         fish_keys = {"sell_fish", "buy_bait", "buy_bait_stack_count", "green_bar_safe_proportion"}
         team_keys = {"chara_1", "chara_2", "chara_3", "chara_4", "skill_order"}
 
