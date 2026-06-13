@@ -18,7 +18,9 @@ class Ocr(Instance):
     INPUT_HEIGHT = 48
     WIDTH_ALIGNMENT = 8
 
-    def __init__(self):
+    def __init__(self, config, device=None):
+        super().__init__(config=config, device=device)
+
         self.characters = DICT_PATH.read_text(encoding="utf-8").split("\n")
         self.session = self._create_session(MODEL_PATH)
         self.input_name = self.session.get_inputs()[0].name
@@ -38,12 +40,8 @@ class Ocr(Instance):
         self.warmup()
 
     def ocr(self, target) -> str:
-        image = getattr(self.device, "image", None)
-        if image is None:
-            raise RuntimeError("OCR requires a cached screenshot in self.device.image")
-
         rect = self._get_rect(target)
-        roi = crop(image, rect, copy=False)
+        roi = crop(self.device.image, rect, copy=False)
         letters = extract_letters(roi)
         text_image = crop_to_text(letters)
         input_tensor = self._preprocess(text_image)

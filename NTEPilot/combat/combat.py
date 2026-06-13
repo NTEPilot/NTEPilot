@@ -2,14 +2,17 @@ import time
 
 from NTEPilot.map.map import Map
 from NTEPilot.team.team import Team
+from NTEPilot.ocr import Ocr
+from NTEPilot.ui.page import MAP_PAGE
 from template.ui import INTERACT, CHAT
+from template.map import CHARACTER_PIXEL
 from template.combat import *
 from template.control import *
 from utils.image import limit_in
 from utils.logger import logger
 from utils.exceptions import ScriptError
 
-class Combat(Map, Team):
+class Combat(Map, Team, Ocr):
     SELECTIONS = {
         1: SELECTION_1,
         2: SELECTION_2,
@@ -17,7 +20,7 @@ class Combat(Map, Team):
         4: SELECTION_4,
         5: SELECTION_5,
         6: SELECTION_6
-    },
+    }
     CHINESE_INFO = {
         '经验本': {
             'teleport_id': 7,
@@ -62,9 +65,9 @@ class Combat(Map, Team):
                 '轨道之夜': 6
             }
         }
-    },
+    }
 
-    def combat(self, teleport_target, selection):
+    def combat(self, teleport_target, selection, double):
         self.teleport_to(teleport_target)
         self.device.sleep((1, 1.2))
         self.init_team()
@@ -77,7 +80,7 @@ class Combat(Map, Team):
         self.wait_until_appear(CHAT)
         self.device.sleep((0.1, 0.2))
         self.start_combat()
-        self.claim_reward()
+        self.claim_reward(double)
 
     def start_combat(self):
         logger.hr('START COMBAT', level=2)
@@ -101,7 +104,7 @@ class Combat(Map, Team):
             self.device.click(LOCK)
             self.combat_once()
 
-    def claim_reward(self):
+    def claim_reward(self, double):
         logger.hr('CLAIM REWARD', level=2)
 
         target_x = 640
@@ -114,6 +117,12 @@ class Combat(Map, Team):
 
             if self.appear(INTERACT):
                 self.device.click(INTERACT)
+                if double:
+                    self.wait_until_appear_then_click(CLAIM_DOUBLE)
+                else:
+                    self.wait_until_appear_then_click(CLAIM_SINGLE)
+                self.wait_until_appear_then_click(EXIT)
+                self.wait_until_appear(CHAT)
                 return
 
             if not self.appear(CHEST, similarity=0.65):
@@ -144,3 +153,20 @@ class Combat(Map, Team):
             self.device.drag(drag_start, (end_x, drag_start[1]))
 
         raise ScriptError('Unable to center chest marker')
+
+    def run(self):
+        logger.hr('COMBAT', level=1)
+        position = self.config['schedule.combat.position']
+        selection = self.config['schedule.combat.selection']
+        cost = self.CHINESE_INFO[position]['cost']
+        self.ui_goto(MAP_PAGE)
+        pixel = int(self.ocr(CHARACTER_PIXEL).split('/')[0])
+        while True:
+            if pixel >= cost * 2:
+                self.combat(self.CHINESE_INFO[position]['teleport_id'], self.CHINESE_INFO[position]['selections'][selection], True)
+                pixel -= cost * 2
+            elif pixel >= cost:
+                self.combat(self.CHINESE_INFO[position]['teleport_id'], self.CHINESE_INFO[position]['selections'][selection], False)
+                pixel -= cost
+            else:
+                break
