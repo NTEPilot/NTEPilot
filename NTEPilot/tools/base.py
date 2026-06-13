@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import importlib
+import time
 from dataclasses import dataclass
 from typing import Any
 
@@ -38,12 +39,14 @@ class ToolSpec:
         module = importlib.import_module(module_name)
         runner_class = getattr(module, class_name)
         runner = runner_class(config=config)
-        if not runner.device.app_is_running():
-            runner.restart_app()
+
         while True:
             try:
+                if not runner.device.app_is_running():
+                    runner.restart_app()
                 runner.run()
                 break
             except GameStuckError:
                 logger.warning("Game stuck error detected, restarting game")
-                runner.restart_app()
+                runner.device.app_stop_adb()
+                time.sleep(3)
