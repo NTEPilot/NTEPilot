@@ -15,9 +15,10 @@ from starlette.routing import Mount, Match
 from starlette.types import Scope
 
 from NTEPilot.config.config import Config, DEFAULT_INSTANCE_NAME, PROJECT_ROOT
+from NTEPilot.config.schema import get_config_schema, get_task_catalog
 from utils.logger import logger
 
-from api.config import CONFIG_FIELDS, TASKS
+from api.scheduler import Scheduler
 from api.task_runner import TaskRunner
 
 STATIC_DIR = PROJECT_ROOT / "frontend" / ".static"
@@ -45,7 +46,7 @@ class ConfigStore:
         return {
             "type": "config.schema",
             "instance": config.name,
-            "fields": [field.to_json(config) for field in CONFIG_FIELDS],
+            "fields": get_config_schema(config),
         }
 
     def update(self, instance: str, values: dict[str, Any]) -> dict[str, Any]:
@@ -109,6 +110,7 @@ class NTEPilotWebSocketApp:
         self.clients: set[WebSocket] = set()
         self.config_store = ConfigStore()
         self.task_runner = TaskRunner(self, self.config_store)
+        self.scheduler = Scheduler(self, self.config_store, self.task_runner)
         self.loop: asyncio.AbstractEventLoop | None = None
         self.log_handler = BroadcastLogHandler(self)
         logger.addHandler(self.log_handler)
@@ -119,6 +121,11 @@ class NTEPilotWebSocketApp:
         @app.on_event("startup")
         async def startup() -> None:
             self.loop = asyncio.get_running_loop()
+            self.scheduler.start()
+
+        @app.on_event("shutdown")
+        async def shutdown() -> None:
+            self.scheduler.shutdown()
 
         @app.websocket("/ws")
         async def websocket_endpoint(websocket: WebSocket) -> None:
@@ -153,7 +160,9 @@ class NTEPilotWebSocketApp:
         )
         await self.send(websocket, {"type": "instance.list", "instances": self.config_store.list_instances()})
         await self.send(websocket, self.config_store.schema(instance))
-        await self.send(websocket, {"type": "task.catalog", "tasks": TASKS})
+        await self.send(websocket, {"type": "task.catalog", "tasks": get_task_catalog("tools")})
+        await self.send(websocket, self.scheduler.catalog_payload())
+        await self.send(websocket, self.scheduler.state_payload(instance))
 
     async def handle_message(self, websocket: WebSocket, raw: str | bytes) -> None:
         message: dict[str, Any] = {}
@@ -173,6 +182,7 @@ class NTEPilotWebSocketApp:
                 config = self.config_store.create(name)
                 await self.broadcast({"type": "instance.list", "instances": self.config_store.list_instances()})
                 await self.send(websocket, self.config_store.schema(config.name))
+                await self.send(websocket, self.scheduler.state_payload(config.name))
                 await self.send_result(websocket, request_id, True, {"instance": config.name})
                 return
             if message_type == "config.get":
@@ -186,7 +196,7 @@ class NTEPilotWebSocketApp:
                 await self.send_result(websocket, request_id, True, {"updated": True, "instance": payload["instance"]})
                 return
             if message_type == "task.list":
-                await self.send(websocket, {"type": "task.catalog", "tasks": TASKS})
+                await self.send(websocket, {"type": "task.catalog", "tasks": get_task_catalog("tools")})
                 return
             if message_type == "task.start":
                 result = self.task_runner.start(
@@ -198,6 +208,47 @@ class NTEPilotWebSocketApp:
                 return
             if message_type == "task.stop":
                 result = self.task_runner.stop(instance, str(message.get("taskId", "")))
+                await self.send_result(websocket, request_id, True, result)
+                return
+            if message_type == "scheduler.catalog":
+                await self.send(websocket, self.scheduler.catalog_payload())
+                return
+            if message_type == "scheduler.get":
+                await self.send(websocket, self.scheduler.state_payload(instance))
+                return
+            if message_type == "scheduler.set_enabled":
+                result = self.scheduler.set_enabled(instance, bool(message.get("enabled")))
+                await self.send_result(websocket, request_id, True, result)
+                return
+            if message_type == "scheduler.plan.add":
+                values = message.get("values")
+                if isinstance(values, dict):
+                    self.config_store.update(instance, values)
+                result = self.scheduler.add_plan(
+                    instance,
+                    str(message.get("taskId", "")),
+                    str(message.get("time", "")),
+                    int(message.get("priority", 0)),
+                )
+                await self.send(websocket, self.config_store.schema(result["instance"]))
+                await self.send_result(websocket, request_id, True, result)
+                return
+            if message_type == "scheduler.plan.update":
+                values = message.get("values")
+                if isinstance(values, dict):
+                    self.config_store.update(instance, values)
+                result = self.scheduler.update_plan(
+                    instance,
+                    str(message.get("planId", "")),
+                    str(message.get("taskId", "")),
+                    str(message.get("time", "")),
+                    int(message.get("priority", 0)),
+                )
+                await self.send(websocket, self.config_store.schema(result["instance"]))
+                await self.send_result(websocket, request_id, True, result)
+                return
+            if message_type == "scheduler.plan.remove":
+                result = self.scheduler.remove_plan(instance, str(message.get("planId", "")))
                 await self.send_result(websocket, request_id, True, result)
                 return
 
@@ -228,6 +279,7 @@ class NTEPilotWebSocketApp:
         return {
             "device": config["general.serial"],
             "activeTask": self.task_runner.active_task_id(config.name),
+            "scheduler": self.scheduler.status(config.name),
         }
 
     async def send(self, websocket: WebSocket, payload: dict[str, Any]) -> None:
@@ -256,6 +308,8 @@ class NTEPilotWebSocketApp:
             payload.setdefault("event", {}).setdefault("time", datetime.now().isoformat())
         if payload.get("type") == "task":
             payload.setdefault("task", {}).setdefault("updatedAt", datetime.now().isoformat())
+        if payload.get("type") == "scheduler.state":
+            payload.setdefault("scheduler", {}).setdefault("updatedAt", datetime.now().isoformat())
         return payload
 
 

@@ -7,7 +7,7 @@ class UI(InfoHandler):
     def ui_page_appear(self, page, offset=10):
         return self.appear(page.check_template, offset=offset)
 
-    def ui_goto(self, destination, offset=10, skip_first_screenshot=True):
+    def ui_goto(self, destination, offset=10, skip_first_screenshot=False):
         Page.init_connection(destination)
 
         logger.hr(f"UI goto {destination}")

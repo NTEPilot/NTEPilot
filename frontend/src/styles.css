@@ -214,7 +214,8 @@ button {
 .top-meta,
 .top-actions,
 .status-chip,
-.task-chip {
+.task-chip,
+.scheduler-chip {
   display: flex;
   align-items: center;
 }
@@ -249,7 +250,8 @@ button {
 }
 
 .status-chip,
-.task-chip {
+.task-chip,
+.scheduler-chip {
   gap: 8px;
   min-height: 32px;
   max-width: 220px;
@@ -264,7 +266,8 @@ button {
 }
 
 .status-chip .material-icon,
-.task-chip .material-icon {
+.task-chip .material-icon,
+.scheduler-chip .material-icon {
   flex: 0 0 auto;
   font-size: 18px;
 }
@@ -274,6 +277,11 @@ button {
   background: var(--md-sys-color-tertiary-container);
 }
 
+.scheduler-chip {
+  color: var(--md-sys-color-on-primary-container);
+  background: var(--md-sys-color-primary-container);
+}
+
 .page-strip {
   padding: 0 24px;
   background: var(--md-sys-color-surface);
@@ -281,7 +289,7 @@ button {
 }
 
 .page-strip md-tabs {
-  max-width: 640px;
+  max-width: 760px;
 }
 
 .content-surface {
@@ -430,10 +438,10 @@ button {
 .tool-config-toggle {
   display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  min-height: 40px;
-  padding: 0 12px;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
   color: var(--md-sys-color-primary);
   background: transparent;
   border: 0;
@@ -460,6 +468,131 @@ button {
 .tool-config .config-fields {
   margin-top: 8px;
   max-width: none;
+}
+
+.planner-layout {
+  display: grid;
+  grid-template-columns: minmax(180px, 240px) minmax(0, 1fr);
+  align-items: start;
+  gap: 20px;
+  max-width: 1180px;
+}
+
+.plan-board,
+.scheduler-catalog {
+  min-width: 0;
+}
+
+.scheduler-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 16px;
+  min-height: 56px;
+  padding: 10px 14px;
+  color: var(--md-sys-color-on-surface);
+  background: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--app-radius-small);
+}
+
+.plan-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.plan-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  padding: 14px;
+  color: var(--md-sys-color-on-surface);
+  background: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--app-radius-small);
+}
+
+.plan-main {
+  min-width: 0;
+}
+
+.plan-main h3,
+.scheduler-task h4 {
+  margin: 0;
+  color: var(--md-sys-color-on-surface);
+  letter-spacing: 0;
+}
+
+.plan-main h3 {
+  overflow: hidden;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.plan-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 6px;
+  color: var(--md-sys-color-on-surface-variant);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.plan-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.scheduler-catalog {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 6px;
+  color: var(--md-sys-color-on-surface);
+  background: var(--md-sys-color-surface-container-low);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--app-radius-small);
+}
+
+.scheduler-task {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 40px;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 48px;
+  padding: 4px 4px 4px 12px;
+  border-radius: 24px;
+}
+
+.scheduler-task h4 {
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.35;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scheduler-task:hover {
+  background: color-mix(in srgb, var(--md-sys-color-primary) 8%, transparent);
+}
+
+.scheduler-task md-icon-button {
+  --md-icon-button-icon-color: var(--md-sys-color-primary);
+}
+
+.compact-empty {
+  min-height: 80px;
 }
 
 .empty-state {
@@ -613,6 +746,27 @@ button {
   min-width: min(360px, calc(100vw - 64px));
 }
 
+.plan-dialog-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(560px, calc(100vw - 64px));
+}
+
+.plan-dialog-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 12px;
+}
+
+.plan-dialog-content .config-fields {
+  max-width: none;
+}
+
+.plan-dialog-content .config-row {
+  grid-template-columns: minmax(180px, 36%) minmax(220px, 1fr);
+}
+
 md-dialog {
   --md-dialog-container-color: var(--md-sys-color-surface-container-high);
   --md-dialog-headline-color: var(--md-sys-color-on-surface);
@@ -731,7 +885,17 @@ md-outlined-select {
   }
 
   .config-row,
-  .tool-row {
+  .tool-row,
+  .plan-item,
+  .plan-dialog-content .config-row {
+    grid-template-columns: 1fr;
+  }
+
+  .planner-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .plan-dialog-grid {
     grid-template-columns: 1fr;
   }
 

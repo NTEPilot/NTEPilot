@@ -25,10 +25,10 @@
 
 ## 配置模型
 
-配置模板位于：
+配置定义位于：
 
 ```text
-NTEPilot/config/template.json
+NTEPilot/config/framework.py
 ```
 
 实例配置保存在：
@@ -37,13 +37,13 @@ NTEPilot/config/template.json
 instances/<实例名>.json
 ```
 
-如果 `instances` 下没有任何实例配置，后端会复制模板创建：
+如果 `instances` 下没有任何实例配置，后端会根据 `framework.py` 的默认值创建：
 
 ```text
 instances/NTE.json
 ```
 
-当前模板是嵌套结构：
+实例配置是嵌套结构：
 
 ```json
 {
@@ -81,40 +81,25 @@ config["tools.fish.green_bar_safe_proportion"]
 
 ## 新增配置项
 
-新增配置项需要三步。
-
-第一步，修改 `NTEPilot/config/template.json`。例如给钓鱼工具新增一个布尔开关：
-
-```json
-{
-  "tools": {
-    "fish": {
-      "enable_debug_marker": false
-    }
-  }
-}
-```
-
-第二步，在 `api/config.py` 的 `CONFIG_FIELDS` 中注册前端字段：
+新增配置项只需要修改 `NTEPilot/config/framework.py`。例如给钓鱼工具新增一个布尔开关：
 
 ```python
-ConfigField(
-    "tools.fish.enable_debug_marker",
-    "显示调试标记",
-    "boolean",
-    "fish",
-    "钓鱼识别时显示调试标记"
-)
+CONFIG["tools"]["fish"]["config"]["enable_debug_marker"] = {
+    "label": "显示调试标记",
+    "type": "boolean",
+    "description": "钓鱼识别时显示调试标记",
+    "default": False,
+}
 ```
 
 字段参数说明：
 
-- `key`：路径式配置 key，必须能在模板中找到。
+- 字段路径由所在分组自动生成，例如上例为 `tools.fish.enable_debug_marker`。
 - `label`：前端显示名。
-- `type`：支持 `text`、`number`、`boolean`。
-- `group`：前端分组。通用配置使用 `general`，钓鱼工具使用 `fish`。
+- `type`：支持 `text`、`integer`、`float`、`boolean`、`select`。
 - `description`：前端辅助说明，可为空。
-- `min/max/step`：数字项的输入范围和步长。
+- `range`：数字项的输入范围和步长，格式为 `(min, max, step)`。
+- `options`：`select` 类型的选项列表。
 
 第三步，在业务代码中读取：
 
@@ -123,7 +108,7 @@ if self.config["tools.fish.enable_debug_marker"]:
     ...
 ```
 
-如果新增的是数字项或字符串项，`Config.update()` 会根据模板中的默认值类型自动做基础类型转换。
+如果新增的是数字项或字符串项，`Config.update()` 会根据 `framework.py` 中的字段类型自动做基础类型转换。
 
 ## WebSocket 协议
 
@@ -142,12 +127,13 @@ if self.config["tools.fish.enable_debug_marker"]:
   "instances": [{ "name": "NTE" }],
   "status": {
     "device": "127.0.0.1:16448",
-    "activeTask": "idle"
+    "activeTask": "idle",
+    "scheduler": "disabled"
   }
 }
 ```
 
-随后还会下发实例列表、配置 schema 和工具目录。
+随后还会下发实例列表、配置 schema、工具目录、计划任务目录和计划器状态。
 
 ### 获取实例列表
 
@@ -326,31 +312,30 @@ if self.config["tools.fish.enable_debug_marker"]:
 NTEPilot/tools/example/example.py
 ```
 
-第二步，新增工具 manifest：
+第二步，在 `NTEPilot/config/framework.py` 中登记工具：
 
 ```python
-from NTEPilot.config.config_field import ConfigField
-from NTEPilot.tools.base import ToolSpec
-
-TOOL_SPEC = ToolSpec(
-    id="example",
-    title="示例工具",
-    description="运行示例工具",
-    runner="NTEPilot.tools.example.example:Example",
-    config_fields=(
-        ConfigField("tools.example.enabled", "启用示例工具", "boolean", "example", default=True),
-        ConfigField("tools.example.interval", "执行间隔", "number", "example", min=0.1, max=60, step=0.1, default=1.0),
-    ),
-)
+CONFIG["tools"]["example"] = {
+    "label": "示例工具",
+    "description": "运行示例工具",
+    "runner": "NTEPilot.tools.example.example:Example",
+    "config": {
+        "enabled": {
+            "label": "启用示例工具",
+            "type": "boolean",
+            "default": True,
+        },
+        "interval": {
+            "label": "执行间隔",
+            "type": "float",
+            "range": (0.1, 60, 0.1),
+            "default": 1.0,
+        },
+    },
+}
 ```
 
-文件路径为：
-
-```text
-NTEPilot/tools/example/manifest.py
-```
-
-后端会自动发现 `NTEPilot/tools/*/manifest.py` 里的 `TOOL_SPEC`，并把工具目录、配置字段和默认值下发给前端。不需要修改 `api/config.py`、`api/task_runner.py` 或前端代码。
+后端会从 `framework.py` 生成工具目录、配置字段和默认值并下发给前端。不需要修改 `api/server.py`、`api/task_runner.py` 或前端代码。
 
 停止逻辑由 `TaskRunner.stop()` 统一处理。新增工具不需要接收停止事件，也不需要在工具内部实现停止检查。工具线程被硬中止时，`TaskRunner` 会捕获内部 `TaskAbort` 并广播任务取消状态。
 
@@ -360,6 +345,6 @@ NTEPilot/tools/example/manifest.py
 
 - API 层通过 `ConfigStore` 管理配置对象；同一个实例只保留一个 `Config` 对象。
 - 配置 key 必须小写。
-- 新工具配置建议在 `ConfigField(..., default=...)` 提供默认值；后端会将这些默认值合并进配置模板和保存校验。
+- 新工具配置必须在 `framework.py` 字段 spec 中提供默认值；后端会将这些默认值合并进实例配置并用于保存校验。
 - 前端和 WebSocket 共用端口，`/ws` 只能用于 WebSocket，静态文件走 `/`。
 - 工具线程不能直接操作前端连接对象，应通过 `broadcast_threadsafe()` 广播状态、任务和日志。

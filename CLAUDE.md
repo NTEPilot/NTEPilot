@@ -49,12 +49,12 @@ Frontend (React/Vite) ←→ WebSocket (/ws) ←→ api/server.py ←→ NTEPilo
 
 ### Key Layers
 
-**`api/`** — WebSocket API server. `server.py` is the single entry point handling all message types. `task_runner.py` executes tools in daemon threads with hard abort via `PyThreadState_SetAsyncExc`. `config.py` assembles the config schema and task catalog for the frontend.
+**`api/`** — WebSocket API server. `server.py` is the single entry point handling all message types. `task_runner.py` executes tasks in daemon threads with hard abort via `PyThreadState_SetAsyncExc`. `scheduler.py` manages daily plans and uses the same task slot as manual runs.
 
 **`NTEPilot/`** — Core business logic package:
-- `config/` — Hierarchical JSON config with path-style keys (e.g. `tools.fish.buy_bait`). `Config` class with `__getitem__` access. Template at `config/template.json`.
+- `config/` — Hierarchical JSON config with path-style keys (e.g. `tools.fish.buy_bait`). `framework.py` is the only place to add config fields, defaults, task catalogs, and runner paths.
 - `device/` — ADB device layer. `Device` class composes `Screenshot` + `Control` via multiple inheritance. Uses DroidCast APK for screenshots, minitouch for input. Connection retry logic in `connection.py`.
-- `tools/` — Plugin system. Tools self-register via `NTEPilot/tools/*/manifest.py` containing a `TOOL_SPEC` object. Registry auto-discovers at import time. Currently: `fish` (fishing automation).
+- `tools/` — Tool implementations. Tool and schedule registration lives in `NTEPilot/config/framework.py`. Currently: `fish` (fishing automation).
 - `team/` — Character/team management with skill rotation.
 - `ui/` — Screen automation. Template matching via OpenCV. `Page` class has A* pathfinding for navigating between game screens.
 
@@ -70,24 +70,24 @@ All messages are JSON. Key message types:
 - `hello` — server sends on connect (instances, status)
 - `config.schema` — server sends config field definitions
 - `config.update` — client saves config
-- `task.start` / `task.stop` — tool lifecycle
+- `task.start` / `task.stop` — task lifecycle
+- `scheduler.catalog` / `scheduler.state` / `scheduler.*` — daily plan catalog, state, and mutations
 - `status` — broadcasts active task changes
 - `log` — broadcasts log events (with ANSI color from Rich)
 
 ### Adding a New Tool
 
-1. Create `NTEPilot/tools/<name>/manifest.py` with `TOOL_SPEC` (id, title, runner path, config_fields)
-2. Create `NTEPilot/tools/<name>/<name>.py` with the tool class
-3. Add config defaults to `NTEPilot/config/template.json`
-4. Frontend auto-discovers tools — no frontend changes needed
+1. Create `NTEPilot/tools/<name>/<name>.py` with the tool class
+2. Register the tool in `NTEPilot/config/framework.py` under `CONFIG["tools"]`
+3. Add fields/defaults in that same framework entry
+4. Frontend auto-discovers tools from the backend schema — no frontend changes needed
 
 Tools are stopped via hard thread abort (`TaskAbort` exception). If a tool holds external resources (ADB forwards, temp files, network), clean them up in a `finally` block.
 
 ### Adding a New Config Field
 
-1. Add default value to `NTEPilot/config/template.json`
-2. Register in `api/config.py` `CONFIG_FIELDS` as a `ConfigField(key, label, type, group, description)`
-3. Frontend auto-renders it based on type (text → input, number → input with min/max/step, boolean → Switch)
+1. Add the field spec and default to `NTEPilot/config/framework.py`
+2. Frontend auto-renders it based on type (text → input, integer/float → number input with range, boolean → Switch, select → Select)
 
 ### Conventions
 

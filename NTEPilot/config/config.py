@@ -2,13 +2,13 @@ from __future__ import annotations
 
 import copy
 import json
-import shutil
 from pathlib import Path
 from typing import Any
 
+from NTEPilot.config import schema
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-TEMPLATE_PATH = Path(__file__).with_name("template.json")
 INSTANCES_DIR = PROJECT_ROOT / "instances"
 DEFAULT_INSTANCE_NAME = "NTE"
 MISSING = object()
@@ -18,7 +18,7 @@ class Config:
     def __init__(self, name: str = DEFAULT_INSTANCE_NAME, data: dict[str, Any] | None = None):
         self.name = self.normalize_name(name)
         self.path = INSTANCES_DIR / f"{self.name}.json"
-        self.data = self.normalize_keys(data or self.load_template_data())
+        self.data = copy.deepcopy(data) if data is not None else schema.get_default_config()
         self.data.setdefault("general", {})
         self.data["general"]["name"] = self.name
 
@@ -39,14 +39,13 @@ class Config:
         return default if value is MISSING else value
 
     def update(self, values: dict[str, Any], save: bool = True) -> "Config":
-        values = self.normalize_keys(values)
-        allowed = {key: value for key, value in self.template_paths().items() if key != "general.name"}
+        allowed = schema.get_user_config_fields()
         unknown = sorted(key for key in values if key not in allowed)
         if unknown:
             raise ValueError(f"Unsupported config keys: {', '.join(unknown)}")
 
         for key, value in values.items():
-            self[key] = self.normalize_value(key, value, allowed[key])
+            self[key] = schema.normalize_config_value(key, value)
 
         if save:
             self.save()
@@ -65,37 +64,11 @@ class Config:
             raise FileNotFoundError(f"Instance config not found: {normalized_name}")
 
         data = json.loads(path.read_text(encoding="utf-8"))
-        normalized_data = cls.normalize_keys(data)
-        if "general" not in normalized_data and "tools" not in normalized_data:
-            normalized_data = cls.migrate_flat_data(normalized_data)
-
-        # Get flat keys of input data
-        input_paths = {}
-        cls.walk_paths(normalized_data, "", input_paths)
-        
-        # Get template keys
-        template_paths = cls.template_paths()
-        
-        has_incompatibility = False
-        for key in input_paths:
-            if key not in template_paths:
-                has_incompatibility = True
-                break
-        
-        if not has_incompatibility:
-            for key in template_paths:
-                if key != "general.name" and key not in input_paths:
-                    has_incompatibility = True
-                    break
-
-        config = cls(normalized_name, cls.merge_with_template(data))
-        if has_incompatibility:
-            config.save()
-        return config
+        return cls(normalized_name, schema.merge_defaults(data))
 
     @classmethod
     def create(cls, name: str = DEFAULT_INSTANCE_NAME, values: dict[str, Any] | None = None) -> "Config":
-        config = cls(cls.normalize_name(name), cls.load_template_data())
+        config = cls(cls.normalize_name(name), schema.get_default_config())
         if values:
             config.update(values, save=False)
         config.save()
@@ -113,40 +86,8 @@ class Config:
     def ensure_default_instance(cls) -> None:
         INSTANCES_DIR.mkdir(parents=True, exist_ok=True)
         if not any(INSTANCES_DIR.glob("*.json")):
-            shutil.copyfile(TEMPLATE_PATH, INSTANCES_DIR / f"{DEFAULT_INSTANCE_NAME}.json")
-
-    @classmethod
-    def load_template_data(cls) -> dict[str, Any]:
-        data = json.loads(TEMPLATE_PATH.read_text(encoding="utf-8"))
-        from NTEPilot.tools.registry import get_tool_default_data
-
-        cls.deep_merge_defaults(data, get_tool_default_data())
-        return data
-
-    @classmethod
-    def merge_with_template(cls, data: dict[str, Any]) -> dict[str, Any]:
-        normalized = cls.normalize_keys(data)
-        if "general" not in normalized and "tools" not in normalized:
-            normalized = cls.migrate_flat_data(normalized)
-
-        merged = cls.load_template_data()
-        cls.deep_merge_known(merged, normalized)
-        return merged
-
-    @classmethod
-    def template_paths(cls) -> dict[str, Any]:
-        paths: dict[str, Any] = {}
-        cls.walk_paths(cls.load_template_data(), "", paths)
-        return paths
-
-    @staticmethod
-    def walk_paths(data: dict[str, Any], prefix: str, paths: dict[str, Any]) -> None:
-        for key, value in data.items():
-            path = f"{prefix}.{key}" if prefix else key
-            if isinstance(value, dict):
-                Config.walk_paths(value, path, paths)
-            else:
-                paths[path] = value
+            config = cls(DEFAULT_INSTANCE_NAME, schema.get_default_config())
+            config.save()
 
     @staticmethod
     def get_from_data(data: dict[str, Any], path: str) -> Any:
@@ -169,64 +110,8 @@ class Config:
         current[parts[-1]] = value
 
     @staticmethod
-    def normalize_keys(data: dict[str, Any]) -> dict[str, Any]:
-        normalized = {}
-        for key, value in data.items():
-            normalized_key = str(key).lower()
-            normalized[normalized_key] = Config.normalize_keys(value) if isinstance(value, dict) else value
-        return normalized
-
-    @staticmethod
     def normalize_name(name: str) -> str:
         normalized = "".join(ch for ch in str(name).strip() if ch.isalnum() or ch in {"-", "_"})
         if not normalized:
             raise ValueError("Instance name cannot be empty")
         return normalized
-
-    @staticmethod
-    def normalize_value(key: str, value: Any, default: Any) -> Any:
-        if isinstance(default, bool):
-            if isinstance(value, str):
-                return value.strip().lower() in {"1", "true", "yes", "on"}
-            return bool(value)
-        if isinstance(default, int) and not isinstance(default, bool):
-            return int(value)
-        if isinstance(default, float):
-            return float(value)
-        return str(value)
-
-    @classmethod
-    def deep_merge_known(cls, target: dict[str, Any], source: dict[str, Any]) -> None:
-        for key, source_value in source.items():
-            if key not in target:
-                continue
-            target_value = target[key]
-            if isinstance(target_value, dict) and isinstance(source_value, dict):
-                cls.deep_merge_known(target_value, source_value)
-            elif not isinstance(target_value, dict):
-                target[key] = source_value
-
-    @classmethod
-    def deep_merge_defaults(cls, target: dict[str, Any], source: dict[str, Any]) -> None:
-        for key, source_value in source.items():
-            target_value = target.get(key)
-            if isinstance(target_value, dict) and isinstance(source_value, dict):
-                cls.deep_merge_defaults(target_value, source_value)
-            elif key not in target:
-                target[key] = source_value
-
-    @staticmethod
-    def migrate_flat_data(data: dict[str, Any]) -> dict[str, Any]:
-        migrated: dict[str, Any] = {"general": {}, "tools": {"fish": {}}, "team": {}}
-        general_keys = {"name", "serial", "client"}
-        fish_keys = {"sell_fish", "buy_bait", "buy_bait_stack_count", "green_bar_safe_proportion"}
-        team_keys = {"chara_1", "chara_2", "chara_3", "chara_4", "skill_order"}
-
-        for key, value in data.items():
-            if key in general_keys:
-                migrated["general"][key] = value
-            elif key in fish_keys:
-                migrated["tools"]["fish"][key] = value
-            elif key in team_keys:
-                migrated["team"][key] = value
-        return migrated

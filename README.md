@@ -100,11 +100,11 @@ NTEPilot/
 │
 ├── api/                    # WebSocket API 服务器
 │   ├── server.py           # FastAPI 应用，WebSocket 端点
-│   ├── config.py           # 配置字段定义和任务目录
-│   └── task_runner.py      # 线程化任务执行，支持硬中止
+│   ├── scheduler.py        # 每日计划调度器
+│   └── task_runner.py      # 线程化任务执行，支持硬中止和重试
 │
 ├── NTEPilot/               # 核心业务逻辑
-│   ├── config/             # 配置系统（Config 类，ConfigField 数据类）
+│   ├── config/             # 配置系统（Config 类，framework.py 唯一配置入口）
 │   ├── device/             # Android 设备交互层
 │   │   ├── connection.py   # ADB 连接管理，重试逻辑
 │   │   ├── device.py       # Device 类（组合截图 + 控制）
@@ -112,11 +112,8 @@ NTEPilot/
 │   │   ├── droidcast.py    # DroidCast APK 管理
 │   │   ├── minitouch.py    # 通过 minitouch 触控输入
 │   │   └── control.py      # 高级点击/滑动/移动控制
-│   ├── tools/              # 工具插件系统
-│   │   ├── base.py         # ToolSpec 数据类
-│   │   ├── registry.py     # 自动发现 */manifest.py
+│   ├── tools/              # 工具实现
 │   │   └── fish/           # 钓鱼自动化工具
-│   │       ├── manifest.py # 工具注册和配置字段
 │   │       └── fish.py     # 钓鱼逻辑（绿条追踪、光标控制）
 │   ├── team/               # 角色/队伍管理
 │   │   ├── character.py    # 16 个角色类，E/Q 技能冷却
@@ -178,12 +175,14 @@ NTEPilot/
 | 服务端 → 客户端 | `hello` | 连接建立，发送实例列表和状态 |
 | 服务端 → 客户端 | `config.schema` | 配置字段定义 |
 | 服务端 → 客户端 | `task.catalog` | 可用工具列表 |
+| 服务端 → 客户端 | `scheduler.catalog` / `scheduler.state` | 计划任务目录和计划器状态 |
 | 服务端 → 客户端 | `status` | 任务状态变更广播 |
 | 服务端 → 客户端 | `log` | 日志事件（支持 ANSI 颜色） |
 | 客户端 → 服务端 | `config.get` | 请求配置 |
 | 客户端 → 服务端 | `config.update` | 保存配置 |
 | 客户端 → 服务端 | `task.start` | 启动工具 |
 | 客户端 → 服务端 | `task.stop` | 停止工具（硬中止） |
+| 客户端 → 服务端 | `scheduler.*` | 开关计划器、新增/删除每日计划 |
 
 ### 配置系统
 
@@ -206,13 +205,14 @@ NTEPilot/
 
 代码中通过 `config["tools.fish.buy_bait"]` 访问。
 
-### 工具插件系统
+### 工具与计划任务
 
-新增工具只需三步：
+工具目录、计划任务目录、配置字段、默认值和 runner 都定义在 `NTEPilot/config/framework.py`。
 
-1. 创建 `NTEPilot/tools/<name>/manifest.py`，定义 `TOOL_SPEC`
-2. 创建 `NTEPilot/tools/<name>/<name>.py`，实现工具逻辑
-3. 在 `NTEPilot/config/template.json` 中添加默认配置
+新增工具或计划任务通常只需两步：
+
+1. 创建对应 runner 类，实现任务逻辑
+2. 在 `NTEPilot/config/framework.py` 的 `CONFIG` 中登记任务、runner、字段和默认值
 
 前端会自动发现并渲染新工具，无需修改前端代码。
 
@@ -232,14 +232,18 @@ Device (device.py)
 
 ## 添加新配置项
 
-1. 在 `NTEPilot/config/template.json` 中添加默认值
-2. 在 `api/config.py` 的 `CONFIG_FIELDS` 中注册字段：
+在 `NTEPilot/config/framework.py` 中给对应分组添加字段：
 
 ```python
-ConfigField("tools.example.option", "选项名称", "boolean", "example", "选项说明", default=True)
+"option": {
+    "label": "选项名称",
+    "type": "boolean",
+    "description": "选项说明",
+    "default": True,
+}
 ```
 
-支持的类型：`text`、`number`（可设置 min/max/step）、`boolean`
+支持的类型：`text`、`integer`、`float`、`boolean`、`select`。
 
 前端会根据类型自动渲染对应的表单控件。
 

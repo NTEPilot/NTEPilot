@@ -156,12 +156,12 @@ class Combat(Map, Team, Ocr):
 
     def run(self):
         logger.hr('COMBAT', level=1)
-        position = self.config['schedule.combat.position']
-        selection = self.config['schedule.combat.selection']
+        position, selection = self.config['schedule.combat.selection'].split(' - ')
         cost = self.CHINESE_INFO[position]['cost']
         self.ui_goto(MAP_PAGE)
         pixel = int(self.ocr(CHARACTER_PIXEL).split('/')[0])
         while True:
+            logger.info(f'Current pixel: {pixel}')
             if pixel >= cost * 2:
                 self.combat(self.CHINESE_INFO[position]['teleport_id'], self.CHINESE_INFO[position]['selections'][selection], True)
                 pixel -= cost * 2

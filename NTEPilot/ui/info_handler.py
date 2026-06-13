@@ -2,7 +2,7 @@ import time
 
 from NTEPilot.instance import Instance
 from template import Template
-from template.ui import START_1, START_2, START_3, CHAT
+from template.ui import START_1, START_2, START_3, CHAT, MONTH_CARD, GET_ITEM
 
 from utils.logger import logger
 
@@ -58,6 +58,12 @@ class InfoHandler(Instance):
         with self.device.temporary_screenshot_interval(3):
             while True:
                 self.device.screenshot()
+                if self.appear(MONTH_CARD):
+                    self.device.click(SAFE_AREA)
+                    continue
+                if self.appear(GET_ITEM):
+                    self.device.click(SAFE_AREA)
+                    continue
                 if self.appear(CHAT):
                     logger.info('App restarted successfully')
                     break

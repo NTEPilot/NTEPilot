@@ -3,6 +3,7 @@ import type {
   BackendInstance,
   BackendMessage,
   BackendStatus,
+  BackendSchedulerState,
   BackendTask,
   ConfigField,
   ConnectionStatus,
@@ -15,6 +16,12 @@ const CLIENT_VERSION = '0.4.0';
 const SELECTED_INSTANCE_KEY = 'ntepilot.selectedInstance';
 
 type ConfigValues = Record<string, string | number | boolean>;
+
+const EMPTY_SCHEDULER: BackendSchedulerState = {
+  enabled: false,
+  status: 'disabled',
+  plans: [],
+};
 
 function defaultWsUrl() {
   const override = new URLSearchParams(window.location.search).get('ws');
@@ -50,6 +57,8 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
   const [fields, setFields] = useState<ConfigField[]>([]);
   const [values, setValues] = useState<ConfigValues>({});
   const [tasks, setTasks] = useState<BackendTask[]>([]);
+  const [scheduleTasks, setScheduleTasks] = useState<BackendTask[]>([]);
+  const [scheduler, setScheduler] = useState<BackendSchedulerState>(EMPTY_SCHEDULER);
   const [taskEvents, setTaskEvents] = useState<Record<string, TaskEvent[]>>({});
   const [logs, setLogs] = useState<LogEvent[]>([
     {
@@ -104,12 +113,18 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
     send({ type: 'config.get', instance });
   }, [send]);
 
+  const requestScheduler = useCallback((instance: string) => {
+    send({ type: 'scheduler.get', instance });
+  }, [send]);
+
   const setSelectedInstance = useCallback((instance: string) => {
     setSelectedInstanceState(instance);
     setFields([]);
     setValues({});
+    setScheduler(EMPTY_SCHEDULER);
     requestConfig(instance);
-  }, [requestConfig]);
+    requestScheduler(instance);
+  }, [requestConfig, requestScheduler]);
 
   const applySchema = useCallback((instance: string, incomingFields: ConfigField[]) => {
     if (instance !== selectedInstanceRef.current) {
@@ -157,6 +172,14 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
         break;
       case 'task.catalog':
         setTasks(message.tasks);
+        break;
+      case 'scheduler.catalog':
+        setScheduleTasks(message.tasks);
+        break;
+      case 'scheduler.state':
+        if (message.instance === selectedInstanceRef.current) {
+          setScheduler(message.scheduler);
+        }
         break;
       case 'status':
         if (message.instance === selectedInstanceRef.current) {
@@ -209,11 +232,13 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
         type: 'hello',
         client: 'ntepilot-frontend',
         version: CLIENT_VERSION,
-        wants: ['instances', 'config', 'tasks', 'logs', 'status'],
+        wants: ['instances', 'config', 'tasks', 'scheduler', 'logs', 'status'],
       });
       send({ type: 'instance.list' });
       send({ type: 'config.get', instance: selectedInstanceRef.current });
       send({ type: 'task.list' });
+      send({ type: 'scheduler.catalog' });
+      send({ type: 'scheduler.get', instance: selectedInstanceRef.current });
     };
 
     socket.onmessage = handleMessage;
@@ -254,6 +279,7 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
     setSelectedInstanceState(name);
     setFields([]);
     setValues({});
+    setScheduler(EMPTY_SCHEDULER);
   }, [send]);
 
   const startTask = useCallback((taskId: string) => {
@@ -267,6 +293,43 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
     send({ type: 'task.stop', requestId, instance: selectedInstanceRef.current, taskId });
     appendLog({ level: 'info', source: '前端', message: `已请求停止任务：${selectedInstanceRef.current}/${taskId}` });
   }, [appendLog, send]);
+
+  const setSchedulerEnabled = useCallback((enabled: boolean) => {
+    const requestId = crypto.randomUUID();
+    send({ type: 'scheduler.set_enabled', requestId, instance: selectedInstanceRef.current, enabled });
+  }, [send]);
+
+  const addSchedulePlan = useCallback((taskId: string, time: string, priority: number) => {
+    const requestId = crypto.randomUUID();
+    send({
+      type: 'scheduler.plan.add',
+      requestId,
+      instance: selectedInstanceRef.current,
+      taskId,
+      time,
+      priority,
+      values: valuesRef.current,
+    });
+  }, [send]);
+
+  const updateSchedulePlan = useCallback((planId: string, taskId: string, time: string, priority: number) => {
+    const requestId = crypto.randomUUID();
+    send({
+      type: 'scheduler.plan.update',
+      requestId,
+      instance: selectedInstanceRef.current,
+      planId,
+      taskId,
+      time,
+      priority,
+      values: valuesRef.current,
+    });
+  }, [send]);
+
+  const removeSchedulePlan = useCallback((planId: string) => {
+    const requestId = crypto.randomUUID();
+    send({ type: 'scheduler.plan.remove', requestId, instance: selectedInstanceRef.current, planId });
+  }, [send]);
 
   useEffect(() => {
     connect(initialUrl);
@@ -292,6 +355,8 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
     groupedFields,
     values,
     tasks,
+    scheduleTasks,
+    scheduler,
     taskEvents: taskEvents[selectedInstance] ?? [],
     logs,
     connect,
@@ -302,5 +367,9 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
     saveConfig,
     startTask,
     stopTask,
+    setSchedulerEnabled,
+    addSchedulePlan,
+    updateSchedulePlan,
+    removeSchedulePlan,
   };
 }

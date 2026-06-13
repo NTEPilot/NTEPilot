@@ -46,7 +46,9 @@ class Ocr(Instance):
         text_image = crop_to_text(letters)
         input_tensor = self._preprocess(text_image)
         output = self.session.run([self.output_name], {self.input_name: input_tensor})[0]
-        return self._decode(output)
+        result = self._decode(output)
+        logger.attr('OCR result', result)
+        return result
 
     def warmup(self, widths=(64, 160, 320)) -> None:
         for width in widths:
