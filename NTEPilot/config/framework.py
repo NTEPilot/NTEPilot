@@ -156,5 +156,23 @@ CONFIG = {
                 },
             },
         },
+        "cafe": {
+            "label": "领一咖舍",
+            "description": None,
+            "runner": "NTEPilot.cafe.claim_rewards:ClaimRewards",
+            "config": {},
+        },
+        "daily": {
+            "label": "领日常任务",
+            "description": None,
+            "runner": "NTEPilot.daily.claim_daily:ClaimDaily",
+            "config": {},
+        },
+        "big_monthcard": {
+            "label": "领大月卡",
+            "description": None,
+            "runner": "NTEPilot.daily.claim_big_monthcard:ClaimBigMonthcard",
+            "config": {},
+        },
     },
 }

@@ -1,0 +1,15 @@
+from template.load_template import load_template
+
+BIG_MONTHCARD = load_template("./template/daily/assets/BIG_MONTHCARD.png")
+BIG_MONTHCARD_TASK = load_template("./template/daily/assets/BIG_MONTHCARD_TASK.png")
+BIG_MONTHCARD_TASK_CLAIM_ALL = load_template("./template/daily/assets/BIG_MONTHCARD_TASK_CLAIM_ALL.png")
+CLAIM_DAILY_POINT = load_template("./template/daily/assets/CLAIM_DAILY_POINT.png", method="avg_color")
+DAILY_REWARDS_1 = load_template("./template/daily/assets/DAILY_REWARDS_1.png", method="avg_color")
+DAILY_REWARDS_2 = load_template("./template/daily/assets/DAILY_REWARDS_2.png", method="avg_color")
+DAILY_REWARDS_3 = load_template("./template/daily/assets/DAILY_REWARDS_3.png", method="avg_color")
+DAILY_REWARDS_4 = load_template("./template/daily/assets/DAILY_REWARDS_4.png", method="avg_color")
+DAILY_REWARDS_5 = load_template("./template/daily/assets/DAILY_REWARDS_5.png", method="avg_color")
+DAILY_TASK = load_template("./template/daily/assets/DAILY_TASK.png")
+GOTO_BIG_MONTHCARD_TASK = load_template("./template/daily/assets/GOTO_BIG_MONTHCARD_TASK.png")
+GOTO_BIG_MONTH_CARD_REWARDS = load_template("./template/daily/assets/GOTO_BIG_MONTH_CARD_REWARDS.png")
+GOTO_DAILY_TASK = load_template("./template/daily/assets/GOTO_DAILY_TASK.png")
