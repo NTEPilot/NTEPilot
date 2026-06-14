@@ -2,6 +2,7 @@ from NTEPilot.team.character import CHINESE_TO_CHARA
 
 
 CHARA_OPTIONS = tuple(CHINESE_TO_CHARA.keys())
+CHARA_OPTIONS_WITHOUT_ZERO = tuple([c for c in CHARA_OPTIONS if c != '零'])
 COMBAT_SELECTIONS = (
     "经验本 - 合订本",
     "经验本 - 万花筒",
@@ -124,6 +125,34 @@ CONFIG = {
                     "description": None,
                     "options": COMBAT_SELECTIONS,
                     "default": "经验本 - 合订本",
+                },
+            },
+        },
+        "gift": {
+            "label": "送礼物",
+            "description": "给一位角色送礼物",
+            "runner": "NTEPilot.bond.gift:Gift",
+            "config": {
+                "character": {
+                    "label": "选择角色",
+                    "type": "select",
+                    "description": None,
+                    "options": CHARA_OPTIONS_WITHOUT_ZERO,
+                    "default": "早雾",
+                },
+                "gift": {
+                    "label": "礼物编号",
+                    "type": "integer",
+                    "description": "送礼物的编号，送礼界面第一页从1开始，先从左往右再从上往下数（1-10）",
+                    "range": (1, 10, 1),
+                    "default": 1,
+                },
+                "number": {
+                    "label": "礼物数量",
+                    "type": "integer",
+                    "description": "送礼物的数量",
+                    "range": (1, 3, 1),
+                    "default": 1,
                 },
             },
         },

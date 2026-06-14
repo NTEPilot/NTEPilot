@@ -63,6 +63,7 @@ export interface SchedulerPlan {
   lastRunAt?: string;
   lastStatus?: 'done' | 'error' | 'cancelled';
   lastDetail?: string;
+  values?: Record<string, string | number | boolean>;
 }
 
 export interface BackendSchedulerState {

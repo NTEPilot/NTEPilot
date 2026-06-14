@@ -61,6 +61,7 @@ export function App() {
   const [editingPlan, setEditingPlan] = useState<SchedulerPlan | null>(null);
   const [planTime, setPlanTime] = useState(DEFAULT_PLAN_TIME);
   const [planPriority, setPlanPriority] = useState(DEFAULT_PLAN_PRIORITY);
+  const [planValues, setPlanValues] = useState<Record<string, string | number | boolean>>({});
   const [shellRef] = useMotionParent<HTMLDivElement>();
   const [topMetaRef] = useMotionParent<HTMLDivElement>();
   const [contentRef] = useMotionParent<HTMLElement>();
@@ -139,6 +140,7 @@ export function App() {
       setEditingPlan(null);
       setPlanTime(DEFAULT_PLAN_TIME);
       setPlanPriority(DEFAULT_PLAN_PRIORITY);
+      setPlanValues({});
     };
     dialog.addEventListener('closed', handleClosed);
     return () => dialog.removeEventListener('closed', handleClosed);
@@ -162,6 +164,7 @@ export function App() {
     setEditingPlan(null);
     setPlanTime(DEFAULT_PLAN_TIME);
     setPlanPriority(DEFAULT_PLAN_PRIORITY);
+    setPlanValues({ ...bridge.values });
     void planDialogRef.current?.show();
     window.setTimeout(() => planTimeInputRef.current?.focus(), 60);
   }
@@ -173,6 +176,10 @@ export function App() {
     setEditingPlan(plan);
     setPlanTime(plan.time);
     setPlanPriority(plan.priority);
+    setPlanValues({
+      ...bridge.values,
+      ...(plan.values || {}),
+    });
     void planDialogRef.current?.show();
     window.setTimeout(() => planTimeInputRef.current?.focus(), 60);
   }
@@ -182,9 +189,9 @@ export function App() {
     const time = (planTimeInputRef.current?.value ?? planTime).trim();
     if (!time) return;
     if (editingPlan) {
-      bridge.updateSchedulePlan(editingPlan.id, selectedPlanTask.id, time, Number(planPriority));
+      bridge.updateSchedulePlan(editingPlan.id, selectedPlanTask.id, time, Number(planPriority), planValues);
     } else {
-      bridge.addSchedulePlan(selectedPlanTask.id, time, Number(planPriority));
+      bridge.addSchedulePlan(selectedPlanTask.id, time, Number(planPriority), planValues);
     }
     void planDialogRef.current?.close(editingPlan ? 'update' : 'create');
   }
@@ -298,6 +305,18 @@ export function App() {
                       <span>优先级 {plan.priority}</span>
                       {plan.lastStatus && <span>{plan.lastStatus}</span>}
                     </div>
+                    {plan.values && Object.keys(plan.values).length > 0 && (
+                      <div className="plan-overrides" style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '6px' }}>
+                        {Object.entries(plan.values).map(([k, v]) => {
+                          const f = bridge.fields.find(field => field.key === k);
+                          return (
+                            <span key={k} style={{ background: 'var(--md-sys-color-surface-container-high, rgba(0,0,0,0.05))', padding: '2px 6px', borderRadius: '4px' }}>
+                              {f ? f.label : k}: {String(v)}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    )}
                   </div>
                   <div className="plan-actions">
                     {running ? (
@@ -497,8 +516,8 @@ export function App() {
           {selectedPlanConfigFields.length > 0 && (
             <ConfigPanel
               fields={selectedPlanConfigFields}
-              values={bridge.values}
-              onChange={bridge.updateValue}
+              values={planValues}
+              onChange={(key, val) => setPlanValues((prev) => ({ ...prev, [key]: val }))}
             />
           )}
         </form>

@@ -86,7 +86,7 @@ class Scheduler:
         self._broadcast_state(config.name)
         return {"instance": config.name, "enabled": bool(enabled)}
 
-    def add_plan(self, instance: str, task_id: str, run_time: str, priority: int) -> dict[str, Any]:
+    def add_plan(self, instance: str, task_id: str, run_time: str, priority: int, values: dict[str, Any] | None = None) -> dict[str, Any]:
         config = self.config_store.get(instance)
         get_task("schedule", task_id)
         plan = {
@@ -94,6 +94,7 @@ class Scheduler:
             "taskId": task_id,
             "time": self._normalize_time(run_time),
             "priority": int(priority),
+            "values": self._filter_plan_values(task_id, values),
         }
         plans = self._plans(config.name)
         plans.append(plan)
@@ -102,7 +103,7 @@ class Scheduler:
         self._broadcast_state(config.name)
         return {"instance": config.name, "plan": plan}
 
-    def update_plan(self, instance: str, plan_id: str, task_id: str, run_time: str, priority: int) -> dict[str, Any]:
+    def update_plan(self, instance: str, plan_id: str, task_id: str, run_time: str, priority: int, values: dict[str, Any] | None = None) -> dict[str, Any]:
         config = self.config_store.get(instance)
         get_task("schedule", task_id)
         plans = self._plans(config.name)
@@ -111,6 +112,7 @@ class Scheduler:
                 plan["taskId"] = task_id
                 plan["time"] = self._normalize_time(run_time)
                 plan["priority"] = int(priority)
+                plan["values"] = self._filter_plan_values(task_id, values)
                 config["scheduler.plans"] = self._sort_plans(plans)
                 config.save()
                 self._broadcast_state(config.name)
@@ -255,3 +257,10 @@ class Scheduler:
         except ValueError as exc:
             raise ValueError("Plan time must use HH:MM format") from exc
         return parsed.strftime("%H:%M")
+
+    @staticmethod
+    def _filter_plan_values(task_id: str, values: dict[str, Any] | None) -> dict[str, Any]:
+        if not values:
+            return {}
+        prefix = f"schedule.{task_id}."
+        return {k: v for k, v in values.items() if k.startswith(prefix)}

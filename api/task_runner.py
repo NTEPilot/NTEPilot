@@ -169,7 +169,16 @@ class TaskRunner:
             try:
                 logger.info("开始运行任务 %s：%s", handle.title, handle.instance)
                 device = self._device(handle.instance)
-                runner = create_runner(handle.section, handle.task_id, self.config_store.get(handle.instance), device=device)
+                config = self.config_store.get(handle.instance)
+                if handle.plan_id:
+                    plans = config.get_value("scheduler.plans", [])
+                    plan = next((p for p in plans if p.get("id") == handle.plan_id), None)
+                    if plan and plan.get("values"):
+                        from NTEPilot.config.config import Config
+                        config = Config(config.name, data=config.to_dict())
+                        for key, value in plan["values"].items():
+                            config[key] = value
+                runner = create_runner(handle.section, handle.task_id, config, device=device)
                 if not runner.device.app_is_running():
                     runner.restart_app()
                 runner.run()

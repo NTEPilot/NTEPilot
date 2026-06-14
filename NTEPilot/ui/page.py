@@ -1,8 +1,12 @@
+from template.bond import BOND_ICON
 import traceback
 
 from template.fish import *
 from template.ui import *
 from template.map import *
+from template.bond import *
+
+SAFE_AREA = (640, 500)
 
 class Page:
     # 键: str, 页面名称如 "page_main"
@@ -69,6 +73,11 @@ class Page:
 
 MAIN_PAGE = Page(CHAT)
 
+# phone
+PHONE_PAGE = Page(BOND)
+MAIN_PAGE.link(PHONE, PHONE_PAGE)
+PHONE_PAGE.link(SAFE_AREA, MAIN_PAGE)
+
 # fish
 FISH_MAIN_PAGE = Page(HOOK)
 FISH_SHOP = Page(BAIT)
@@ -85,3 +94,8 @@ FISH_STORAGE_PAGE.link(BUTTON_CROSS, FISH_MAIN_PAGE)
 MAP_PAGE = Page(MAP_SETTING)
 MAIN_PAGE.link(MAP, MAP_PAGE)
 MAP_PAGE.link(BUTTON_CROSS, MAIN_PAGE)
+
+# bond
+BOND_PAGE = Page(BOND_ICON)
+PHONE_PAGE.link(BOND, BOND_PAGE)
+BOND_PAGE.link(BUTTON_CROSS, PHONE_PAGE)

@@ -299,7 +299,7 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
     send({ type: 'scheduler.set_enabled', requestId, instance: selectedInstanceRef.current, enabled });
   }, [send]);
 
-  const addSchedulePlan = useCallback((taskId: string, time: string, priority: number) => {
+  const addSchedulePlan = useCallback((taskId: string, time: string, priority: number, values?: ConfigValues) => {
     const requestId = crypto.randomUUID();
     send({
       type: 'scheduler.plan.add',
@@ -308,11 +308,11 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
       taskId,
       time,
       priority,
-      values: valuesRef.current,
+      values: values ?? valuesRef.current,
     });
   }, [send]);
 
-  const updateSchedulePlan = useCallback((planId: string, taskId: string, time: string, priority: number) => {
+  const updateSchedulePlan = useCallback((planId: string, taskId: string, time: string, priority: number, values?: ConfigValues) => {
     const requestId = crypto.randomUUID();
     send({
       type: 'scheduler.plan.update',
@@ -322,7 +322,7 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
       taskId,
       time,
       priority,
-      values: valuesRef.current,
+      values: values ?? valuesRef.current,
     });
   }, [send]);
 

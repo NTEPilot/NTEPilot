@@ -222,27 +222,25 @@ class NTEPilotWebSocketApp:
                 return
             if message_type == "scheduler.plan.add":
                 values = message.get("values")
-                if isinstance(values, dict):
-                    self.config_store.update(instance, values)
                 result = self.scheduler.add_plan(
                     instance,
                     str(message.get("taskId", "")),
                     str(message.get("time", "")),
                     int(message.get("priority", 0)),
+                    values=values if isinstance(values, dict) else None,
                 )
                 await self.send(websocket, self.config_store.schema(result["instance"]))
                 await self.send_result(websocket, request_id, True, result)
                 return
             if message_type == "scheduler.plan.update":
                 values = message.get("values")
-                if isinstance(values, dict):
-                    self.config_store.update(instance, values)
                 result = self.scheduler.update_plan(
                     instance,
                     str(message.get("planId", "")),
                     str(message.get("taskId", "")),
                     str(message.get("time", "")),
                     int(message.get("priority", 0)),
+                    values=values if isinstance(values, dict) else None,
                 )
                 await self.send(websocket, self.config_store.schema(result["instance"]))
                 await self.send_result(websocket, request_id, True, result)
