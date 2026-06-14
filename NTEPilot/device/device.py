@@ -1,6 +1,7 @@
 # 此文件定义了 Device 类，是脚本与设备交互的综合管理入口。
 # 负责整合截图、点击、输入功能，并由于内置了防卡死检测和点击频率控制，能有效提高脚本自动化运行的稳定性。
 import collections
+import time
 
 import cv2
 
@@ -63,10 +64,13 @@ class Device(Screenshot, Control):
     click_record = collections.deque(maxlen=15)
     stuck_timer = Timer(60)
     stuck_timer_long = Timer(195)
-    _prev_fingerprint = None
-    _stuck_image_timer = Timer(30)
 
     def __init__(self, *args, **kwargs):
+        # 初始化卡死检测相关的实例属性
+        self._prev_fingerprint = None
+        self._stuck_image_timer = Timer(30)
+        self._last_screenshot_time = None
+
         # 初始化模拟器管理平台
         # self._platform = None
 
@@ -160,9 +164,28 @@ class Device(Screenshot, Control):
         self._check_image_stuck()
         return self.image
 
+    def app_start_adb(self, *args, **kwargs):
+        self.stuck_timer_reset()
+        return super().app_start_adb(*args, **kwargs)
+
+    def app_stop_adb(self, *args, **kwargs):
+        self.stuck_timer_reset()
+        return super().app_stop_adb(*args, **kwargs)
+
+    def stuck_timer_reset(self):
+        self._prev_fingerprint = None
+        if hasattr(self, '_stuck_image_timer') and self._stuck_image_timer is not None:
+            self._stuck_image_timer.reset()
+
     def _check_image_stuck(self):
         if self.image is None:
             return
+
+        # 防御性检测：如果距离上次截图大于 10 秒，重置卡死状态以防误判闲置时间
+        now = time.time()
+        if self._last_screenshot_time is not None and now - self._last_screenshot_time > 10.0:
+            self.stuck_timer_reset()
+        self._last_screenshot_time = now
 
         small = cv2.resize(self.image, (16, 16))
         fp = hash(small.tobytes())

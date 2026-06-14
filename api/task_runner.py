@@ -164,10 +164,10 @@ class TaskRunner:
             self.app.broadcast_threadsafe(self.status_event(handle.instance))
 
     def _execute_with_retry(self, handle: TaskHandle) -> None:
-        for attempt in range(1, self.max_attempts + 1):
+        while True:
             runner = None
             try:
-                logger.info("开始运行任务 %s：%s（第 %s/%s 次）", handle.title, handle.instance, attempt, self.max_attempts)
+                logger.info("开始运行任务 %s：%s", handle.title, handle.instance)
                 device = self._device(handle.instance)
                 runner = create_runner(handle.section, handle.task_id, self.config_store.get(handle.instance), device=device)
                 if not runner.device.app_is_running():
@@ -180,14 +180,12 @@ class TaskRunner:
                 raise
             except (GameStuckError, GameBugError, GameNotRunningError) as exc:
                 self._safe_stop_runner_app(handle.instance, runner)
-                self._retry_or_raise(handle, attempt, exc)
+                self._retry_or_raise(handle, exc)
             except Exception as exc:
-                self._retry_or_raise(handle, attempt, exc)
+                self._retry_or_raise(handle, exc)
 
-    def _retry_or_raise(self, handle: TaskHandle, attempt: int, exc: BaseException) -> None:
-        if attempt >= self.max_attempts:
-            raise exc
-        detail = f"第 {attempt}/{self.max_attempts} 次失败，{self.retry_delay:g} 秒后重试：{exc}"
+    def _retry_or_raise(self, handle: TaskHandle, exc: BaseException) -> None:
+        detail = f"{self.retry_delay:g} 秒后重试：{exc}"
         logger.warning("任务 %s %s", handle.title, detail)
         self.app.broadcast_threadsafe(self.task_event(handle, "running", detail))
         time.sleep(self.retry_delay)
