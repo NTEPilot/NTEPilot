@@ -81,7 +81,7 @@ CONFIG = {
         "fish": {
             "label": "钓鱼",
             "description": "自动钓鱼工具，在钓鱼界面运行该工具",
-            "runner": "NTEPilot.tools.fish.fish:Fish",
+            "runner": "NTEPilot.fish.fish:Fish",
             "config": {
                 "sell_fish": {
                     "label": "自动卖鱼",
