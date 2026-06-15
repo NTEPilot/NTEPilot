@@ -12,7 +12,7 @@ class CustomLogger(logging.Logger):
     def rule(self, title="", *, characters="─", style="rule.line", end="\n", align="center"):
         rule = Rule(title=title, characters=characters,
                     style=style, end=end, align=align)
-        print(rule)
+        console.print(rule)
 
     def hr(self, title, level=3):
         title = str(title).upper()

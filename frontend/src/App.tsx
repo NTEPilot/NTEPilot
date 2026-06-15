@@ -296,8 +296,15 @@ export function App() {
         </aside>
 
         <section className="plan-board" aria-label="每日计划">
-          <div className="scheduler-toolbar">
-            <Switch checked={bridge.scheduler.enabled} onChange={bridge.setSchedulerEnabled} ariaLabel="计划器" />
+          <div className="scheduler-toolbar" style={{ justifyContent: 'space-between' }}>
+            <div className="tool-title">
+              <h3>总开关</h3>
+            </div>
+            <Switch
+              checked={bridge.scheduler.enabled}
+              onChange={bridge.setSchedulerEnabled}
+              ariaLabel="计划器总开关"
+            />
           </div>
 
           <div className="plan-list" ref={planListRef}>
@@ -336,24 +343,34 @@ export function App() {
                     )}
                   </div>
                   <div className="plan-actions">
-                    {running ? (
-                      <md-filled-tonal-button className="danger-action" hasIcon onClick={() => bridge.stopTask(plan.taskId)}>
-                        <MaterialIcon name="stop" slot="icon" />
-                        停止
-                      </md-filled-tonal-button>
-                    ) : (
-                      <>
-                        <md-icon-button aria-label={`强制运行${title}计划`} title={`强制运行${title}计划`} onClick={() => bridge.runSchedulePlan(plan.id)}>
-                          <MaterialIcon name="play_arrow" />
-                        </md-icon-button>
-                        <md-icon-button aria-label={`配置${title}计划`} onClick={() => openEditPlan(plan)}>
-                          <MaterialIcon name="edit" />
-                        </md-icon-button>
-                        <md-icon-button aria-label={`删除${title}计划`} onClick={() => bridge.removeSchedulePlan(plan.id)}>
-                          <MaterialIcon name="delete" />
-                        </md-icon-button>
-                      </>
+                    {running && (
+                      <span className="plan-running-state">
+                        <MaterialIcon name="progress_activity" />
+                        运行中
+                      </span>
                     )}
+                    <md-icon-button
+                      aria-label={`强制运行${title}计划`}
+                      disabled={running || !bridge.scheduler.enabled}
+                      title={`强制运行${title}计划`}
+                      onClick={() => bridge.runSchedulePlan(plan.id)}
+                    >
+                      <MaterialIcon name="play_arrow" />
+                    </md-icon-button>
+                    <md-icon-button
+                      aria-label={`配置${title}计划`}
+                      disabled={running}
+                      onClick={() => openEditPlan(plan)}
+                    >
+                      <MaterialIcon name="edit" />
+                    </md-icon-button>
+                    <md-icon-button
+                      aria-label={`删除${title}计划`}
+                      disabled={running}
+                      onClick={() => bridge.removeSchedulePlan(plan.id)}
+                    >
+                      <MaterialIcon name="delete" />
+                    </md-icon-button>
                   </div>
                 </article>
               );
@@ -411,7 +428,7 @@ export function App() {
             <md-icon-button aria-label={isDark ? '切换到亮色主题' : '切换到暗色主题'} onClick={toggleTheme}>
               <MaterialIcon name={isDark ? 'light_mode' : 'dark_mode'} />
             </md-icon-button>
-            <md-icon-button aria-label="打开日志" onClick={() => setConsoleOpen(true)}>
+            <md-icon-button aria-label={consoleOpen ? "关闭日志" : "打开日志"} onClick={() => setConsoleOpen(!consoleOpen)}>
               <MaterialIcon name="terminal" />
             </md-icon-button>
           </div>

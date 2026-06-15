@@ -63,7 +63,7 @@ class Scheduler:
         config = self.config_store.get(instance)
         if self._active_plan.get(config.name):
             return "running"
-        if not bool(config.get_value("scheduler.enabled", False)):
+        if not self._scheduler_enabled(config.name):
             return "disabled"
         if self._due_plans(config.name) and not self.task_runner.is_idle(config.name):
             return "waiting"
@@ -132,6 +132,8 @@ class Scheduler:
 
     def run_plan(self, instance: str, plan_id: str) -> dict[str, Any]:
         config = self.config_store.get(instance)
+        if not self._scheduler_enabled(config.name):
+            raise ValueError("Scheduler is disabled")
         plan = self._get_plan(config.name, plan_id)
         handle = self._start_plan(config.name, plan)
         watcher = threading.Thread(
@@ -155,7 +157,7 @@ class Scheduler:
 
     def _run_due_plans(self, instance: str) -> None:
         config = self.config_store.get(instance)
-        if not bool(config.get_value("scheduler.enabled", False)):
+        if not self._scheduler_enabled(config.name):
             return
 
         due = self._due_plans(config.name)
@@ -166,7 +168,7 @@ class Scheduler:
             return
 
         ran_any = False
-        while due and bool(config.get_value("scheduler.enabled", False)):
+        while due and self._scheduler_enabled(config.name):
             plan = due[0]
 
             try:
@@ -191,7 +193,7 @@ class Scheduler:
 
     def _due_plans(self, instance: str) -> list[dict[str, Any]]:
         config = self.config_store.get(instance)
-        if not bool(config.get_value("scheduler.enabled", False)):
+        if not self._scheduler_enabled(config.name):
             return []
 
         now = datetime.now()
@@ -239,7 +241,19 @@ class Scheduler:
             raise
 
     def _finish_plan(self, instance: str, plan_id: str, handle: Any) -> str:
-        handle.done.wait()
+        stop_requested = handle.status == "cancelled"
+        while not handle.done.wait(0.2):
+            if stop_requested or self._scheduler_enabled(instance):
+                continue
+            stop_requested = True
+            try:
+                if self.task_runner.active_source(instance) == "scheduler":
+                    self.task_runner.stop(instance)
+            except RuntimeError:
+                pass
+            except Exception as exc:
+                logger.warning("Failed to stop scheduled task after scheduler was disabled: %s", exc)
+
         status = handle.status if handle.status in {"done", "cancelled", "error"} else "error"
         if status == "done":
             self._mark_plan_success(instance, plan_id)
@@ -276,6 +290,10 @@ class Scheduler:
     def _broadcast_state(self, instance: str) -> None:
         self.app.broadcast_threadsafe(self.state_payload(instance))
         self.app.broadcast_threadsafe({"type": "status", "instance": instance, "status": self.app.status_payload(instance)})
+
+    def _scheduler_enabled(self, instance: str) -> bool:
+        config = self.config_store.get(instance)
+        return bool(config.get_value("scheduler.enabled", False))
 
     @staticmethod
     def _sort_plans(plans: list[dict[str, Any]]) -> list[dict[str, Any]]:
