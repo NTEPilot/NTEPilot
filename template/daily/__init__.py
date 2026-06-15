@@ -5,6 +5,7 @@ BIG_MONTHCARD_CLAIM_ALL = load_template("./template/daily/assets/BIG_MONTHCARD_C
 BIG_MONTHCARD_TASK = load_template("./template/daily/assets/BIG_MONTHCARD_TASK.png")
 BIG_MONTHCARD_TASK_CLAIM_ALL = load_template("./template/daily/assets/BIG_MONTHCARD_TASK_CLAIM_ALL.png")
 CLAIM_DAILY_POINT = load_template("./template/daily/assets/CLAIM_DAILY_POINT.png", method="avg_color")
+DAILY = load_template("./template/daily/assets/DAILY.png")
 DAILY_REWARDS_1 = load_template("./template/daily/assets/DAILY_REWARDS_1.png", method="avg_color")
 DAILY_REWARDS_2 = load_template("./template/daily/assets/DAILY_REWARDS_2.png", method="avg_color")
 DAILY_REWARDS_3 = load_template("./template/daily/assets/DAILY_REWARDS_3.png", method="avg_color")
