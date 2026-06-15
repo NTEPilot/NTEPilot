@@ -616,7 +616,15 @@ button {
 }
 
 .plan-running-state .material-icon {
+  animation: plan-running-spin 1s linear infinite;
   font-size: 18px;
+  transform-origin: center;
+}
+
+@keyframes plan-running-spin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .scheduler-catalog {

@@ -109,6 +109,10 @@ export function App() {
     running: '运行中',
     error: '错误',
   }[schedulerStatus ?? 'disabled'];
+  const activeTaskId = bridge.backendStatus.activeTask && bridge.backendStatus.activeTask !== 'idle'
+    ? bridge.backendStatus.activeTask
+    : null;
+  const hasActiveTask = Boolean(activeTaskId);
   const activeTaskText = bridge.backendStatus.activeTask && bridge.backendStatus.activeTask !== 'idle'
     ? (taskTitleById[bridge.backendStatus.activeTask] ?? bridge.backendStatus.activeTask)
     : '空闲';
@@ -221,7 +225,7 @@ export function App() {
           const configGroup = task.configGroup ?? task.id;
           const configFields = bridge.groupedFields[configGroup] ?? [];
           const configOpen = Boolean(openToolConfigs[task.id]);
-          const running = bridge.backendStatus.activeTask === task.id;
+          const running = activeTaskId === task.id;
 
           return (
             <article className="tool-item" key={task.id}>
@@ -238,7 +242,7 @@ export function App() {
                     停止
                   </md-filled-tonal-button>
                 ) : (
-                  <md-filled-button hasIcon onClick={() => bridge.startTask(task.id)}>
+                  <md-filled-button disabled={hasActiveTask} hasIcon onClick={() => bridge.startTask(task.id)}>
                     <MaterialIcon name="play_arrow" slot="icon" filled />
                     启动
                   </md-filled-button>
@@ -351,7 +355,7 @@ export function App() {
                     )}
                     <md-icon-button
                       aria-label={`强制运行${title}计划`}
-                      disabled={running || !bridge.scheduler.enabled}
+                      disabled={hasActiveTask}
                       title={`强制运行${title}计划`}
                       onClick={() => bridge.runSchedulePlan(plan.id)}
                     >

@@ -132,8 +132,6 @@ class Scheduler:
 
     def run_plan(self, instance: str, plan_id: str) -> dict[str, Any]:
         config = self.config_store.get(instance)
-        if not self._scheduler_enabled(config.name):
-            raise ValueError("Scheduler is disabled")
         plan = self._get_plan(config.name, plan_id)
         handle = self._start_plan(config.name, plan)
         watcher = threading.Thread(
@@ -242,8 +240,13 @@ class Scheduler:
 
     def _finish_plan(self, instance: str, plan_id: str, handle: Any) -> str:
         stop_requested = handle.status == "cancelled"
+        seen_enabled = self._scheduler_enabled(instance)
         while not handle.done.wait(0.2):
-            if stop_requested or self._scheduler_enabled(instance):
+            enabled = self._scheduler_enabled(instance)
+            if enabled:
+                seen_enabled = True
+                continue
+            if stop_requested or not seen_enabled:
                 continue
             stop_requested = True
             try:
