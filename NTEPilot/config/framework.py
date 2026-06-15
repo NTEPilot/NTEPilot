@@ -174,5 +174,19 @@ CONFIG = {
             "runner": "NTEPilot.daily.claim_big_monthcard:ClaimBigMonthcard",
             "config": {},
         },
+        "movie": {
+            "label": "看电影",
+            "description": None,
+            "runner": "NTEPilot.bond.movie:Movie",
+            "config": {
+                "character": {
+                    "label": "选择角色",
+                    "type": "select",
+                    "description": None,
+                    "options": CHARA_OPTIONS_WITHOUT_ZERO,
+                    "default": "早雾",
+                },
+            },
+        }
     },
 }

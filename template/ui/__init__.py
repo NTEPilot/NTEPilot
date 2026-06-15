@@ -3,6 +3,7 @@ from template.load_template import load_template
 BOND = load_template("./template/ui/assets/BOND.png")
 BUTTON_CROSS = load_template("./template/ui/assets/BUTTON_CROSS.png", rect=(1190, 0, 1280, 70))
 CHAT = load_template("./template/ui/assets/CHAT.png")
+EXIT = load_template("./template/ui/assets/EXIT.png")
 F1 = load_template("./template/ui/assets/F1.png")
 F2 = load_template("./template/ui/assets/F2.png")
 F3 = load_template("./template/ui/assets/F3.png")

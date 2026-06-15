@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 
 from utils.image import get_color, color_similar
 from utils.exceptions import ScriptError
@@ -43,6 +44,57 @@ class Template:
             
         return False
 
+    def match_all_template_gray(self, screenshot, rect=None, offset=10, similarity=0.85):
+        if screenshot is None or self.image is None:
+            return []
+            
+        x1, y1, x2, y2 = rect if rect is not None else self.rect
+        
+        h_img, w_img = screenshot.shape[:2]
+        x1 = max(0, x1 - offset)
+        y1 = max(0, y1 - offset)
+        x2 = min(w_img, x2 + offset)
+        y2 = min(h_img, y2 + offset)
+        
+        if x2 <= x1 or y2 <= y1:
+            return []
+            
+        roi = screenshot[y1:y2, x1:x2]
+        if roi.shape[0] < self.height or roi.shape[1] < self.width:
+            return []
+            
+        roi_gray = cv2.cvtColor(roi, cv2.COLOR_RGB2GRAY)
+        res = cv2.matchTemplate(roi_gray, self.gray_image, cv2.TM_CCOEFF_NORMED)
+        
+        loc = np.where(res >= similarity)
+        points = []
+        for y, x in zip(*loc):
+            points.append((x, y, res[y, x]))
+            
+        # Sort by match score descending to process best matches first
+        points = sorted(points, key=lambda p: p[2], reverse=True)
+        
+        results = []
+        # Non-maximum suppression to filter out overlapping matching regions
+        min_dist = max(10, min(self.width, self.height) // 2)
+        for x, y, score in points:
+            too_close = False
+            for rx, ry in results:
+                if abs(x - rx) < min_dist and abs(y - ry) < min_dist:
+                    too_close = True
+                    break
+            if not too_close:
+                results.append((x, y))
+                
+        # Return center positions of matches in the original screenshot coordinates
+        final_positions = []
+        for rx, ry in results:
+            center_x = int(x1 + rx + self.width // 2)
+            center_y = int(y1 + ry + self.height // 2)
+            final_positions.append((center_x, center_y))
+            
+        return final_positions
+
     def match_avg_color(self, screenshot, threshold=10, **kwargs):
         if screenshot is None or self.image is None:
             return False
@@ -58,3 +110,9 @@ class Template:
             return self.match_avg_color(screenshot, *args, **kwargs)
         else:
             raise ScriptError(f"Invalid template method: {self.method}")
+
+    def match_all(self, screenshot, *args, **kwargs):
+        if self.method == 'template_gray':
+            return self.match_all_template_gray(screenshot, *args, **kwargs)
+        else:
+            raise ScriptError(f"match_all not implemented for method: {self.method}")

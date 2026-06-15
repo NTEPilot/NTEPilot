@@ -1,13 +1,10 @@
-from template.bond import PRESENT
-from NTEPilot.device import screenshot
-from rich import screen
 from NTEPilot.ui.ui import UI
-from NTEPilot.ocr import Ocr
+from NTEPilot.bond.ocr import CharaOcr
 from NTEPilot.ui.page import BOND_PAGE, MAIN_PAGE
 from template.bond import *
 from utils.logger import logger
 
-class Gift(UI, Ocr):
+class Gift(UI, CharaOcr):
     CHARAS = [CHARA_1, CHARA_2, CHARA_3, CHARA_4, CHARA_5]
     GIFTS = {
         1: GIFT_1,
@@ -21,19 +18,6 @@ class Gift(UI, Ocr):
         9: GIFT_9,
         10: GIFT_10,
     }
-
-    def ocr(self, *args, **kwargs):
-        result = super().ocr(*args, **kwargs)
-
-        # 狗狗人是驱（
-        if result == '驱':
-            logger.info('Detected 驱, correcting to 翳')
-            result = '翳'
-        elif result == '得':
-            logger.info('Detected 得, correcting to 浔')
-            result = '浔'
-
-        return result
 
     def click(self, target):
         self.device.click(target)
@@ -62,7 +46,7 @@ class Gift(UI, Ocr):
 
         return True
 
-    def gift(self):
+    def _gift(self):
         for chara in self.CHARAS:
             self.click(chara)
             if self.try_gift():
@@ -82,5 +66,5 @@ class Gift(UI, Ocr):
         self._last_chara = ''
 
         self.ui_goto(BOND_PAGE)
-        self.gift()
+        self._gift()
         self.ui_goto(MAIN_PAGE)
