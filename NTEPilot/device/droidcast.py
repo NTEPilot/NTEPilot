@@ -1,4 +1,5 @@
 import re
+import subprocess
 import time
 import typing as t
 from functools import wraps
@@ -130,7 +131,7 @@ class DroidCast(Connection):
         if self.is_mumu_over_version_356:
             w, h = self.droidcast_width, self.droidcast_height
             if self.orientation == 0:
-                return f'http://127.0.0.1:{self._droidcast_port}{url}?width={w}&height={h}'
+                return f'http://127.0.0.1:{self._droidcast_port}{url}?width={h}&height={w}'
             elif self.orientation == 1:
                 return f'http://127.0.0.1:{self._droidcast_port}{url}?width={h}&height={w}'
             else:
@@ -151,10 +152,10 @@ class DroidCast(Connection):
         # DroidCast_raw-release-1.1.apk
         # CLASSPATH=/data/local/tmp/DroidCast_raw.apk app_process / ink.mol.droidcast_raw.Main > /dev/null
         # adb shell CLASSPATH=/data/local/tmp/DroidCast_raw.apk app_process / ink.mol.droidcast_raw.Main
-        self.adb_shell([
-            'sh', '-c',
-            f"setsid sh -c 'CLASSPATH={DROIDCAST_FILEPATH_REMOTE} app_process / ink.mol.droidcast_raw.Main > /dev/null 2>&1 &' || CLASSPATH={DROIDCAST_FILEPATH_REMOTE} app_process / ink.mol.droidcast_raw.Main > /dev/null 2>&1 &"
-        ])
+        subprocess.Popen([
+            'adb', '-s', self.serial, 'shell',
+            f"nohup sh -c 'CLASSPATH={DROIDCAST_FILEPATH_REMOTE} app_process / ink.mol.droidcast_raw.Main' > /dev/null 2>&1 &",
+        ]).wait(timeout=3)
         del_cached_property(self, 'droidcast_session')
         _ = self.droidcast_session
 
@@ -187,7 +188,10 @@ class DroidCast(Connection):
             if not self.droidcast_width or not self.droidcast_height:
                 self._droidcast_update_resolution()
             if self.droidcast_height and self.droidcast_width:
-                shape = (self.droidcast_height, self.droidcast_width)
+                if self.orientation == 1:
+                    shape = (self.droidcast_height, self.droidcast_width)
+                else:
+                    shape = (self.droidcast_width, self.droidcast_height)
 
         rotate = self.is_mumu_over_version_356 and self.orientation == 1
 

@@ -1,5 +1,6 @@
 import asyncio
 import json
+import subprocess
 import socket
 import threading
 import time
@@ -511,26 +512,15 @@ class Minitouch(Connection):
 
         kill_cmd = f"kill -s 9 {' '.join(map(str, pids))}"
         try:
-            self.adb_shell(['su', '-c', kill_cmd])
+            self.adb_shell(kill_cmd)
         except Exception as e:
-            logger.error(f"Failed to kill minitouch processes as root: {e}")
+            logger.error(f"Failed to kill minitouch processes: {e}")
 
     def minitouch_init(self):
         logger.hr('MiniTouch init')
         max_x, max_y = 1280, 720
         max_contacts = 2
         max_pressure = 50
-
-        # Check for root privilege
-        try:
-            res = self.adb_shell(['su', '-c', 'whoami'])
-            has_su = 'root' in res
-        except Exception:
-            has_su = False
-
-        if not has_su:
-            logger.critical("su is not available or cannot get root. Root privilege is required to run minitouch.")
-            raise RequestHumanTakeover("su is not available or cannot get root. Root privilege is required to run minitouch.")
 
         # 尝试关闭已有连接
         if self._minitouch_client is not None:
@@ -545,10 +535,22 @@ class Minitouch(Connection):
 
         logger.info('Pushing minitouch binary')
         self.adb_push(MINITOUCH_FILEPATH_LOCAL, MINITOUCH_FILEPATH_REMOTE)
-        self.adb_shell(['su', '-c', f"chmod 755 {MINITOUCH_FILEPATH_REMOTE}"])
+        subprocess.run(
+            ['adb', '-s', self.serial, 'shell', f"chmod 755 {MINITOUCH_FILEPATH_REMOTE}"],
+            check=False,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=3,
+        )
 
         logger.info('Starting minitouch daemon')
-        self.adb_shell(f"setsid sh -c \"su -c '{MINITOUCH_FILEPATH_REMOTE}' > /dev/null 2>&1 &\"")
+        subprocess.run(
+            ['adb', '-s', self.serial, 'shell', f"nohup {MINITOUCH_FILEPATH_REMOTE} >/dev/null 2>&1 &"],
+            check=False,
+            stdout=subprocess.DEVNULL,
+            stderr=subprocess.DEVNULL,
+            timeout=3,
+        )
 
         self._minitouch_port = self.adb_forward("localabstract:minitouch")
 
