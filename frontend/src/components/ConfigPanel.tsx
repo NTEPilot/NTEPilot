@@ -20,6 +20,24 @@ function asSelectElement(target: EventTarget & Element) {
   return target as HTMLElement & { value: string };
 }
 
+function inputTypeFor(field: ConfigField) {
+  return field.type === 'integer' || field.type === 'float' ? 'number' : 'text';
+}
+
+function stepFor(field: ConfigField) {
+  if (field.type === 'integer') return '1';
+  return field.step === undefined ? undefined : String(field.step);
+}
+
+function valueFromInput(field: ConfigField, rawValue: string) {
+  if (field.type === 'integer') {
+    const numberValue = Number(rawValue);
+    return Number.isFinite(numberValue) ? Math.trunc(numberValue) : 0;
+  }
+  if (field.type === 'float') return Number(rawValue);
+  return rawValue;
+}
+
 export function ConfigPanel({ fields, values, onChange }: ConfigPanelProps) {
   const [fieldsRef] = useMotionParent<HTMLDivElement>({ duration: 140 });
 
@@ -83,16 +101,19 @@ export function ConfigPanel({ fields, values, onChange }: ConfigPanelProps) {
             <md-outlined-text-field
               className="config-input"
               label={field.label}
-              type={field.type === 'number' ? 'number' : 'text'}
+              type={inputTypeFor(field)}
               min={field.min === undefined ? undefined : String(field.min)}
               max={field.max === undefined ? undefined : String(field.max)}
-              step={field.step === undefined ? undefined : String(field.step)}
+              step={stepFor(field)}
               supportingText={field.description}
               value={String(current ?? '')}
+              onInput={(event) => {
+                const rawValue = asTextFieldElement(event.currentTarget).value;
+                onChange(field.key, valueFromInput(field, rawValue));
+              }}
               onChange={(event) => {
                 const rawValue = asTextFieldElement(event.currentTarget).value;
-                const next = field.type === 'number' ? Number(rawValue) : rawValue;
-                onChange(field.key, next);
+                onChange(field.key, valueFromInput(field, rawValue));
               }}
             />
           </div>

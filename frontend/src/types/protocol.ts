@@ -1,6 +1,6 @@
 export type ConnectionStatus = 'idle' | 'connecting' | 'open' | 'closed' | 'error';
 
-export type ConfigFieldType = 'text' | 'number' | 'boolean' | 'select';
+export type ConfigFieldType = 'text' | 'integer' | 'float' | 'boolean' | 'select';
 
 export interface BackendInstance {
   name: string;
@@ -59,10 +59,7 @@ export interface SchedulerPlan {
   taskId: string;
   time: string;
   priority: number;
-  lastRunDate?: string;
-  lastRunAt?: string;
-  lastStatus?: 'done' | 'error' | 'cancelled';
-  lastDetail?: string;
+  last_run_date?: string;
   values?: Record<string, string | number | boolean>;
 }
 
@@ -118,7 +115,7 @@ export interface ConfigGetMessage {
 
 export interface ConfigUpdateMessage {
   type: 'config.update';
-  requestId: string;
+  requestId?: string;
   instance: string;
   values: Record<string, string | number | boolean>;
 }
@@ -186,6 +183,13 @@ export interface SchedulerPlanRemoveMessage {
   planId: string;
 }
 
+export interface SchedulerPlanRunMessage {
+  type: 'scheduler.plan.run';
+  requestId: string;
+  instance: string;
+  planId: string;
+}
+
 export type FrontendMessage =
   | FrontendHello
   | InstanceListMessage
@@ -200,4 +204,5 @@ export type FrontendMessage =
   | SchedulerSetEnabledMessage
   | SchedulerPlanAddMessage
   | SchedulerPlanUpdateMessage
-  | SchedulerPlanRemoveMessage;
+  | SchedulerPlanRemoveMessage
+  | SchedulerPlanRunMessage;

@@ -249,6 +249,10 @@ class NTEPilotWebSocketApp:
                 result = self.scheduler.remove_plan(instance, str(message.get("planId", "")))
                 await self.send_result(websocket, request_id, True, result)
                 return
+            if message_type == "scheduler.plan.run":
+                result = self.scheduler.run_plan(instance, str(message.get("planId", "")))
+                await self.send_result(websocket, request_id, True, result)
+                return
 
             raise ValueError(f"Unknown message type: {message_type}")
         except Exception as exc:

@@ -49,6 +49,18 @@ function readConsoleWidth() {
   return Number.isFinite(saved) && saved > 0 ? clampConsoleWidth(saved) : DEFAULT_CONSOLE_WIDTH;
 }
 
+function localDateKey(date = new Date()) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+function integerValue(value: string) {
+  const numberValue = Number(value);
+  return Number.isFinite(numberValue) ? Math.trunc(numberValue) : 0;
+}
+
 export function App() {
   const bridge = useWebSocketBridge();
   const { isDark, toggleTheme } = useThemeMode();
@@ -263,6 +275,8 @@ export function App() {
   }
 
   function renderPlanPage() {
+    const today = localDateKey();
+
     return (
       <div className="planner-layout">
         <aside className="scheduler-catalog" aria-label="支持的计划任务">
@@ -296,21 +310,24 @@ export function App() {
             {sortedPlans.map((plan) => {
               const running = bridge.scheduler.activePlanId === plan.id;
               const title = taskTitleById[plan.taskId] ?? plan.taskId;
+              const completedToday = plan.last_run_date === today;
               return (
                 <article className="plan-item" key={plan.id}>
                   <div className="plan-main">
                     <h3>{title}</h3>
                     <div className="plan-meta">
-                      <span>{plan.time}</span>
-                      <span>优先级 {plan.priority}</span>
-                      {plan.lastStatus && <span>{plan.lastStatus}</span>}
+                      <span className="plan-meta-item">时间 {plan.time}</span>
+                      <span className="plan-meta-item">优先级 {plan.priority}</span>
+                      <span className={`plan-meta-item plan-done-state ${completedToday ? 'is-done' : 'is-pending'}`}>
+                        {completedToday ? '今日已完成' : '今日未完成'}
+                      </span>
                     </div>
                     {plan.values && Object.keys(plan.values).length > 0 && (
-                      <div className="plan-overrides" style={{ fontSize: '11px', color: 'var(--md-sys-color-on-surface-variant)', display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '6px' }}>
+                      <div className="plan-overrides">
                         {Object.entries(plan.values).map(([k, v]) => {
                           const f = bridge.fields.find(field => field.key === k);
                           return (
-                            <span key={k} style={{ background: 'var(--md-sys-color-surface-container-high, rgba(0,0,0,0.05))', padding: '2px 6px', borderRadius: '4px' }}>
+                            <span className="plan-override" key={k}>
                               {f ? f.label : k}: {String(v)}
                             </span>
                           );
@@ -326,6 +343,9 @@ export function App() {
                       </md-filled-tonal-button>
                     ) : (
                       <>
+                        <md-icon-button aria-label={`强制运行${title}计划`} title={`强制运行${title}计划`} onClick={() => bridge.runSchedulePlan(plan.id)}>
+                          <MaterialIcon name="play_arrow" />
+                        </md-icon-button>
                         <md-icon-button aria-label={`配置${title}计划`} onClick={() => openEditPlan(plan)}>
                           <MaterialIcon name="edit" />
                         </md-icon-button>
@@ -394,10 +414,6 @@ export function App() {
             <md-icon-button aria-label="打开日志" onClick={() => setConsoleOpen(true)}>
               <MaterialIcon name="terminal" />
             </md-icon-button>
-            <md-filled-button className="save-action" hasIcon onClick={bridge.saveConfig}>
-              <MaterialIcon name="save" slot="icon" />
-              保存
-            </md-filled-button>
           </div>
         </header>
 
@@ -509,8 +525,8 @@ export function App() {
               type="number"
               step="1"
               value={String(planPriority)}
-              onInput={(event) => setPlanPriority(Number((event.currentTarget as TextFieldElement).value))}
-              onChange={(event) => setPlanPriority(Number((event.currentTarget as TextFieldElement).value))}
+              onInput={(event) => setPlanPriority(integerValue((event.currentTarget as TextFieldElement).value))}
+              onChange={(event) => setPlanPriority(integerValue((event.currentTarget as TextFieldElement).value))}
             />
           </div>
           {selectedPlanConfigFields.length > 0 && (

@@ -81,6 +81,8 @@ def normalize_config_value(path: str, value: Any) -> Any:
         return bool(value)
 
     if field_type == "integer":
+        if isinstance(value, float) and not value.is_integer():
+            raise ValueError(f"Integer value cannot contain decimals for {path}: {value}")
         normalized: Any = int(value)
     elif field_type == "float":
         normalized = float(value)
@@ -104,7 +106,7 @@ def field_to_json(path: str, group: str, field: dict[str, Any], config: Any) -> 
     payload: dict[str, Any] = {
         "key": path,
         "label": str(field.get("label", path)),
-        "type": "number" if field_type in {"integer", "float"} else field_type,
+        "type": field_type,
         "group": group,
         "value": config.get_value(path, copy.deepcopy(field.get("default"))),
     }
@@ -113,6 +115,8 @@ def field_to_json(path: str, group: str, field: dict[str, Any], config: Any) -> 
     if "range" in field:
         minimum, maximum, step = field["range"]
         payload.update({"min": minimum, "max": maximum, "step": step})
+    elif field_type == "integer":
+        payload["step"] = 1
     if "options" in field:
         payload["options"] = list(field["options"])
     return payload

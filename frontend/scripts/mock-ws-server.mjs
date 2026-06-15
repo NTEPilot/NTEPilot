@@ -53,7 +53,7 @@ const fields = [
   { key: 'general.serial', label: '设备序列号', type: 'text', group: 'general', description: 'ADB 设备或模拟器序列号' },
   { key: 'general.client', label: '客户端', type: 'select', group: 'general', options: ['异环', '云·异环'] },
   { key: 'general.websocket_host', label: '监听地址', type: 'text', group: 'general' },
-  { key: 'general.websocket_port', label: '监听端口', type: 'number', group: 'general', min: 1, max: 65535, step: 1 },
+  { key: 'general.websocket_port', label: '监听端口', type: 'integer', group: 'general', min: 1, max: 65535, step: 1 },
   { key: 'team.chara_1', label: '一号角色', type: 'select', group: 'team', description: '队伍一号位角色', options: characterOptions },
   { key: 'team.chara_2', label: '二号角色', type: 'select', group: 'team', description: '队伍二号位角色', options: characterOptions },
   { key: 'team.chara_3', label: '三号角色', type: 'select', group: 'team', description: '队伍三号位角色', options: characterOptions },
@@ -61,8 +61,8 @@ const fields = [
   { key: 'team.skill_order', label: '技能顺序', type: 'text', group: 'team', description: '按 1E>2E>3E>4E>1A 格式填写队伍技能循环' },
   { key: 'tools.fish.sell_fish', label: '自动卖鱼', type: 'boolean', group: 'fish' },
   { key: 'tools.fish.buy_bait', label: '自动买鱼饵', type: 'boolean', group: 'fish' },
-  { key: 'tools.fish.buy_bait_stack_count', label: '鱼饵购买组数', type: 'number', group: 'fish', min: 1, max: 20, step: 1 },
-  { key: 'tools.fish.green_bar_safe_proportion', label: '绿条安全比例', type: 'number', group: 'fish', min: 0, max: 1, step: 0.05 },
+  { key: 'tools.fish.buy_bait_stack_count', label: '鱼饵购买组数', type: 'integer', group: 'fish', min: 1, max: 20, step: 1 },
+  { key: 'tools.fish.green_bar_safe_proportion', label: '绿条安全比例', type: 'float', group: 'fish', min: 0, max: 1, step: 0.05 },
 ];
 
 const tasks = [

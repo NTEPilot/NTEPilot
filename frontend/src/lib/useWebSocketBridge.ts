@@ -73,16 +73,11 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
   const reconnectTimer = useRef<number | null>(null);
   const manuallyClosed = useRef(false);
   const selectedInstanceRef = useRef(selectedInstance);
-  const valuesRef = useRef(values);
 
   useEffect(() => {
     selectedInstanceRef.current = selectedInstance;
     localStorage.setItem(SELECTED_INSTANCE_KEY, selectedInstance);
   }, [selectedInstance]);
-
-  useEffect(() => {
-    valuesRef.current = values;
-  }, [values]);
 
   const appendLog = useCallback((entry: Omit<LogEvent, 'id' | 'time'> & Partial<Pick<LogEvent, 'id' | 'time'>>) => {
     setLogs((current) => [
@@ -265,13 +260,8 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
 
   const updateValue = useCallback((key: string, value: string | number | boolean) => {
     setValues((current) => ({ ...current, [key]: value }));
-  }, []);
-
-  const saveConfig = useCallback(() => {
-    const requestId = crypto.randomUUID();
-    send({ type: 'config.update', requestId, instance: selectedInstanceRef.current, values: valuesRef.current });
-    appendLog({ level: 'info', source: '前端', message: `已请求保存实例配置：${selectedInstanceRef.current}。` });
-  }, [appendLog, send]);
+    send({ type: 'config.update', instance: selectedInstanceRef.current, values: { [key]: value } });
+  }, [send]);
 
   const createInstance = useCallback((name: string) => {
     const requestId = crypto.randomUUID();
@@ -284,7 +274,7 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
 
   const startTask = useCallback((taskId: string) => {
     const requestId = crypto.randomUUID();
-    send({ type: 'task.start', requestId, instance: selectedInstanceRef.current, taskId, values: valuesRef.current });
+    send({ type: 'task.start', requestId, instance: selectedInstanceRef.current, taskId });
     appendLog({ level: 'info', source: '前端', message: `已请求启动任务：${selectedInstanceRef.current}/${taskId}` });
   }, [appendLog, send]);
 
@@ -308,7 +298,7 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
       taskId,
       time,
       priority,
-      values: values ?? valuesRef.current,
+      values,
     });
   }, [send]);
 
@@ -322,7 +312,7 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
       taskId,
       time,
       priority,
-      values: values ?? valuesRef.current,
+      values,
     });
   }, [send]);
 
@@ -330,6 +320,12 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
     const requestId = crypto.randomUUID();
     send({ type: 'scheduler.plan.remove', requestId, instance: selectedInstanceRef.current, planId });
   }, [send]);
+
+  const runSchedulePlan = useCallback((planId: string) => {
+    const requestId = crypto.randomUUID();
+    send({ type: 'scheduler.plan.run', requestId, instance: selectedInstanceRef.current, planId });
+    appendLog({ level: 'info', source: '前端', message: `已请求强制运行计划：${selectedInstanceRef.current}/${planId}` });
+  }, [appendLog, send]);
 
   useEffect(() => {
     connect(initialUrl);
@@ -364,12 +360,12 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
     setSelectedInstance,
     createInstance,
     updateValue,
-    saveConfig,
     startTask,
     stopTask,
     setSchedulerEnabled,
     addSchedulePlan,
     updateSchedulePlan,
     removeSchedulePlan,
+    runSchedulePlan,
   };
 }

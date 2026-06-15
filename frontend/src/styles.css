@@ -18,12 +18,24 @@
 html[data-theme="light"] {
   --app-shadow-1: 0 1px 2px rgb(0 0 0 / 0.16), 0 1px 3px rgb(0 0 0 / 0.1);
   --app-shadow-2: 0 2px 6px rgb(0 0 0 / 0.15), 0 8px 24px rgb(0 0 0 / 0.08);
+  --app-plan-done-bg: #d8f5dd;
+  --app-plan-done-ink: #0b5d2a;
+  --app-plan-done-border: #7ac991;
+  --app-plan-pending-bg: #fff1c4;
+  --app-plan-pending-ink: #705200;
+  --app-plan-pending-border: #d6a900;
 }
 
 html[data-theme="dark"] {
   --app-shadow-1: 0 1px 2px rgb(0 0 0 / 0.32), 0 1px 3px rgb(0 0 0 / 0.24);
   --app-shadow-2: 0 2px 6px rgb(0 0 0 / 0.34), 0 8px 24px rgb(0 0 0 / 0.28);
   --app-console-bg: #0c0f14;
+  --app-plan-done-bg: #123b24;
+  --app-plan-done-ink: #b7f0c2;
+  --app-plan-done-border: #367a4b;
+  --app-plan-pending-bg: #3f3212;
+  --app-plan-pending-ink: #ffdf8a;
+  --app-plan-pending-border: #8b6b1f;
 }
 
 * {
@@ -233,20 +245,6 @@ button {
   --md-icon-button-icon-color: var(--md-sys-color-on-surface-variant);
   --md-icon-button-hover-icon-color: var(--md-sys-color-on-surface);
   --md-icon-button-pressed-icon-color: var(--md-sys-color-on-surface);
-}
-
-.save-action {
-  --md-filled-button-container-height: 40px;
-  --md-filled-button-container-shape: 20px;
-  --md-filled-button-leading-space: 16px;
-  --md-filled-button-trailing-space: 18px;
-  --md-filled-button-label-text-size: 14px;
-  --md-filled-button-label-text-weight: 600;
-  min-width: 92px;
-}
-
-.save-action .material-icon {
-  font-size: 20px;
 }
 
 .status-chip,
@@ -539,11 +537,58 @@ button {
 .plan-meta {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   gap: 8px;
-  margin-top: 6px;
+  margin-top: 10px;
+  color: var(--md-sys-color-on-surface);
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.plan-meta-item {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 0 12px;
+  color: var(--md-sys-color-on-surface);
+  background: var(--md-sys-color-surface-container-high);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--app-radius-small);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.plan-done-state.is-done {
+  color: var(--app-plan-done-ink);
+  background: var(--app-plan-done-bg);
+  border-color: var(--app-plan-done-border);
+}
+
+.plan-done-state.is-pending {
+  color: var(--app-plan-pending-ink);
+  background: var(--app-plan-pending-bg);
+  border-color: var(--app-plan-pending-border);
+}
+
+.plan-overrides {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 8px;
   color: var(--md-sys-color-on-surface-variant);
   font-size: 12px;
   font-weight: 600;
+}
+
+.plan-override {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 8px;
+  background: var(--md-sys-color-surface-container-high);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: 6px;
+  line-height: 1;
 }
 
 .plan-actions {

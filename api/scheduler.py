@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import copy
 import threading
-import time
 import traceback
 import uuid
 from datetime import datetime
@@ -62,10 +61,10 @@ class Scheduler:
 
     def status(self, instance: str) -> str:
         config = self.config_store.get(instance)
-        if not bool(config.get_value("scheduler.enabled", False)):
-            return "disabled"
         if self._active_plan.get(config.name):
             return "running"
+        if not bool(config.get_value("scheduler.enabled", False)):
+            return "disabled"
         if self._due_plans(config.name) and not self.task_runner.is_idle(config.name):
             return "waiting"
         if self._last_error.get(config.name):
@@ -131,6 +130,19 @@ class Scheduler:
         self._broadcast_state(config.name)
         return {"instance": config.name, "removed": plan_id}
 
+    def run_plan(self, instance: str, plan_id: str) -> dict[str, Any]:
+        config = self.config_store.get(instance)
+        plan = self._get_plan(config.name, plan_id)
+        handle = self._start_plan(config.name, plan)
+        watcher = threading.Thread(
+            target=self._finish_forced_plan,
+            args=(config.name, plan_id, handle),
+            name=f"NTEPilotSchedulerForce-{plan_id}-{config.name}",
+            daemon=True,
+        )
+        watcher.start()
+        return {"instance": config.name, "planId": plan_id, "taskId": handle.task_id, "status": "running"}
+
     def _loop(self) -> None:
         while not self._stop_event.is_set():
             try:
@@ -156,41 +168,18 @@ class Scheduler:
         ran_any = False
         while due and bool(config.get_value("scheduler.enabled", False)):
             plan = due[0]
-            plan_id = str(plan["id"])
-            task_id = str(plan["taskId"])
-
-            with self._lock:
-                self._active_plan[config.name] = plan_id
-                self._last_error.pop(config.name, None)
-            self._broadcast_state(config.name)
 
             try:
-                handle = self.task_runner.start_scheduled(config.name, task_id, plan_id)
+                handle = self._start_plan(config.name, plan)
             except TaskBusyError:
-                with self._lock:
-                    self._active_plan.pop(config.name, None)
-                self._broadcast_state(config.name)
                 return
-            except Exception as exc:
-                logger.error("Failed to start scheduled plan %s: %s", plan_id, exc)
-                logger.debug(traceback.format_exc())
-                self._mark_plan(config.name, plan_id, "error", str(exc))
-                with self._lock:
-                    self._active_plan.pop(config.name, None)
-                    self._last_error[config.name] = str(exc)
-                self._broadcast_state(config.name)
+            except Exception:
                 return
 
-            handle.done.wait()
             ran_any = True
-            status = handle.status if handle.status in {"done", "cancelled", "error"} else "error"
-            detail = handle.detail
-            self._mark_plan(config.name, plan_id, status, detail)
-            with self._lock:
-                self._active_plan.pop(config.name, None)
-                if status == "error" and detail:
-                    self._last_error[config.name] = detail
-            self._broadcast_state(config.name)
+            status = self._finish_plan(config.name, str(plan["id"]), handle)
+            if status != "done":
+                return
 
             config = self.config_store.get(instance)
             if not self.task_runner.is_idle(config.name):
@@ -211,26 +200,68 @@ class Scheduler:
         due = [
             plan
             for plan in self._plans(config.name)
-            if plan.get("lastRunDate") != today
+            if plan.get("last_run_date") != today
             and str(plan.get("time", "23:59")) <= current_time
         ]
         due.sort(key=lambda item: (-int(item.get("priority", 0)), str(item.get("time", "00:00")), str(item.get("id", ""))))
         return due
 
-    def _mark_plan(self, instance: str, plan_id: str, status: str, detail: str = "") -> None:
+    def _get_plan(self, instance: str, plan_id: str) -> dict[str, Any]:
+        plan = next((item for item in self._plans(instance) if item.get("id") == plan_id), None)
+        if plan is None:
+            raise ValueError(f"Unknown plan: {plan_id}")
+        return plan
+
+    def _start_plan(self, instance: str, plan: dict[str, Any]) -> Any:
+        plan_id = str(plan["id"])
+        task_id = str(plan["taskId"])
+        with self._lock:
+            self._active_plan[instance] = plan_id
+            self._last_error.pop(instance, None)
+        self._broadcast_state(instance)
+
+        try:
+            return self.task_runner.start_scheduled(instance, task_id, plan_id)
+        except TaskBusyError:
+            with self._lock:
+                if self._active_plan.get(instance) == plan_id:
+                    self._active_plan.pop(instance, None)
+            self._broadcast_state(instance)
+            raise
+        except Exception as exc:
+            logger.error("Failed to start scheduled plan %s: %s", plan_id, exc)
+            logger.debug(traceback.format_exc())
+            with self._lock:
+                if self._active_plan.get(instance) == plan_id:
+                    self._active_plan.pop(instance, None)
+                self._last_error[instance] = str(exc)
+            self._broadcast_state(instance)
+            raise
+
+    def _finish_plan(self, instance: str, plan_id: str, handle: Any) -> str:
+        handle.done.wait()
+        status = handle.status if handle.status in {"done", "cancelled", "error"} else "error"
+        if status == "done":
+            self._mark_plan_success(instance, plan_id)
+        with self._lock:
+            if self._active_plan.get(instance) == plan_id:
+                self._active_plan.pop(instance, None)
+            if status != "done" and handle.detail:
+                self._last_error[instance] = handle.detail
+        self._broadcast_state(instance)
+        return status
+
+    def _finish_forced_plan(self, instance: str, plan_id: str, handle: Any) -> None:
+        if self._finish_plan(instance, plan_id, handle) == "done":
+            self.task_runner.close_app(instance)
+
+    def _mark_plan_success(self, instance: str, plan_id: str) -> None:
         config = self.config_store.get(instance)
         today = datetime.now().date().isoformat()
-        now = datetime.now().isoformat(timespec="seconds")
         plans = self._plans(config.name)
         for plan in plans:
             if plan.get("id") == plan_id:
-                plan["lastRunDate"] = today
-                plan["lastRunAt"] = now
-                plan["lastStatus"] = status
-                if detail:
-                    plan["lastDetail"] = detail
-                else:
-                    plan.pop("lastDetail", None)
+                plan["last_run_date"] = today
                 break
         config["scheduler.plans"] = plans
         config.save()
@@ -240,7 +271,7 @@ class Scheduler:
         plans = config.get_value("scheduler.plans", [])
         if not isinstance(plans, list):
             plans = []
-        return self._sort_plans(copy.deepcopy(plans))
+        return self._sort_plans([self._clean_plan(plan) for plan in copy.deepcopy(plans) if isinstance(plan, dict)])
 
     def _broadcast_state(self, instance: str) -> None:
         self.app.broadcast_threadsafe(self.state_payload(instance))
@@ -249,6 +280,19 @@ class Scheduler:
     @staticmethod
     def _sort_plans(plans: list[dict[str, Any]]) -> list[dict[str, Any]]:
         return sorted(plans, key=lambda plan: (str(plan.get("time", "00:00")), -int(plan.get("priority", 0)), str(plan.get("id", ""))))
+
+    @staticmethod
+    def _clean_plan(plan: dict[str, Any]) -> dict[str, Any]:
+        cleaned = {
+            "id": str(plan.get("id") or uuid.uuid4().hex),
+            "taskId": str(plan.get("taskId") or ""),
+            "time": str(plan.get("time") or "00:00"),
+            "priority": int(plan.get("priority", 0)),
+            "values": copy.deepcopy(plan.get("values") if isinstance(plan.get("values"), dict) else {}),
+        }
+        if plan.get("last_run_date"):
+            cleaned["last_run_date"] = str(plan["last_run_date"])
+        return cleaned
 
     @staticmethod
     def _normalize_time(value: str) -> str:
