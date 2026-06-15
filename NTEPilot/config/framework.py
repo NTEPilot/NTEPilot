@@ -1,8 +1,10 @@
 from NTEPilot.team.character import CHINESE_TO_CHARA
+from NTEPilot.house.chinese_to_teleport import CHINESE_TO_TELEPORT
 
 
 CHARA_OPTIONS = tuple(CHINESE_TO_CHARA.keys())
 CHARA_OPTIONS_WITHOUT_ZERO = tuple([c for c in CHARA_OPTIONS if c != '零'])
+HOUSE_OPTIONS = tuple(CHINESE_TO_TELEPORT.keys())
 COMBAT_SELECTIONS = (
     "经验本 - 合订本",
     "经验本 - 万花筒",
@@ -187,6 +189,27 @@ CONFIG = {
                     "default": "早雾",
                 },
             },
-        }
+        },
+        "house": {
+            "label": "领房产资源",
+            "description": None,
+            "runner": "NTEPilot.house.claim_house:ClaimHouse",
+            "config": {
+                "house": {
+                    "label": "房产选择",
+                    "type": "select",
+                    "description": None,
+                    "options": HOUSE_OPTIONS,
+                    "default": "维纳公寓",
+                },
+                "index": {
+                    "label": "家具编号",
+                    "type": "integer",
+                    "description": "家具页面拉到最上面从上往下数领第几个（1-4）",
+                    "range": (1, 4, 1),
+                    "default": 1,
+                },
+            },
+        },
     },
 }

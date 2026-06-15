@@ -1,0 +1,14 @@
+{
+    "CLAIM_1.png": {
+        "method": "avg_color"
+    },
+    "CLAIM_2.png": {
+        "method": "avg_color"
+    },
+    "CLAIM_3.png": {
+        "method": "avg_color"
+    },
+    "CLAIM_4.png": {
+        "method": "avg_color"
+    }
+}
