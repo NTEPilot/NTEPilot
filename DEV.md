@@ -1,81 +1,49 @@
 # DEV.md — 项目开发文档
 
-本文件记录项目的模块、功能、架构变更，维护开发上下文。每次新增模块或功能时必须同步更新。
+项目架构总览和模块索引。详细文档在 `dev_doc/` 目录下。
 
 ---
 
-## 当前架构总览
+## 架构
 
 ```
-前端 (React/Vite) ←→ WebSocket (/ws) ←→ api/server.py ←→ NTEPilot/*（业务逻辑）←→ ADB 设备
+前端 (React/Vite) ←→ WebSocket (/ws) ←→ api/server.py ←→ NTEPilot/* ←→ ADB 设备
 ```
 
-## 模块清单
-
-### api/ — WebSocket 服务端
-
-| 文件 | 职责 |
-|------|------|
-| `server.py` | 唯一入口，处理所有 WebSocket 消息类型 |
-| `task_runner.py` | 守护线程执行任务，支持 `PyThreadState_SetAsyncExc` 强制中断 |
-| `scheduler.py` | 管理每日计划，与手动任务共用同一任务槽位 |
-
-### NTEPilot/ — 核心业务逻辑
-
-| 子模块 | 职责 | 核心文件 |
-|--------|------|----------|
-| `config/` | 层级 JSON 配置，路径式键名 | `framework.py`（字段、默认值、任务注册） |
-| `device/` | ADB 设备层，截图 + 触控 | `Device` 类（多重继承），`connection.py`（重试） |
-| `tools/` | 工具实现 | `fish/`（钓鱼自动化） |
-| `team/` | 角色/队伍管理与技能循环 | — |
-| `ui/` | 屏幕自动化，OpenCV 模板匹配 | `Page` 类（A* 寻路） |
-
-### template/ — 模板图片资源
-
-- PNG 图片用于 OpenCV 模板匹配
-- `Template` 类在 `__init__.py` 中处理匹配
-- 添加/删除 PNG 后运行 `template/update.py` 重新生成 `__init__.py`
-
-### frontend/ — 前端
-
-- React 19 + Vite 7 + Material Web Components
-- 三栏布局：实例列表、配置/工具工作区、日志控制台
-- 配置表单由后端 schema 动态渲染，新增字段无需改前端
-
-### utils/ — 公共工具
-
-- `CustomLogger` — 基于 Rich 的日志
-- `image.py` — 图像处理
-- 自定义异常、装饰器
-
-### bin/ — 二进制依赖
-
-- DroidCast APK（截图）
-- minitouch（触控）
-- 不要修改
+任务执行：每实例单任务，`PyThreadState_SetAsyncExc` 强制中断，最多重试 3 次。调度器 5s 轮询，按优先级执行到期计划。
 
 ---
 
-## WebSocket 协议
+## 模块索引
 
-所有消息均为 JSON。主要类型：
+| 模块 | 职责 | 详细文档 |
+|------|------|----------|
+| `api/` | WebSocket 服务端、任务执行器、调度器 | [api.md](dev_doc/api.md) |
+| `NTEPilot/config/` | 配置系统（路径式键名、schema 驱动前端） | [config.md](dev_doc/config.md) |
+| `NTEPilot/device/` | ADB 设备层（DroidCast 截图 + minitouch 触控） | [device.md](dev_doc/device.md) |
+| `NTEPilot/ui/` | 屏幕自动化（模板匹配、A* 页面导航） | [ui.md](dev_doc/ui.md) |
+| `NTEPilot/tools/` | 工具实现（fish、combat、bond、cafe、daily、house） | [tools.md](dev_doc/tools.md) |
+| `NTEPilot/map/` | 地图导航（定位、传送） | [map.md](dev_doc/map.md) |
+| `NTEPilot/team/` | 队伍与角色系统（17 角色、技能循环） | [team.md](dev_doc/team.md) |
+| `NTEPilot/ocr.py` | OCR 系统（ONNX 推理） | [ocr.md](dev_doc/ocr.md) |
+| `template/` | 模板匹配 PNG 资源（改 PNG 后跑 `python template/update.py`） | [ui.md](dev_doc/ui.md) |
+| `frontend/` | React 前端（MD3、schema 动态渲染） | [frontend.md](dev_doc/frontend.md) |
+| `utils/` | 公共工具（日志、图像、异常、装饰器） | [utils.md](dev_doc/utils.md) |
 
-| 消息类型 | 方向 | 说明 |
-|----------|------|------|
-| `hello` | 服务端→客户端 | 连接时发送，包含实例列表和状态 |
-| `config.schema` | 服务端→客户端 | 配置字段定义 |
-| `config.update` | 客户端→服务端 | 保存配置 |
-| `task.start` / `task.stop` | 双向 | 任务生命周期 |
-| `scheduler.*` | 双向 | 每日计划目录、状态及变更 |
-| `status` | 服务端→客户端 | 广播活跃任务变化 |
-| `log` | 服务端→客户端 | 广播日志（带 ANSI 颜色） |
+---
+
+## 关键约定
+
+- **配置入口唯一** — 所有字段、默认值、runner 路径都在 `NTEPilot/config/framework.py` 注册
+- **前端 schema 驱动** — 新增配置字段无需改前端
+- **工具自注册** — 新增工具只需在 `framework.py` 注册，前端自动发现
+- **模板更新** — 添加/删除 PNG 后必须运行 `python template/update.py`
+- **线程安全** — 工具线程不得直接操作前端连接，必须用 `broadcast_threadsafe()`
 
 ---
 
 ## 变更记录
 
-<!-- 每次新增模块、功能、架构变更时在此处添加记录 -->
-
-| 日期 | 变更类型 | 说明 |
-|------|----------|------|
-| 2026-06-16 | 初始化 | 创建 DEV.md，记录当前架构 |
+| 日期 | 说明 |
+|------|------|
+| 2026-06-16 | 初始化，创建 DEV.md 和 dev_doc/ 详细文档 |

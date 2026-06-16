@@ -5,7 +5,7 @@ alwaysApply: true
 
 # CLAUDE.md
 
-本文件为 Claude Code (claude.ai/code) 提供项目指引。
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
 ---
 
@@ -29,18 +29,17 @@ while working.
 
 ### DEV.md 维护规范
 
-所有新增模块、功能、架构变更必须同步更新 `DEV.md`，维护项目上下文：
+`DEV.md` 是模块索引（类目录），指向 `dev_doc/` 下的详细文档。具体信息写到对应文件，不要堆在 DEV.md 里。
 
-- **新增模块** — 写明模块名称、职责、核心文件、与其他模块的关系
-- **新增功能** — 写明功能用途、入口文件、关键实现逻辑
-- **架构变更** — 记录变更原因、影响范围、迁移方式
-- **废弃/删除** — 标记已废弃的模块，说明替代方案
+- **新增模块** — 在 `DEV.md` 加一行索引，在 `dev_doc/` 创建详细文档
+- **模块变更** — 修改 `dev_doc/` 下对应的文档
+- **架构变更** — 更新 `DEV.md` 的架构总览，同时更新对应的 `dev_doc/` 文件
 
-`DEV.md` 是项目的活文档，每次改动代码后都要问自己：这次改动需要更新 `DEV.md` 吗？
+每次改动代码后都要问自己：这次改动需要更新 `dev_doc/` 吗？
 
 ### 代码注释规范
 
-所有代码必须写注释，遵循 Google 代码注释风格，使用简体中文为主、英文术语保留原文：
+所有代码必须写注释，遵循 Google 代码注释风格。注释格式为中文原文 + 英文翻译，方便国内外成员维护：
 
 - **文件头注释** — 说明文件用途、作者、日期
 - **函数/方法注释** — 说明功能、参数、返回值、可能的异常
@@ -51,23 +50,29 @@ while working.
 ```python
 def connect_device(serial: str, retry: int = 3) -> Device:
     """连接指定 ADB 设备并返回 Device 实例。
+    Connect to the specified ADB device and return a Device instance.
 
     Args:
         serial: 设备序列号，通过 adb devices 获取。
+                Device serial number, obtained via adb devices.
         retry: 最大重试次数，默认 3 次。
+               Maximum retry count, defaults to 3.
 
     Returns:
         连接成功的 Device 对象。
+        The connected Device object.
 
     Raises:
         DeviceConnectionError: 重试耗尽仍无法连接时抛出。
+                               Raised when all retry attempts are exhausted.
     """
 ```
 
 ```typescript
-/** 从后端 schema 动态渲染配置表单。 */
+/** 从后端 schema 动态渲染配置表单。 Render config form dynamically from backend schema. */
 function ConfigForm({ schema }: ConfigFormProps) {
   // 按字段类型分组，select 类型单独处理
+  // Group by field type, handle select type separately
   const groups = groupByType(schema.fields);
   ...
 }
@@ -106,7 +111,7 @@ const screenshot: string = raw;
 
 ### 开发原则
 
-- **无需兼容旧版本** — 这是个人项目，不考虑向后兼容，该删就删，该改就改
+- **无需兼容旧版本** — 不考虑向后兼容，该删就删，该改就改
 - **代码尽可能简洁** — 不写多余的抽象、不搞花哨的设计模式，能一行解决就不要三行
 - **复用已有代码** — 优先用现有模块和工具函数，但不要为了复用而过度修改原有代码
 - **项目结构清晰优先** — 结构比性能更重要。必要时可以新增类、调整继承关系、重组目录，让逻辑归属更合理
@@ -116,6 +121,7 @@ const screenshot: string = raw;
 
 - 配置键名使用小写、点分隔路径：`tools.fish.buy_bait`
 - 前端绝不硬编码配置字段，始终由后端 `config.schema` 驱动
+- 前端 UI 必须使用 Material Design 3 设计语言（`@material/web` 组件）
 - 工具线程不得直接操作前端连接对象，必须使用 `broadcast_threadsafe()`
 - `frontend/.static` 是构建输出目录，不要手动编辑
 - `bin/` 目录包含二进制依赖（DroidCast APK、minitouch），不要修改
@@ -124,66 +130,6 @@ const screenshot: string = raw;
 
 ## 二、项目信息
 
-### 常用命令
+本项目使用 uv 管理 Python 依赖，不要使用系统 Python 环境。
 
-#### 后端
-
-本项目使用 uv 管理依赖 请使用'uv' 不要使用系统Python环境
-
-#### 前端
-
-# 前端独立开发用的模拟 WebSocket 服务器
-npm run mock:server
-```
-
-前端开发服务器需要后端同时运行，启动时传入后端 WebSocket 地址：
-`http://127.0.0.1:5173/?ws=ws://127.0.0.1:9150/ws`
-
-开发前端时 请使用MD3设计语言设计UI
-
-项目暂未配置测试框架和代码检查工具。
-
-### 系统架构
-
-
-#### 核心模块
-
-**`api/`** — WebSocket 服务端。`server.py` 是唯一入口，处理所有消息类型。`task_runner.py` 在守护线程中执行任务，通过 `PyThreadState_SetAsyncExc` 实现强制中断。`scheduler.py` 管理每日计划，与手动任务共用同一任务槽位。
-
-**`NTEPilot/`** — 核心业务逻辑包：
-- `config/` — 使用路径式键名的层级 JSON 配置（如 `tools.fish.buy_bait`）。`framework.py` 是唯一添加配置字段、默认值、任务目录和运行器路径的地方。
-- `device/` — ADB 设备层。`Device` 类通过多重继承组合了 `Screenshot` + `Control`。截图使用 DroidCast APK，触控使用 minitouch。连接重试逻辑在 `connection.py` 中。
-- `tools/` — 工具实现。工具和计划任务的注册在 `NTEPilot/config/framework.py` 中。目前有：`fish`（钓鱼自动化）。
-- `team/` — 角色/队伍管理与技能循环。
-- `ui/` — 屏幕自动化。通过 OpenCV 进行模板匹配。`Page` 类使用 A* 寻路算法在游戏界面间导航。
-
-**`template/`** — 用于 OpenCV 模板匹配的 PNG 图片资源。`Template` 类在 `__init__.py` 中处理匹配。添加或删除 PNG 后需运行 `template/update.py` 重新生成该模块的 `__init__.py`。
-
-**`frontend/`** — React 19 + Vite 7 + Material Web Components。三栏布局：实例列表、配置/工具工作区、日志控制台。配置表单由后端 schema 动态渲染，新增配置字段无需修改前端。
-
-**`utils/`** — 公共工具：`CustomLogger`（基于 Rich）、图像处理（`image.py`）、自定义异常、装饰器。
-
-#### WebSocket 协议
-
-所有消息均为 JSON 格式。主要消息类型：
-- `hello` — 连接时服务端发送（实例列表、状态）
-- `config.schema` — 服务端发送配置字段定义
-- `config.update` — 客户端保存配置
-- `task.start` / `task.stop` — 任务生命周期
-- `scheduler.catalog` / `scheduler.state` / `scheduler.*` — 每日计划目录、状态及变更
-- `status` — 广播当前活跃任务变化
-- `log` — 广播日志事件（带 Rich 的 ANSI 颜色）
-
-#### 新增工具的步骤
-
-1. 在 `NTEPilot/tools/<名称>/<名称>.py` 中创建工具类
-2. 在 `NTEPilot/config/framework.py` 的 `CONFIG["tools"]` 中注册工具
-3. 在同一文件中添加字段和默认值
-4. 前端会从后端 schema 自动发现工具，无需修改前端代码
-
-工具通过硬线程中断（`TaskAbort` 异常）停止。如果工具持有外部资源（ADB 端口转发、临时文件、网络连接），务必在 `finally` 块中清理。
-
-#### 新增配置字段的步骤
-
-1. 在 `NTEPilot/config/framework.py` 中添加字段定义和默认值
-2. 前端根据类型自动渲染（文本 → 输入框，整数/浮点 → 带范围的数字输入，布尔 → 开关，选择 → 下拉选择）
+系统架构、模块清单、WebSocket 协议等详见 `DEV.md`。
