@@ -84,8 +84,8 @@ def retry(func):
 
         if func.__name__ in [
             'adb_connect', 'adb_reconnect', 'adb_start_server',
-            'screenshot', 'screenshot_adb', 'screenshot_uiautomator2', 'screenshot_ascreencap',
-            'screenshot_droidcast', 'screenshot_droidcast_raw', 'screenshot_scrcpy',
+            'screenshot', 'screenshot_adb', 'screenshot_ascreencap',
+            'screenshot_droidcast', 'screenshot_droidcast_raw',
             'screenshot_nemu_ipc', 'screenshot_ldopengl',
         ]:
             logger.critical(f'重试 {func.__name__}() 失败')
@@ -219,6 +219,56 @@ class Connection:
             str: 属性值。
         """
         return self.adb_shell(['getprop', name]).strip()
+
+    def adb_find_pids(self, *keywords) -> list[int]:
+        """寻找包含指定关键字的进程 PID 列表。"""
+        cmd = 'for p in /proc/[0-9]*; do [ -f "$p/cmdline" ] && echo "${p##*/}:$(cat "$p/cmdline")"; done'
+        try:
+            output = self.adb_shell(['sh', '-c', cmd])
+        except Exception as e:
+            logger.error(f"Failed to list processes via adb shell: {e}")
+            return []
+
+        if not output:
+            return []
+
+        pids = []
+        for line in output.splitlines():
+            line = line.strip()
+            if not line or ':' not in line:
+                continue
+            parts = line.split(':', 1)
+            pid_str, cmdline = parts[0], parts[1]
+            if not pid_str.isdigit():
+                continue
+            pid = int(pid_str)
+            cmdline = cmdline.replace('\x00', ' ').strip()
+
+            if any(keyword in cmdline for keyword in keywords):
+                pids.append(pid)
+        return pids
+
+    def adb_kill_processes(self, pids: list[int]):
+        """终止设备上的指定 PID 进程。"""
+        if not pids:
+            return
+        kill_cmd = f"kill -s 9 {' '.join(map(str, pids))}"
+        try:
+            self.adb_shell(kill_cmd)
+        except Exception as e:
+            logger.error(f"Failed to kill processes: {e}")
+
+    def close_stream(self, stream):
+        """安全关闭 ADB 套接字或套接字流。"""
+        if stream is None:
+            return
+        try:
+            if hasattr(stream, 'close'):
+                stream.close()
+            elif hasattr(stream, 'conn') and hasattr(stream.conn, 'close'):
+                stream.conn.close()
+        except Exception as e:
+            logger.error(f'Failed to close stream: {e}')
 
     @cached_property
     @retry
@@ -535,6 +585,16 @@ class Connection:
         return True
 
     def release_resource(self):
+        if hasattr(self, 'droidcast_stop'):
+            try:
+                self.droidcast_stop()
+            except Exception:
+                pass
+        if hasattr(self, 'minitouch_stop'):
+            try:
+                self.minitouch_stop()
+            except Exception:
+                pass
         del_cached_property(self, 'droidcast_session')
         del_cached_property(self, '_minitouch_builder')
 
@@ -603,7 +663,7 @@ class Connection:
     @retry
     def app_current_adb(self):
         """
-        获取当前前台应用的包名，复制自 uiautomator2。
+        获取当前前台应用的包名。
 
         Returns:
             当前前台应用的包名。
@@ -611,10 +671,8 @@ class Connection:
         Raises:
             OSError: 无法获取前台应用时抛出。
 
-        Note:
-            reset_uiautomator 函数依赖此方法，因此不能在此使用 jsonrpc。
         """
-        # 相关 issue: https://github.com/openatx/uiautomator2/issues/200
+        # 参考常见 dumpsys window/current focus 解析方式。
         # $ adb shell dumpsys window windows
         # 输出示例:
         #   mCurrentFocus=Window{41b37570 u0 com.incall.apps.launcher/com.incall.apps.launcher.Launcher}

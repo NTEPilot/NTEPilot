@@ -1,6 +1,5 @@
 import re
 import time
-import typing as t
 from functools import wraps
 
 import cv2
@@ -21,6 +20,24 @@ DROIDCAST_FILEPATH_REMOTE = '/data/local/tmp/DroidCast_raw.apk'
 
 class DroidCastVersionIncompatible(Exception):
     pass
+
+
+def decode_droidcast_raw(image: bytes, shape=(720, 1280), rotate=False) -> np.ndarray:
+    try:
+        arr = np.frombuffer(image, dtype=np.uint16)
+        if rotate:
+            arr = arr.reshape(shape)
+            arr = cv2.transpose(arr)
+            cv2.flip(arr, 1, dst=arr)
+        else:
+            arr = arr.reshape(shape)
+    except ValueError as e:
+        raise ImageTruncated(
+            str(e) + '\nIf your emulator resolution not 1280x720, please set emulator resolution to 1280x720'
+        )
+
+    arr_u8 = arr.view(np.uint8).reshape((arr.shape[0], arr.shape[1], 2))
+    return cv2.cvtColor(arr_u8, cv2.COLOR_BGR5652RGB)
 
 
 def retry(func):
@@ -108,6 +125,7 @@ class DroidCast(Connection):
     _droidcast_port: int = 0
     droidcast_width: int = 0
     droidcast_height: int = 0
+    _droidcast_stream = None
 
     @cached_property
     def droidcast_session(self):
@@ -151,14 +169,16 @@ class DroidCast(Connection):
         # DroidCast_raw-release-1.1.apk
         # CLASSPATH=/data/local/tmp/DroidCast_raw.apk app_process / ink.mol.droidcast_raw.Main > /dev/null
         # adb shell CLASSPATH=/data/local/tmp/DroidCast_raw.apk app_process / ink.mol.droidcast_raw.Main
-        self.adb_shell([
-            'sh', '-c',
-            f"setsid sh -c 'CLASSPATH={DROIDCAST_FILEPATH_REMOTE} app_process / ink.mol.droidcast_raw.Main > /dev/null 2>&1 &' || CLASSPATH={DROIDCAST_FILEPATH_REMOTE} app_process / ink.mol.droidcast_raw.Main > /dev/null 2>&1 &"
-        ])
+        self._droidcast_stream = self.adb_shell(
+            f'CLASSPATH={DROIDCAST_FILEPATH_REMOTE} app_process / ink.mol.droidcast_raw.Main',
+            stream=True,
+            recvall=False,
+            timeout=3,
+        )
         del_cached_property(self, 'droidcast_session')
         _ = self.droidcast_session
 
-        logger.attr('DroidCast_raw', self.droidcast_url())
+        logger.attr('DroidCast', self.droidcast_url())
         self.droidcast_wait_startup()
 
     def _droidcast_update_resolution(self):
@@ -206,25 +226,7 @@ class DroidCast(Connection):
             logger.warning(f'Unexpected screenshot: {image}')
             raise requests.exceptions.ConnectionError(f'DroidCast service error: {image!r}')
 
-        try:
-            arr = np.frombuffer(image, dtype=np.uint16)
-            if rotate:
-                arr = arr.reshape(shape)
-                # arr = cv2.rotate(arr, cv2.ROTATE_90_CLOCKWISE)
-                # 稍微快一点？
-                arr = cv2.transpose(arr)
-                cv2.flip(arr, 1, dst=arr)
-            else:
-                arr = arr.reshape(shape)
-        except ValueError as e:
-            # ValueError: cannot reshape array of size 0 into shape (720,1280)
-            raise ImageTruncated(str(e)+'\nIf your emulator resolution not 1280x720, please set emulator resolution to 1280x720')
-
-        # 将 RGB565 转换为 RGB888
-        arr_u8 = arr.view(np.uint8).reshape((arr.shape[0], arr.shape[1], 2))
-        image = cv2.cvtColor(arr_u8, cv2.COLOR_BGR5652RGB)
-
-        return image
+        return decode_droidcast_raw(image, shape=shape, rotate=rotate)
 
     def droidcast_wait_startup(self):
         """等待 DroidCast 启动完成。"""
@@ -255,39 +257,14 @@ class DroidCast(Connection):
         logger.info('Removing DroidCast')
         self.adb_shell(["rm", DROIDCAST_FILEPATH_REMOTE])
 
-    def _iter_droidcast_proc(self) -> t.Iterable[int]:
-        """列出所有 DroidCast 进程。"""
-        cmd = 'for p in /proc/[0-9]*; do [ -f "$p/cmdline" ] && echo "${p##*/}:$(cat "$p/cmdline")"; done'
-        try:
-            output = self.adb_shell(['sh', '-c', cmd])
-        except Exception as e:
-            logger.error(f"Failed to list processes via adb shell: {e}")
-            output = ""
-
-        if not output:
-            return
-
-        for line in output.splitlines():
-            line = line.strip()
-            if not line or ':' not in line:
-                continue
-            parts = line.split(':', 1)
-            pid_str, cmdline = parts[0], parts[1]
-            if not pid_str.isdigit():
-                continue
-            pid = int(pid_str)
-            cmdline = cmdline.replace('\x00', ' ').strip()
-
-            if 'com.rayworks.droidcast.Main' in cmdline:
-                yield pid
-            elif 'com.torther.droidcasts.Main' in cmdline:
-                yield pid
-            elif 'ink.mol.droidcast_raw.Main' in cmdline:
-                yield pid
-
     def droidcast_stop(self):
         """停止 DroidCast 进程。"""
         logger.info('Stopping DroidCast')
-        for pid in self._iter_droidcast_proc():
-            logger.info(f'Kill pid={pid}')
-            self.adb_shell(['kill', '-s', '9', str(pid)])
+        self.close_stream(self._droidcast_stream)
+        self._droidcast_stream = None
+        pids = self.adb_find_pids(
+            'com.rayworks.droidcast.Main',
+            'com.torther.droidcasts.Main',
+            'ink.mol.droidcast_raw.Main'
+        )
+        self.adb_kill_processes(pids)

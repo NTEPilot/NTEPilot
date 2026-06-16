@@ -1,10 +1,10 @@
 import asyncio
 import json
+import os
 import socket
 import threading
 import time
 from functools import wraps
-from typing import List
 
 import websockets
 import numpy as np
@@ -18,7 +18,7 @@ from utils.exceptions import EmulatorNotRunningError, RequestHumanTakeover, Scri
 from utils.logger import logger
 
 
-MINITOUCH_FILEPATH_LOCAL = './bin/Minitouch/minitouch'
+MINITOUCH_FILEPATH_LOCAL = './bin/Minitouch'
 MINITOUCH_FILEPATH_REMOTE = '/data/local/tmp/minitouch'
 
 
@@ -438,10 +438,25 @@ def retry(func):
 class Minitouch(Connection):
     _minitouch_port: int = 0
     _minitouch_client: socket.socket = None
+    _minitouch_stream = None
     _minitouch_pid: int
     max_x: int
     max_y: int
     _minitouch_init_thread = None
+
+    def _minitouch_local_path(self):
+        abi = self.cpu_abi
+        filepath = os.path.join(MINITOUCH_FILEPATH_LOCAL, abi, 'minitouch')
+        if os.path.exists(filepath):
+            logger.attr('Minitouch ABI', abi)
+            return filepath
+
+        fallback = os.path.join(MINITOUCH_FILEPATH_LOCAL, 'minitouch')
+        if os.path.exists(fallback):
+            logger.warning(f'Minitouch binary for ABI {abi} not found, fallback to {fallback}')
+            return fallback
+
+        raise MinitouchNotInstalledError(f'Minitouch binary for ABI {abi} not found')
 
     @cached_property
     @retry
@@ -474,63 +489,19 @@ class Minitouch(Connection):
         self._minitouch_init_thread = thread
         thread.start()
 
-    def _iter_minitouch_proc(self) -> List[int]:
-        """列出所有 minitouch 进程。"""
-        cmd = 'for p in /proc/[0-9]*; do [ -f "$p/cmdline" ] && echo "${p##*/}:$(cat "$p/cmdline")"; done'
-        try:
-            output = self.adb_shell(['sh', '-c', cmd])
-        except Exception as e:
-            logger.error(f"Failed to list processes via adb shell: {e}")
-            output = ""
-
-        if not output:
-            return []
-
-        pids = []
-        for line in output.splitlines():
-            line = line.strip()
-            if not line or ':' not in line:
-                continue
-            parts = line.split(':', 1)
-            pid_str, cmdline = parts[0], parts[1]
-            if not pid_str.isdigit():
-                continue
-            pid = int(pid_str)
-            cmdline = cmdline.replace('\x00', ' ').strip()
-
-            if 'minitouch' in cmdline:
-                pids.append(pid)
-        return pids
-
     def minitouch_stop(self):
         """停止 minitouch 进程。"""
         logger.info('Stopping minitouch')
-        pids = self._iter_minitouch_proc()
-        if not pids:
-            return
-
-        kill_cmd = f"kill -s 9 {' '.join(map(str, pids))}"
-        try:
-            self.adb_shell(['su', '-c', kill_cmd])
-        except Exception as e:
-            logger.error(f"Failed to kill minitouch processes as root: {e}")
+        self.close_stream(self._minitouch_stream)
+        self._minitouch_stream = None
+        pids = self.adb_find_pids('minitouch')
+        self.adb_kill_processes(pids)
 
     def minitouch_init(self):
         logger.hr('MiniTouch init')
         max_x, max_y = 1280, 720
         max_contacts = 2
         max_pressure = 50
-
-        # Check for root privilege
-        try:
-            res = self.adb_shell(['su', '-c', 'whoami'])
-            has_su = 'root' in res
-        except Exception:
-            has_su = False
-
-        if not has_su:
-            logger.critical("su is not available or cannot get root. Root privilege is required to run minitouch.")
-            raise RequestHumanTakeover("su is not available or cannot get root. Root privilege is required to run minitouch.")
 
         # 尝试关闭已有连接
         if self._minitouch_client is not None:
@@ -544,11 +515,11 @@ class Minitouch(Connection):
         self.get_orientation()
 
         logger.info('Pushing minitouch binary')
-        self.adb_push(MINITOUCH_FILEPATH_LOCAL, MINITOUCH_FILEPATH_REMOTE)
-        self.adb_shell(['su', '-c', f"chmod 755 {MINITOUCH_FILEPATH_REMOTE}"])
+        self.adb_push(self._minitouch_local_path(), MINITOUCH_FILEPATH_REMOTE)
+        self.adb_shell(['chmod', '755', MINITOUCH_FILEPATH_REMOTE], timeout=3)
 
         logger.info('Starting minitouch daemon')
-        self.adb_shell(f"setsid sh -c \"su -c '{MINITOUCH_FILEPATH_REMOTE}' > /dev/null 2>&1 &\"")
+        self._minitouch_stream = self.adb_shell(MINITOUCH_FILEPATH_REMOTE, stream=True, recvall=False, timeout=3)
 
         self._minitouch_port = self.adb_forward("localabstract:minitouch")
 
