@@ -17,6 +17,7 @@ NTEPilot 是一个游戏自动化工具，通过 ADB 连接 Android 模拟器，
 - Node.js 18+
 - ADB（Android Debug Bridge）
 - Android 模拟器（如雷电、MuMu、BlueStacks）
+> **为什么使用模拟器？** 如果你用桌面端来运行脚本的话，游戏窗口必须保持在前台，我猜你也不想运行脚本的时候不能动鼠标键盘像个傻宝一样坐在那吧，所以用模拟器。
 
 ## 快速开始
 
