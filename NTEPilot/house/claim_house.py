@@ -42,6 +42,7 @@ class ClaimHouse(Map):
 
         with self.device.temporary_screenshot_interval(0.5):
             while True:
+                self.device.screenshot()
                 if self.appear(GET_ITEM):
                     self.device.click((640, 500))
                     continue
