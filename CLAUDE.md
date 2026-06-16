@@ -1,3 +1,8 @@
+---
+description:
+alwaysApply: true
+---
+
 # CLAUDE.md
 
 本文件为 Claude Code (claude.ai/code) 提供项目指引。
