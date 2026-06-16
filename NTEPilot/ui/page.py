@@ -7,8 +7,6 @@ from template.bond import *
 from template.daily import *
 from template.tycoon import *
 
-SAFE_AREA = (640, 500)
-
 class Page:
     # 键: str, 页面名称如 "page_main"
     # 值: Page, 页面实例

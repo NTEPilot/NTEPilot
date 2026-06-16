@@ -14,6 +14,7 @@ INTERACT = load_template("./template/ui/assets/INTERACT.png", method="avg_color"
 MAP = load_template("./template/ui/assets/MAP.png")
 MONTH_CARD = load_template("./template/ui/assets/MONTH_CARD.png")
 PHONE = load_template("./template/ui/assets/PHONE.png")
+SAFE_AREA = load_template("./template/ui/assets/SAFE_AREA.png")
 START_1 = load_template("./template/ui/assets/START_1.png")
 START_2 = load_template("./template/ui/assets/START_2.png")
 START_3 = load_template("./template/ui/assets/START_3.png")

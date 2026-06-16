@@ -2,11 +2,9 @@ import time
 
 from NTEPilot.instance import Instance
 from template import Template
-from template.ui import START_1, START_2, START_3, CHAT, MONTH_CARD, GET_ITEM
+from template.ui import START_1, START_2, START_3, CHAT, MONTH_CARD, GET_ITEM, SAFE_AREA
 
 from utils.logger import logger
-
-SAFE_AREA = (640, 500)
 
 class InfoHandler(Instance):
     def appear(self, template: Template, offset=10, similarity=0.85):

@@ -1,7 +1,7 @@
 from NTEPilot.ui.ui import UI
 from NTEPilot.ui.page import MAIN_PAGE, DAILY_TASK_PAGE
 from template.daily import *
-from template.ui import GET_ITEM
+from template.ui import GET_ITEM, SAFE_AREA
 from utils.logger import logger
 
 class ClaimDaily(UI):
@@ -21,7 +21,7 @@ class ClaimDaily(UI):
                 self.appear_then_click(DAILY_REWARDS_4) or \
                 self.appear_then_click(DAILY_REWARDS_5):
                 self.wait_until_appear(GET_ITEM)
-                self.device.click((640, 500))
+                self.device.click(SAFE_AREA)
                 break
         
         self.ui_goto(MAIN_PAGE)

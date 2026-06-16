@@ -1,7 +1,7 @@
 from NTEPilot.map.map import Map
 from NTEPilot.bond.ocr import CharaOcr
 from template.bond import *
-from template.ui import INTERACT, CHAT, EXIT
+from template.ui import INTERACT, CHAT, EXIT, SAFE_AREA
 from utils.logger import logger
 from utils.image import xywh2xyxy
 
@@ -64,6 +64,6 @@ class Movie(Map, CharaOcr):
                 self.device.screenshot()
                 if self.appear(DATE):
                     break
-                self.device.click((640, 500))
+                self.device.click(SAFE_AREA)
         self._last_name = ''
         self._movie()

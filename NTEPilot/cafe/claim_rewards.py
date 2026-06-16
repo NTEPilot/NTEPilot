@@ -1,7 +1,7 @@
 from NTEPilot.ui.ui import UI
 from NTEPilot.ui.page import CAFE_PAGE, MAIN_PAGE
 from template.tycoon import CLAIM_CAFE, CONFIRM_CLAIM
-from template.ui import GET_ITEM
+from template.ui import GET_ITEM, SAFE_AREA
 from utils.logger import logger
 
 class ClaimRewards(UI):
@@ -17,5 +17,5 @@ class ClaimRewards(UI):
                 self.device.sleep((1, 1.2))
 
         self.wait_until_appear(GET_ITEM)
-        self.device.click((640, 500))
+        self.device.click(SAFE_AREA)
         self.ui_goto(MAIN_PAGE)

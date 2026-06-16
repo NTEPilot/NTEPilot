@@ -7,11 +7,9 @@ from NTEPilot.ui.ui import UI
 from NTEPilot.device.control import Control
 from NTEPilot.ui.page import FISH_MAIN_PAGE, FISH_SHOP, FISH_STORAGE_PAGE
 from template.fish import *
-from template.ui import GET_ITEM, INTERACT
+from template.ui import GET_ITEM, INTERACT, SAFE_AREA
 
 from utils.logger import logger
-
-SAFE_AREA = (600, 700)
 
 class Fish(UI):
     FISH_BAR_RECT = (404, 44, 880, 55)

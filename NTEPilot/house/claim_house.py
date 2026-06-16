@@ -1,7 +1,7 @@
 from NTEPilot.map.map import Map
 from .chinese_to_teleport import CHINESE_TO_TELEPORT
 from template.house import *
-from template.ui import CHAT, BUTTON_CROSS, GET_ITEM
+from template.ui import CHAT, BUTTON_CROSS, GET_ITEM, SAFE_AREA
 from utils.logger import logger
 
 class ClaimHouse(Map):
@@ -44,7 +44,7 @@ class ClaimHouse(Map):
             while True:
                 self.device.screenshot()
                 if self.appear(GET_ITEM):
-                    self.device.click((640, 500))
+                    self.device.click(SAFE_AREA)
                     continue
                 if self.appear(BUTTON_CROSS):
                     self.device.click(BUTTON_CROSS)
