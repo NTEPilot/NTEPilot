@@ -179,8 +179,7 @@ class TaskRunner:
                         for key, value in plan["values"].items():
                             config[key] = value
                 runner = create_runner(handle.section, handle.task_id, config, device=device)
-                if not runner.device.app_is_running():
-                    runner.restart_app()
+                runner.ensure_in_game()
                 runner.run()
                 return
             except TaskAbort:

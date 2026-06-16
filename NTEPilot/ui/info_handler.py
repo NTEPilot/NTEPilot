@@ -49,6 +49,24 @@ class InfoHandler(Instance):
             if not self.appear(template, offset=offset, similarity=similarity):
                 break
 
+    def handle_enter_game(self):
+        if self.appear(MONTH_CARD):
+            self.device.click(SAFE_AREA)
+            return True
+        if self.appear(GET_ITEM):
+            self.device.click(SAFE_AREA)
+            return True
+        if self.appear(START_1):
+            self.device.click(SAFE_AREA)
+            return True
+        if self.appear(START_2):
+            self.device.click(START_2)
+            return True
+        if self.appear(START_3):
+            self.device.click(SAFE_AREA)
+            return True
+        return False
+
     def restart_app(self):
         logger.hr('RESTART', level=1)
         self.device.app_stop_adb()
@@ -58,30 +76,25 @@ class InfoHandler(Instance):
         with self.device.temporary_screenshot_interval(3):
             while True:
                 self.device.screenshot()
-                if self.appear(MONTH_CARD):
-                    self.device.click(SAFE_AREA)
-                    continue
-                if self.appear(GET_ITEM):
-                    self.device.click(SAFE_AREA)
+                if self.handle_enter_game():
                     continue
                 if self.appear(CHAT):
                     logger.info('App restarted successfully')
                     break
-                if self.appear(START_1):
-                    self.device.click(SAFE_AREA)
-                    continue
-                if self.appear(START_2):
-                    self.device.click(START_2)
-                    continue
-                if self.appear(START_3):
-                    self.device.click(SAFE_AREA)
-                    continue
+                
 
-    def ensure_main_page(self):
+    def ensure_in_game(self):
         if self.device.app_is_running():
-            with self.device.temporary_screenshot_interval(1):
-                for _ in range(3):
-                    if self.appear(CHAT):
-                        return
-        self.restart_app()
+            self.device.screenshot()
+            if self.handle_enter_game():
+                with self.device.temporary_screenshot_interval(3):
+                    while True:
+                        self.device.screenshot()
+                        if self.handle_enter_game():
+                            continue
+                        if self.appear(CHAT):
+                            logger.info('App restarted successfully')
+                            break
+        else:
+            self.restart_app()
         

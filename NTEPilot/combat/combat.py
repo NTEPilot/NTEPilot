@@ -115,12 +115,20 @@ class Combat(Map, Team, Ocr):
         for attempt in range(1, 101):
             self.device.screenshot()
 
-            if self.appear(INTERACT):
-                self.device.click(INTERACT)
-                if double:
-                    self.wait_until_appear_then_click(CLAIM_DOUBLE)
-                else:
-                    self.wait_until_appear_then_click(CLAIM_SINGLE)
+            if self.appear_then_click(INTERACT):
+                handled = False
+                with self.device.temporary_screenshot_interval(0.5):
+                    for _ in range(6):
+                        self.device.screenshot()
+                        if self.appear_then_click(INTERACT):
+                            continue
+                        if (double and self.appear_then_click(CLAIM_DOUBLE)) or (not double and self.appear_then_click(CLAIM_SINGLE)):
+                            handled = True
+                            break
+
+                if not handled:
+                    continue
+                
                 self.wait_until_appear_then_click(EXIT)
                 self.wait_until_appear(CHAT)
                 return
@@ -160,13 +168,12 @@ class Combat(Map, Team, Ocr):
         cost = self.CHINESE_INFO[position]['cost']
         self.ui_goto(MAP_PAGE)
         pixel = int(self.ocr(CHARACTER_PIXEL).split('/')[0])
-        while True:
-            logger.info(f'Current pixel: {pixel}')
-            if pixel >= cost * 2:
+        number = min(self.config['schedule.combat.number'], pixel // cost)
+        while number > 0:
+            logger.info(f'Remaining: {number}')
+            if number > 1:
                 self.combat(self.CHINESE_INFO[position]['teleport_id'], self.CHINESE_INFO[position]['selections'][selection], True)
-                pixel -= cost * 2
-            elif pixel >= cost:
-                self.combat(self.CHINESE_INFO[position]['teleport_id'], self.CHINESE_INFO[position]['selections'][selection], False)
-                pixel -= cost
+                number -= 2
             else:
-                break
+                self.combat(self.CHINESE_INFO[position]['teleport_id'], self.CHINESE_INFO[position]['selections'][selection], False)
+                number -= 1

@@ -128,6 +128,13 @@ CONFIG = {
                     "options": COMBAT_SELECTIONS,
                     "default": "经验本 - 合订本",
                 },
+                "number": {
+                    "label": "最高领奖励次数",
+                    "type": "integer",
+                    "description": "双倍领取算两次",
+                    "range": (1, 100, 1),
+                    "default": 100,
+                },
             },
         },
         "gift": {
