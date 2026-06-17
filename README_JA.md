@@ -1,10 +1,10 @@
-# NTEPilot
+<h1 align="center" style="font-size: 3em"><em>NTEPilot</em></h1>
 
 <p align="center">
   <a href="README.md">中文</a> · <a href="README_EN.md">English</a> · <a href="README_JA.md">日本語</a> · <a href="README_TW.md">繁體中文</a>
 </p>
 
-<p>
+<p align="center">
   <img src="https://count.getloli.com/@NTEPilot?name=NTEPilot&theme=moebooru" />
 </p>
 
@@ -25,7 +25,11 @@
   <img src="https://img.shields.io/badge/WebSocket-リアルタイム-FF6F00?style=flat-square" alt="WebSocket">
 </p>
 
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=NTEPilot&repo=NTEPilot&theme=dark)](https://github.com/NTEPilot/NTEPilot)
+<p align="center">
+  <a href="https://github.com/NTEPilot/NTEPilot">
+    <img src="https://github-readme-stats.vercel.app/api/pin/?username=NTEPilot&repo=NTEPilot" alt="Readme Card">
+  </a>
+</p>
 
 ---
 
@@ -389,8 +393,18 @@ python template/update.py
 
 このプロジェクトは [GNU Affero General Public License v3.0](LICENSE) でライセンスされています。
 
+
+
+<a href="https://www.star-history.com/?type=date&repos=NTEPilot%2FNTEPilot">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=NTEPilot/NTEPilot&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=NTEPilot/NTEPilot&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=NTEPilot/NTEPilot&type=date&legend=top-left" />
+ </picture>
+</a>
+
 ## コントリビューター
 
 <a href="https://github.com/NTEPilot/NTEPilot/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=NTEPilot/NTEPilot" />
+  <img src="https://contrib.rocks/image?repo=NTEPilot/NTEPilot&max=1000" alt="AzurPilot Contributors">
 </a>
