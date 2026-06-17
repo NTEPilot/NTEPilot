@@ -126,6 +126,7 @@ class NTEPilotWebSocketApp:
         @app.on_event("shutdown")
         async def shutdown() -> None:
             self.scheduler.shutdown()
+            self.task_runner.stop_all()
 
         @app.websocket("/ws")
         async def websocket_endpoint(websocket: WebSocket) -> None:
