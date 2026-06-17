@@ -23,7 +23,7 @@
   <img src="https://img.shields.io/badge/WebSocket-实时通信-FF6F00?style=flat-square" alt="WebSocket">
 </p>
 
-[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=NTEPilot&repo=NTEPilot&theme=dark)](https://github.com/NTEPilot/NTEPilot)
+[![Readme Card](https://github-readme-stats.vercel.app/api/pin/?username=NTEPilot&repo=NTEPilot)](https://github.com/NTEPilot/NTEPilot)
 
 ---
 
