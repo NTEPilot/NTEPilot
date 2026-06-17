@@ -1,0 +1,51 @@
+# 同步 NTEPilot tag 到 Launcher 仓库。
+# Sync NTEPilot tags to the Launcher repository.
+name: Sync Launcher Tag
+
+on:
+  push:
+    tags:
+      - "*"
+
+permissions:
+  contents: read
+
+jobs:
+  sync-launcher-tag:
+    name: Sync tag to NTEP-Launcher
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create matching Launcher tag
+        env:
+          GH_TOKEN: ${{ secrets.NTEP_LAUNCHER_TOKEN }}
+          SOURCE_TAG: ${{ github.ref_name }}
+          TARGET_REPO: NTEPilot/NTEP-Launcher
+        run: |
+          set -euo pipefail
+
+          # 校验跨仓库写入令牌是否已配置。
+          # Validate that the cross-repository write token is configured.
+          if [ -z "${GH_TOKEN}" ]; then
+            echo "Missing secret: NTEP_LAUNCHER_TOKEN"
+            exit 1
+          fi
+
+          # 已存在同名 tag 时直接跳过，避免重复发布失败。
+          # Skip when the same tag already exists to avoid duplicate release failures.
+          if gh api "repos/${TARGET_REPO}/git/ref/tags/${SOURCE_TAG}" >/dev/null 2>&1; then
+            echo "Tag ${SOURCE_TAG} already exists in ${TARGET_REPO}; skipping."
+            exit 0
+          fi
+
+          # 取目标仓库默认分支最新提交，让目标仓库的 tag 工作流被 push 事件触发。
+          # Use the latest commit on the target default branch so its tag workflow is triggered by push.
+          DEFAULT_BRANCH="$(gh repo view "${TARGET_REPO}" --json defaultBranchRef --jq '.defaultBranchRef.name')"
+          TARGET_SHA="$(gh api "repos/${TARGET_REPO}/commits/${DEFAULT_BRANCH}" --jq '.sha')"
+
+          gh api \
+            --method POST \
+            "repos/${TARGET_REPO}/git/refs" \
+            -f ref="refs/tags/${SOURCE_TAG}" \
+            -f sha="${TARGET_SHA}"
+
+          echo "Created tag ${SOURCE_TAG} in ${TARGET_REPO} at ${TARGET_SHA}."

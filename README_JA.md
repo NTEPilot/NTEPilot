@@ -4,7 +4,9 @@
   <a href="README.md">中文</a> · <a href="README_EN.md">English</a> · <a href="README_JA.md">日本語</a> · <a href="README_TW.md">繁體中文</a>
 </p>
 
-![Visitor Count](https://profile-counter.glitch.me/NTEPilot_NTEPilot/count.svg)
+<p>
+  <img src="https://count.getloli.com/@NTEPilot?name=NTEPilot&theme=gelbooru-h" />
+</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.14+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python">
