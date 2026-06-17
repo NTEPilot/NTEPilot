@@ -95,3 +95,18 @@ MapView(origin_x, origin_y, scale, score, crop, screen_size)
 ## mark.py — 调试工具
 
 在大地图上标注所有传送点编号，用于调试和验证传送点数据。
+
+---
+
+## 终点模板微调
+
+`follow_navigation(camera_angle=0.0, target_template=None)` 支持传入终点小地图模板，例如 `MINIMAP_FISH_POINT`。模板应当来自人物站在真实终点时的小地图截图。
+
+导航路线消失后，系统会先保留原有的短距离前冲逻辑，然后在传入 `target_template` 时执行像素级微调：
+
+1. 在模板原始位置周围小范围搜索当前小地图。
+2. 匹配时屏蔽小地图中心角色光标区域，避免光标朝向变化影响识别。
+3. 根据模板偏移量计算移动方向，使用短时、小半径摇杆移动逐步修正。
+4. 当当前小地图与模板偏移为 `(0, 0)` 时结束；超过最大尝试次数或模板分数过低时抛出 `MapMatchError`。
+
+`follow_navigation_from_teleport(number, target_template=None)` 会把模板参数继续传给 `follow_navigation`。
