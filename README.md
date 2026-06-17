@@ -5,7 +5,7 @@
 </p>
 
 <p>
-  <img src="https://count.getloli.com/@NTEPilot?name=NTEPilot&theme=gelbooru-h" />
+  <img src="https://count.getloli.com/@NTEPilot?name=NTEPilot&theme=moebooru" />
 </p>
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.14+-3776AB?style=flat-square&logo=python&logoColor=white" alt="Python">

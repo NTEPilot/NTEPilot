@@ -5,7 +5,7 @@
 </p>
 
 <p>
-  <img src="https://count.getloli.com/@NTEPilot?name=NTEPilot&theme=gelbooru-h" />
+  <img src="https://count.getloli.com/@NTEPilot?name=NTEPilot&theme=moebooru" />
 </p>
 
 <p align="center">

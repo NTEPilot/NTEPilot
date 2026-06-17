@@ -4,7 +4,7 @@
   <a href="README.md">中文</a> · <a href="README_EN.md">English</a> · <a href="README_JA.md">日本語</a> · <a href="README_TW.md">繁體中文</a>
 </p>
 <p>
-  <img src="https://count.getloli.com/@NTEPilot?name=NTEPilot&theme=gelbooru-h" />
+  <img src="https://count.getloli.com/@NTEPilot?name=NTEPilot&theme=moebooru" />
 </p>
 
 <p align="center">
