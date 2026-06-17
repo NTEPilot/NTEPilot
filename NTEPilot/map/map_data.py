@@ -1,4 +1,5 @@
 import json
+import math
 from pathlib import Path
 
 from .utils import TeleportPoint, TeleportNotFoundError
@@ -32,6 +33,8 @@ class MapData:
             world_x = float(pos["X"])
             world_y = float(pos["Y"])
             map_x, map_y = self.world_to_map(world_x, world_y)
+            yaw = self._teleport_yaw(row)
+            camera_yaw = self._camera_yaw(row)
             teleports.append(
                 TeleportPoint(
                     number=number,
@@ -42,9 +45,30 @@ class MapData:
                     world_y=world_y,
                     map_x=map_x,
                     map_y=map_y,
+                    yaw=yaw,
+                    camera_yaw=camera_yaw,
                 )
             )
         return teleports
+
+    def _teleport_yaw(self, row: dict) -> float:
+        override = row.get("TeleportTransformOverride") or {}
+        rotation = override.get("Rotation") or row.get("Transform", {}).get("Rotation")
+        if rotation:
+            z = float(rotation.get("Z", 0.0))
+            w = float(rotation.get("W", 1.0))
+            yaw = math.degrees(math.atan2(2 * w * z, 1 - 2 * z * z))
+        else:
+            yaw = float(row.get("CameraRotation", {}).get("Yaw", 0.0))
+        return self._ue_yaw_to_minimap(yaw)
+
+    def _camera_yaw(self, row: dict) -> float:
+        yaw = float(row.get("CameraRotation", {}).get("Yaw", 0.0))
+        return self._ue_yaw_to_minimap(yaw)
+
+    @staticmethod
+    def _ue_yaw_to_minimap(yaw: float) -> float:
+        return (yaw + 90) % 360
 
     def world_to_map(self, x: float, y: float) -> tuple[float, float]:
         # The exported coordinates match the visible map axes:

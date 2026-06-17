@@ -18,6 +18,8 @@ class TeleportPoint:
     world_y: float
     map_x: float
     map_y: float
+    yaw: float
+    camera_yaw: float
 
 @dataclass(frozen=True)
 class MapView:
