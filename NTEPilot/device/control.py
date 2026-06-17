@@ -104,17 +104,22 @@ class Control(Minitouch):
         end_point = (JOYSTICK_CENTER[0] + math.sin(math.radians(angle)) * JOYSTICK_OFFSET, JOYSTICK_CENTER[1] - math.cos(math.radians(angle)) * JOYSTICK_OFFSET)
         self.keep_drag_minitouch(JOYSTICK_CENTER, end_point, contact=1)
 
-        if isinstance(until, (int, float)):
-            logger.info(f'Move at {angle} degrees for {until} seconds')
-            time.sleep(until)
-        elif callable(until):
-            logger.info(f'Move at {angle} degrees until {until.__name__}')
-            until()
-            logger.info('Move stop')
-        else:
-            raise ScriptError(f'Unsupported until type: {type(until)}')
-
-        self.release_minitouch(contact=1)
+        try:
+            if isinstance(until, (int, float)):
+                logger.info(f'Move at {angle} degrees for {until} seconds')
+                time.sleep(until)
+            elif callable(until):
+                logger.info(f'Move at {angle} degrees until {until.__name__}')
+                until()
+                logger.info('Move stop')
+            else:
+                raise ScriptError(f'Unsupported until type: {type(until)}')
+        finally:
+            try:
+                self.release_minitouch(contact=1)
+            except Exception as exc:
+                logger.warning('Failed to release move contact: %s', exc)
+                logger.debug('Failed to release move contact', exc_info=True)
 
     def move_forward(self, until):
         self.move(0, until)

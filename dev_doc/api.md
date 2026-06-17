@@ -96,7 +96,8 @@ WebSocket 服务端，负责前后端通信、任务执行和调度管理。
 方法：
 - `start(instance, task_id, values)` — 手动启动任务
 - `start_scheduled(instance, task_id, plan_id)` — 调度器启动任务
-- `stop(instance, task_id)` — 通过 `raise_thread_exception` 强制中止
+- `stop(instance, task_id)` — 先释放设备按下触点，再通过 `raise_thread_exception` 强制中止
+- `stop_all()` — 服务关闭时停止全部运行中任务，并释放所有已缓存设备的按下输入
 - `_run_task(handle)` — 线程入口，调用 `_execute_with_retry`
 - `_execute_with_retry(handle)` — 创建 runner（通过 `create_runner` 动态导入），调用 `ensure_in_game()` + `run()`
 - `_device(instance)` — 懒加载 Device 实例
