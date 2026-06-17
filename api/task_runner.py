@@ -91,10 +91,11 @@ class TaskRunner:
                 raise RuntimeError(f"No running task for instance: {config.name}")
             if task_id and handle.task_id != task_id:
                 raise RuntimeError(f"Task {handle.task_id} is running for instance: {config.name}")
-            raise_thread_exception(handle.thread, TaskAbort)
             handle.status = "cancelled"
             handle.detail = "任务已强制中止"
 
+        self._release_device_controls(config.name)
+        raise_thread_exception(handle.thread, TaskAbort)
         self.app.broadcast_threadsafe(self.task_event(handle, "cancelled", handle.detail))
         self.app.broadcast_threadsafe(self.status_event(config.name))
         return {"instance": config.name, "taskId": handle.task_id, "status": "aborted"}
@@ -157,6 +158,7 @@ class TaskRunner:
             logger.debug(traceback.format_exc())
             self.app.broadcast_threadsafe(self.task_event(handle, handle.status, handle.detail))
         finally:
+            self._release_device_controls(handle.instance)
             with self._lock:
                 if self._tasks.get(handle.instance) is handle:
                     self._tasks.pop(handle.instance, None)
@@ -201,9 +203,57 @@ class TaskRunner:
     def _safe_stop_runner_app(self, instance: str, runner: Any) -> None:
         try:
             if runner is not None:
+                runner.device.release_all_minitouch()
                 runner.device.app_stop_adb()
         except Exception as exc:
             logger.debug("Failed to stop app before retry", exc_info=True)
+
+    def stop_all(self) -> None:
+        """停止所有正在运行的任务并释放设备输入。
+        Stop all running tasks and release device inputs.
+        """
+        with self._lock:
+            handles = [
+                handle
+                for handle in self._tasks.values()
+                if handle.thread is not None and handle.thread.is_alive()
+            ]
+
+        for handle in handles:
+            try:
+                self._release_device_controls(handle.instance)
+                if handle.thread is not None and handle.thread.is_alive():
+                    raise_thread_exception(handle.thread, TaskAbort)
+                    handle.thread.join(timeout=2.0)
+            except Exception as exc:
+                logger.warning("Failed to stop task %s for instance %s: %s", handle.task_id, handle.instance, exc)
+                logger.debug(traceback.format_exc())
+
+        self.release_all_devices()
+
+    def release_all_devices(self) -> None:
+        """释放所有已缓存设备的按下输入。
+        Release pressed inputs on all cached devices.
+        """
+        with self._device_lock:
+            instances = list(self._devices)
+
+        for instance in instances:
+            self._release_device_controls(instance)
+
+    def _release_device_controls(self, instance: str) -> None:
+        """释放指定实例设备上的所有 minitouch 触点。
+        Release all minitouch contacts on the device for an instance.
+        """
+        with self._device_lock:
+            device = self._devices.get(instance)
+        if device is None:
+            return
+        try:
+            device.release_all_minitouch()
+        except Exception as exc:
+            logger.warning("Failed to release device controls for instance %s: %s", instance, exc)
+            logger.debug(traceback.format_exc())
 
     def _device(self, instance: str) -> Any:
         config = self.config_store.get(instance)

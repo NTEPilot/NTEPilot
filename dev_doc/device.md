@@ -116,6 +116,7 @@ MuMu > 3.5.6 版本需要动态获取分辨率和方向。
 - `swipe_minitouch(p1, p2)` — 滑动
 - `drag_minitouch(p1, p2, disturbance)` — 拖拽
 - `press_minitouch(x, y)` / `release_minitouch()` — 持续按住（保持线程定期发送 move 命令）
+- `release_all_minitouch()` — 释放所有已记录为按下的触点，用于任务中断、服务关闭和 minitouch 停止兜底
 - `keep_drag_minitouch(p1, p2)` — 拖拽后保持按住
 
 ### 滑动路径生成

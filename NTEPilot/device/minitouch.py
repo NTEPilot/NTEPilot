@@ -184,7 +184,7 @@ class Command:
         """
         x, y = self.x / max_x, self.y / max_y
         if self.operation == 'c':
-            out = dict(operation=self.operation)
+            out: dict[str, object] = dict(operation=self.operation)
         elif self.operation == 'r':
             out = dict(operation=self.operation)
         elif self.operation == 'd':
@@ -437,12 +437,24 @@ def retry(func):
 
 class Minitouch(Connection):
     _minitouch_port: int = 0
-    _minitouch_client: socket.socket = None
+    _minitouch_client: socket.socket | None = None
     _minitouch_stream = None
     _minitouch_pid: int
     max_x: int
     max_y: int
     _minitouch_init_thread = None
+
+    def _pressed_contacts(self) -> set[int]:
+        """获取当前记录为按下的触点集合。
+        Get the contacts currently recorded as pressed.
+
+        Returns:
+            当前仍处于按下状态的触点集合。
+            The set of contacts that are still pressed.
+        """
+        if not hasattr(self, '_minitouch_pressed_contacts'):
+            self._minitouch_pressed_contacts: set[int] = set()
+        return self._minitouch_pressed_contacts
 
     def _minitouch_local_path(self):
         abi = self.cpu_abi
@@ -492,6 +504,7 @@ class Minitouch(Connection):
     def minitouch_stop(self):
         """停止 minitouch 进程。"""
         logger.info('Stopping minitouch')
+        self.release_all_minitouch()
         self.close_stream(self._minitouch_stream)
         self._minitouch_stream = None
         pids = self.adb_find_pids('minitouch')
@@ -607,6 +620,8 @@ class Minitouch(Connection):
         if not hasattr(self, '_minitouch_lock'):
             self._minitouch_lock = threading.Lock()
         with self._minitouch_lock:
+            if self._minitouch_client is None:
+                raise MinitouchOccupiedError('minitouch client is not connected')
             content = builder.to_minitouch()
             # logger.info("send operation: {}".format(content.replace("\n", "\\n")))
             byte_content = content.encode('utf-8')
@@ -662,14 +677,15 @@ class Minitouch(Connection):
         builder = self.minitouch_builder
 
         builder.down(*points[0], contact).commit().wait(10)
+        self._pressed_contacts().add(contact)
         builder.send()
 
-        for point in points[1:]:
-            builder.move(*point, contact).commit().wait(10)
-        builder.send()
-
-        builder.up(contact).commit()
-        builder.send()
+        try:
+            for point in points[1:]:
+                builder.move(*point, contact).commit().wait(10)
+            builder.send()
+        finally:
+            self._safe_release_minitouch(contact)
 
     @retry
     def drag_minitouch(self, p1, p2, contact=0, disturbance=False):
@@ -677,20 +693,21 @@ class Minitouch(Connection):
         builder = self.minitouch_builder
 
         builder.down(*points[0], contact).commit().wait(10)
+        self._pressed_contacts().add(contact)
         builder.send()
 
-        for point in points[1:]:
-            builder.move(*point, contact).commit().wait(10)
-        builder.send()
+        try:
+            for point in points[1:]:
+                builder.move(*point, contact).commit().wait(10)
+            builder.send()
 
-        builder.move(*p2, contact).commit().wait(140)
-        builder.move(*p2, contact).commit().wait(140)
-        if disturbance:
-            builder.move(p2[0] + 1, p2[1] + 1, contact).commit().wait(140)
-        builder.send()
-
-        builder.up(contact).commit()
-        builder.send()
+            builder.move(*p2, contact).commit().wait(140)
+            builder.move(*p2, contact).commit().wait(140)
+            if disturbance:
+                builder.move(p2[0] + 1, p2[1] + 1, contact).commit().wait(140)
+            builder.send()
+        finally:
+            self._safe_release_minitouch(contact)
 
         if disturbance:
             time.sleep(0.2)
@@ -700,6 +717,8 @@ class Minitouch(Connection):
 
         if not hasattr(self, '_minitouch_keep_threads'):
             self._minitouch_keep_threads = {}
+        if not hasattr(self, '_minitouch_keep_thread_handles'):
+            self._minitouch_keep_thread_handles = {}
 
         stop_event = threading.Event()
         self._minitouch_keep_threads[contact] = stop_event
@@ -711,6 +730,7 @@ class Minitouch(Connection):
                 self.minitouch_send(builder)
 
         thread = threading.Thread(target=keep_thread, daemon=True)
+        self._minitouch_keep_thread_handles[contact] = thread
         thread.start()
 
     def _stop_keep_thread(self, contact):
@@ -719,11 +739,31 @@ class Minitouch(Connection):
         stop_event = self._minitouch_keep_threads.pop(contact, None)
         if stop_event is not None:
             stop_event.set()
+        if hasattr(self, '_minitouch_keep_thread_handles'):
+            thread = self._minitouch_keep_thread_handles.pop(contact, None)
+            if thread is not None and thread is not threading.current_thread():
+                thread.join(timeout=0.3)
+
+    def _stop_all_keep_threads(self) -> None:
+        """停止所有 minitouch 保持按住线程。
+        Stop all minitouch keep-alive press threads.
+        """
+        if not hasattr(self, '_minitouch_keep_threads'):
+            return
+        for stop_event in self._minitouch_keep_threads.values():
+            stop_event.set()
+        if hasattr(self, '_minitouch_keep_thread_handles'):
+            for thread in self._minitouch_keep_thread_handles.values():
+                if thread is not threading.current_thread():
+                    thread.join(timeout=0.3)
+            self._minitouch_keep_thread_handles.clear()
+        self._minitouch_keep_threads.clear()
 
     @retry
     def press_minitouch(self, x, y, contact=0):
         builder = self.minitouch_builder
         builder.down(x, y, contact).commit()
+        self._pressed_contacts().add(contact)
         builder.send()
         self._start_keep_thread((x, y), contact)
 
@@ -733,6 +773,39 @@ class Minitouch(Connection):
         builder = self.minitouch_builder
         builder.up(contact).commit()
         builder.send()
+        self._pressed_contacts().discard(contact)
+
+    def _safe_release_minitouch(self, contact: int = 0) -> None:
+        """尽力释放单个触点，避免清理错误覆盖原始异常。
+        Best-effort release for one contact without masking the original error.
+        """
+        try:
+            self.release_minitouch(contact)
+        except Exception as exc:
+            logger.warning('Failed to release minitouch contact %s: %s', contact, exc)
+            logger.debug('Failed to release minitouch contact', exc_info=True)
+
+    def release_all_minitouch(self) -> None:
+        """释放所有当前记录为按下的 minitouch 触点。
+        Release all minitouch contacts currently recorded as pressed.
+        """
+        contacts = sorted(self._pressed_contacts())
+        self._stop_all_keep_threads()
+        if not contacts:
+            return
+
+        try:
+            if self._minitouch_client is None:
+                return
+            builder = CommandBuilder(self)
+            for contact in contacts:
+                builder.up(contact).commit()
+            builder.send()
+        except Exception as exc:
+            logger.warning('Failed to release all minitouch contacts: %s', exc)
+            logger.debug('Failed to release all minitouch contacts', exc_info=True)
+        finally:
+            self._pressed_contacts().clear()
 
     @retry
     def keep_drag_minitouch(self, p1, p2, contact=0):
@@ -740,6 +813,7 @@ class Minitouch(Connection):
         builder = self.minitouch_builder
 
         builder.down(*points[0], contact).commit().wait(10)
+        self._pressed_contacts().add(contact)
         builder.send()
 
         for point in points[1:]:

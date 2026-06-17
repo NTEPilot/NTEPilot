@@ -104,10 +104,10 @@ const screenshot: string = raw;
 
 每次完成任务后，必须用类型检查工具自查，确认无新增类型错误后才能交付 尽量确保无类型错误：
 
-- **Python** — 使用 `mypy` 检查：`uv run mypy <修改的文件>`
+- **Python** — 只使用主机环境已有的 `pyrefly` 检查：`pyrefly check <修改的文件>`；如果主机环境没有 `pyrefly`，跳过工具检查，改为人工自查类型问题
 - **TypeScript** — 使用 `tsc` 检查：`cd frontend && npx tsc --noEmit`
 
-如果项目未安装 mypy，先安装：`uv add --dev mypy`。检查必须通过才能提交，不通过就修到通过为止。
+禁止为了类型检查向项目虚拟环境安装 `mypy`、`pyrefly` 或其他同类工具，避免污染项目依赖。可用的检查必须通过才能提交；工具不可用时必须说明已改为人工自查。
 
 ### 开发原则
 
