@@ -22,7 +22,9 @@
 | `NTEPilot/config/` | 配置系统（路径式键名、schema 驱动前端） | [config.md](dev_doc/config.md) |
 | `NTEPilot/device/` | ADB 设备层（DroidCast 截图 + minitouch 触控） | [device.md](dev_doc/device.md) |
 | `NTEPilot/ui/` | 屏幕自动化（模板匹配、A* 页面导航） | [ui.md](dev_doc/ui.md) |
+| `NTEPilot/macro/` | 语义宏执行层（方向/动作语义键到 minitouch 触控） | [macro.md](dev_doc/macro.md) |
 | `NTEPilot/tools/` | 工具实现（fish、combat、bond、cafe、daily、house） | [tools.md](dev_doc/tools.md) |
+| `NTEPilot/pinkpaw/` | 粉爪大劫案路线运行时和工具入口 | [tools.md](dev_doc/tools.md) |
 | `NTEPilot/map/` | 地图导航（定位、传送） | [map.md](dev_doc/map.md) |
 | `NTEPilot/team/` | 队伍与角色系统（17 角色、技能循环） | [team.md](dev_doc/team.md) |
 | `NTEPilot/ocr.py` | OCR 系统（ONNX 推理） | [ocr.md](dev_doc/ocr.md) |

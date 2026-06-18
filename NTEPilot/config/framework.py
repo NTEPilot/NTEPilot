@@ -114,6 +114,60 @@ CONFIG = {
                 },
             },
         },
+        "pinkpaw": {
+            "label": "粉爪大劫案",
+            "description": "自动执行粉爪大劫案路线",
+            "runner": "NTEPilot.pinkpaw.pinkpaw:PinkPawHeist",
+            "config": {
+                "scheme": {
+                    "label": "路线方案",
+                    "type": "select",
+                    "description": None,
+                    "options": ("方案一", "方案二", "方案三"),
+                    "default": "方案三",
+                },
+                "core3_branch": {
+                    "label": "方案三分支",
+                    "type": "select",
+                    "description": None,
+                    "options": ("1早雾 2翳 3薄荷 4任意", "1翳 2浔 3薄荷 4任意"),
+                    "default": "1早雾 2翳 3薄荷 4任意",
+                },
+                "loop_count": {
+                    "label": "循环次数",
+                    "type": "integer",
+                    "description": None,
+                    "range": (1, 999, 1),
+                    "default": 1,
+                },
+                "timing_scale": {
+                    "label": "路线时间倍率",
+                    "type": "float",
+                    "description": "小幅调整方案三路线等待时长",
+                    "range": (0.25, 1.2, 0.01),
+                    "default": 1.0,
+                },
+                "interaction_pause": {
+                    "label": "交互停顿",
+                    "type": "float",
+                    "description": "交互前松开方向后的等待秒数",
+                    "range": (0, 1, 0.05),
+                    "default": 0.2,
+                },
+                "early_extract_exit1": {
+                    "label": "出口1提前撤离",
+                    "type": "boolean",
+                    "description": None,
+                    "default": False,
+                },
+                "early_extract_exit2": {
+                    "label": "出口2提前撤离",
+                    "type": "boolean",
+                    "description": None,
+                    "default": False,
+                },
+            },
+        },
     },
     "schedule": {
         "combat": {

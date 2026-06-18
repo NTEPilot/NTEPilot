@@ -177,4 +177,7 @@ logs/
 
 # debug
 debug/
-scripts/
+scripts/*
+!scripts/
+!scripts/convert_pinkpaw_macro.py
+!scripts/check_pinkpaw_routes.py

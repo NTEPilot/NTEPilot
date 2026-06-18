@@ -178,6 +178,48 @@ class Instance:
 
 ---
 
+## pinkpaw — 粉爪大劫案
+
+**文件**: `NTEPilot/pinkpaw/pinkpaw.py`
+**继承**: `UI`
+**Runner**: `NTEPilot.pinkpaw.pinkpaw:PinkPawHeist`
+
+### 路线文件
+
+路线位于 `NTEPilot/pinkpaw/routes/`：
+
+- `core1.json`
+- `core2.json`
+- `core3_dash.json`
+- `core3_attack.json`
+- `entrance_recovery.json`
+
+这些 JSON 由 `scripts/convert_pinkpaw_macro.py` 从 MaaNTE 的粉爪 Python 路线生成，保留原路线中的按下、松开、点击、等待、循环、分支和撤离重试。转换时会把桌面按键改成语义键，例如 `W` 变成 `forward`，`F` 变成 `interact`，鼠标左键变成 `attack`。
+
+### 运行时
+
+`NTEPilot/pinkpaw/runtime.py` 负责承接路线调用：
+
+1. 用 `SemanticController` 把语义键转为 minitouch 触控。
+2. 用现有 OCR、颜色检测和模板匹配实现交互点、撬锁、撤离、怪物血条等检测。
+3. 停止或异常时释放摇杆和动作触点。
+
+粉爪专用模板目录是 `template/pinkpaw/assets/`。当前专用模板允许为空；缺少 `INTERACTABLE.png`、`HEIST_INTERAC_LOCK_PICK.png`、`HEIST_LOCK_PICK.png` 时，对应模板检测会返回未命中，不会伪造成功。
+
+### 配置项
+
+注册位置：`NTEPilot/config/framework.py` 的 `CONFIG["tools"]["pinkpaw"]`。
+
+- `scheme` — 方案一、方案二、方案三
+- `core3_branch` — 方案三分支
+- `loop_count` — 循环次数
+- `timing_scale` — 方案三路线时间倍率
+- `interaction_pause` — 交互前松开方向后的停顿
+- `early_extract_exit1` — 出口 1 提前撤离
+- `early_extract_exit2` — 出口 2 提前撤离
+
+---
+
 ## 新增工具的步骤
 
 1. 在 `NTEPilot/tools/<名称>/<名称>.py` 中创建工具类，继承 `UI` 或 `Map`
