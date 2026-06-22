@@ -31,6 +31,8 @@ CLIENT = {
 
 - `adb_shell` — 执行 shell 命令
 - `adb_getprop` — 获取系统属性
+- `get_display_density_state` / `get_display_density` — 读取 `wm density` 的物理 DPI 和覆盖 DPI
+- `set_display_density` / `reset_display_density` / `restore_display_density` — 通过 ADB 设置、重置或恢复设备 DPI
 - `adb_find_pids` / `adb_kill_processes` — 查找/杀死进程
 - `adb_forward` / `adb_reverse` — 端口转发
 - `adb_push` — 推送文件到设备

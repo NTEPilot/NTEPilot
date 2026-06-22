@@ -53,6 +53,22 @@ class Instance:
 
 ---
 
+## display_density_calibrator — DPI 校准工具
+
+**文件**: `NTEPilot/tools/display_density.py`
+**继承**: `UI`
+**Runner**: `NTEPilot.tools.display_density:DisplayDensityCalibrator`
+
+手动工具，不接入普通任务的进游戏前置流程。启动后会：
+
+1. 记录当前设备 DPI 状态
+2. 按 10-999 逐个执行 `wm density`
+3. 每次设置后重启游戏
+4. 等待进入主界面并检测 `F1` / `F2` / `F3`
+5. 命中后保留当前 DPI；失败或中断时尽量恢复原 DPI
+
+---
+
 ## combat — 战斗自动化
 
 **文件**: `NTEPilot/combat/combat.py`

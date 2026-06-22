@@ -3,6 +3,7 @@ import re
 import time
 import json
 import sys
+from dataclasses import dataclass
 from functools import cached_property, wraps
 from concurrent.futures import ThreadPoolExecutor
 
@@ -29,6 +30,29 @@ IS_MACINTOSH = sys.platform == 'darwin'
 IS_LINUX = sys.platform.startswith('linux')
 
 FORWARD_PORT_RANGE = (20000, 21000)
+
+
+@dataclass(frozen=True)
+class DisplayDensityState:
+    """设备显示密度状态。
+    Device display density state.
+
+    Attributes:
+        physical: 设备物理 DPI，读取失败时为 None。
+                  Physical device DPI, None when unavailable.
+        override: ADB 覆盖 DPI，未设置时为 None。
+                  ADB override DPI, None when not set.
+    """
+
+    physical: int | None
+    override: int | None
+
+    @property
+    def effective(self) -> int | None:
+        """返回当前实际生效的 DPI。
+        Return the currently effective DPI.
+        """
+        return self.override if self.override is not None else self.physical
 
 def retry(func):
     """带自动重试的装饰器，处理 ADB 连接和设备相关异常。
@@ -219,6 +243,79 @@ class Connection:
             str: 属性值。
         """
         return self.adb_shell(['getprop', name]).strip()
+
+    @retry
+    def get_display_density_state(self) -> DisplayDensityState:
+        """读取设备当前 DPI 状态。
+        Read the current device DPI state.
+
+        Returns:
+            设备显示密度状态，包含物理 DPI 和 ADB 覆盖 DPI。
+            Device display density state with physical and override DPI.
+        """
+        output = str(self.adb_shell(['wm', 'density']))
+        physical: int | None = None
+        override: int | None = None
+        for label, value in re.findall(r'(Physical|Override)\s+density:\s*(\d+)', output):
+            if label == 'Physical':
+                physical = int(value)
+            elif label == 'Override':
+                override = int(value)
+
+        logger.attr('DisplayDensity', f'physical={physical}, override={override}')
+        return DisplayDensityState(physical=physical, override=override)
+
+    def get_display_density(self) -> int | None:
+        """读取当前实际生效的 DPI。
+        Read the currently effective DPI.
+
+        Returns:
+            当前实际生效的 DPI，读取失败时为 None。
+            Currently effective DPI, None when unavailable.
+        """
+        return self.get_display_density_state().effective
+
+    @retry
+    def set_display_density(self, density: int) -> None:
+        """通过 ADB 设置设备 DPI。
+        Set device DPI via ADB.
+
+        Args:
+            density: 要设置的 DPI，Android `wm density` 接受正整数。
+                     Target DPI, accepted by Android `wm density` as a positive integer.
+
+        Raises:
+            ValueError: DPI 不在工具允许范围内时抛出。
+                        Raised when DPI is outside the tool range.
+        """
+        if density < 10 or density > 999:
+            raise ValueError(f'Display density out of range: {density}')
+        logger.info(f'Set display density: {density}')
+        self.adb_shell(['wm', 'density', str(density)])
+
+    @retry
+    def reset_display_density(self) -> None:
+        """清除 ADB 覆盖 DPI，恢复设备默认 DPI。
+        Clear ADB override DPI and restore the device default DPI.
+        """
+        logger.info('Reset display density override')
+        self.adb_shell(['wm', 'density', 'reset'])
+
+    def restore_display_density(self, state: DisplayDensityState) -> None:
+        """按记录状态恢复 DPI。
+        Restore DPI according to a recorded state.
+
+        Args:
+            state: 需要恢复的 DPI 状态。
+                   DPI state to restore.
+        """
+        if state.override is not None:
+            self.set_display_density(state.override)
+            return
+        if state.physical is not None:
+            self.reset_display_density()
+            return
+        logger.warning('Skip density restore because original density is unknown')
 
     def adb_find_pids(self, *keywords) -> list[int]:
         """寻找包含指定关键字的进程 PID 列表。"""

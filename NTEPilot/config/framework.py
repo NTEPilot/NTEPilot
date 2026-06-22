@@ -81,6 +81,12 @@ CONFIG = {
         },
     },
     "tools": {
+        "display_density_calibrator": {
+            "label": "校准 DPI",
+            "description": "手动工具：用 ADB 从 10 到 999 逐个调整 DPI，重启游戏并检测 F1/F2/F3 UI",
+            "runner": "NTEPilot.tools.display_density:DisplayDensityCalibrator",
+            "config": {},
+        },
         "fish": {
             "label": "钓鱼",
             "description": "自动钓鱼工具，在钓鱼界面运行该工具",
