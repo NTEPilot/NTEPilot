@@ -24,15 +24,14 @@ class Template:
 
     @property
     def pos(self):
-        x1, y1, x2, y2 = self.rect
-        orig_cx = (x1 + x2) // 2
-        orig_cy = (y1 + y2) // 2
+        # 使用识别到的中心点，并在模板图像的实际宽高范围内进行随机偏移。
+        # Use the detected center point and apply random offsets within the template image's width/height.
+        cx, cy = self._pos
+        hw = self.width // 2
+        hh = self.height // 2
         
-        # Calculate offset from the original center to the matched position
-        dx = self._pos[0] - orig_cx
-        dy = self._pos[1] - orig_cy
-        
-        rx1, ry1, rx2, ry2 = x1 + dx, y1 + dy, x2 + dx, y2 + dy
+        rx1, rx2 = cx - hw, cx + hw
+        ry1, ry2 = cy - hh, cy + hh
         
         if rx1 > rx2:
             rx1, rx2 = rx2, rx1
