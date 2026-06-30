@@ -77,7 +77,7 @@ MuMu > 3.5.6 版本需要动态获取分辨率和方向。
 
 ### 截图流程
 
-1. 等待间隔 (0.1s)
+1. 等待配置的截图间隔（默认 0.1s，局部流程可通过 `temporary_screenshot_interval(0)` 临时关闭间隔）
 2. 调用 `screenshot_droidcast()`
 3. 处理方向（非 1280x720 时根据 orientation 旋转）
 4. 检查分辨率和黑屏
@@ -88,6 +88,7 @@ MuMu > 3.5.6 版本需要动态获取分辨率和方向。
 - `_handle_orientated_image(image)` — 方向处理
 - `check_screen_size()` — 验证分辨率为 1280x720
 - `check_screen_black()` — 检测纯黑截图（模拟器未就绪）
+- `temporary_screenshot_interval(interval)` — 临时调整截图间隔，退出上下文后自动恢复
 - `save_screenshot(interval)` — 保存截图到 `./debug/screenshots/`
 
 ---
