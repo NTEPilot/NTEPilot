@@ -112,7 +112,7 @@ class Combat(Map, Team, Ocr):
         drag_start = (800, 360)
         drag_left, drag_top, drag_right, drag_bottom = 260, 130, 1120, 610
 
-        for attempt in range(1, 101):
+        for attempt in range(1, 501):
             self.device.screenshot()
 
             if self.appear_then_click(INTERACT):
@@ -134,7 +134,7 @@ class Combat(Map, Team, Ocr):
                 return
 
             if not self.appear(CHEST, similarity=0.65):
-                logger.info(f'Chest marker not found, scanning, attempt {attempt}/100')
+                logger.info(f'Chest marker not found, scanning, attempt {attempt}/500')
                 self.device.move_forward(lambda: self.wait_until_appear(CHEST, similarity=0.65))
                 continue
 
@@ -143,7 +143,7 @@ class Combat(Map, Team, Ocr):
 
             logger.info(
                 f'Chest marker ({chest_x}, {chest_y}), '
-                f'offset ({dx}), attempt {attempt}/100'
+                f'offset ({dx}), attempt {attempt}/500'
             )
 
             if chest_y > 600:
@@ -160,6 +160,7 @@ class Combat(Map, Team, Ocr):
 
             self.device.drag(drag_start, (end_x, drag_start[1]))
 
+        self.restart_app()
         raise ScriptError('Unable to center chest marker')
 
     def run(self):
