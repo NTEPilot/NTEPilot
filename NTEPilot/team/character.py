@@ -170,5 +170,10 @@ CHINESE_TO_CHARA = {
     '翳': Skia,
     '娜娜莉': Nanally,
     '浔': Hotori,
-    '安魂曲': Lacrimosa
+    '安魂曲': Lacrimosa,
+    '卡厄斯': None,
+    '真红': None,
+    '伊洛伊': None,
+    '残虹': None,
+    '灵可': None,
 }
