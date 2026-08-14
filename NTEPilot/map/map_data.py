@@ -9,11 +9,12 @@ class MapData:
     BIG_MAP_FILE = Path('./NTEPilot/map/assets/bigmap_total_hires.png')
     TELEPORT_FILE = Path('./NTEPilot/map/assets/DT_TeleportPoint.json')
 
-    # 从解包文件DataTable/MiniMap/DT_LevelMiniMap.json中得到 (XL_map_bigworld_test)
-    CENTER_X = -40532.004
-    CENTER_Y = 131446.33
-    EDGE_X = 687134.0
-    EDGE_Y = 687134.0
+    # 从解包文件 DataTable/MiniMap/DT_LevelMiniMap.json 的 XL_map_bigworld_test 行读取。
+    # Read from the XL_map_bigworld_test row in DataTable/MiniMap/DT_LevelMiniMap.json.
+    CENTER_X = 0.0
+    CENTER_Y = 80000.0
+    EDGE_X = 796461.8
+    EDGE_Y = 796461.8
 
     def __init__(self):
         self.big_map = load_image(self.BIG_MAP_FILE)

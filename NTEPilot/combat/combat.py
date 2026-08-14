@@ -23,7 +23,7 @@ class Combat(Map, Team, Ocr):
     }
     CHINESE_INFO = {
         '经验本': {
-            'teleport_id': 7,
+            'teleport_id': 8,
             'cost': 40,
             'selections': {
                 '合订本': 1,
@@ -32,7 +32,7 @@ class Combat(Map, Team, Ocr):
             }
         },
         '卡牌本': {
-            'teleport_id': 8,
+            'teleport_id': 9,
             'cost': 40,
             'selections': {
                 '小心鸽子': 1,
@@ -43,7 +43,7 @@ class Combat(Map, Team, Ocr):
             }
         },
         '罐头本': {
-            'teleport_id': 9,
+            'teleport_id': 10,
             'cost': 40,
             'selections': {
                 '泡影罐头·苹果核': 1,
@@ -54,7 +54,7 @@ class Combat(Map, Team, Ocr):
             }
         },
         '兔子洞': {
-            'teleport_id': 10,
+            'teleport_id': 11,
             'cost': 40,
             'selections': {
                 '钟表把戏': 1,

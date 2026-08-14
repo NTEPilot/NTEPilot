@@ -7,7 +7,9 @@ from utils.image import image_size, crop, limit_in
 
 
 class MapLocator:
-    SCALE = 0.1736
+    # 按新版 25×25 图块尺寸及最大地图视野变化，从旧比例等比换算。
+    # Scale the old ratio for the new 25x25 tile grid and maximum map view field.
+    SCALE = 0.1448791
     MIN_SCORE = 0.2
     EARLY_SCORE = 0.6
                 

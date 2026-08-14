@@ -14,6 +14,9 @@
     "Rows": {
       "WertheimerTower_001": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "001",
         "Transform": {
           "Rotation": {
@@ -82,6 +85,9 @@
       },
       "WertheimerTower_002": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "002",
         "Transform": {
           "Rotation": {
@@ -150,6 +156,9 @@
       },
       "WertheimerTower_003": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "003",
         "Transform": {
           "Rotation": {
@@ -218,6 +227,9 @@
       },
       "WertheimerTower_004": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "004",
         "Transform": {
           "Rotation": {
@@ -286,6 +298,9 @@
       },
       "WertheimerTower_005": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "005",
         "Transform": {
           "Rotation": {
@@ -352,8 +367,82 @@
         "RewardId": "drop_WertheimerTower",
         "ExtensionContent": null
       },
+      "WertheimerTower_006": {
+        "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "006",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.6044211,
+            "W": 0.796665,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -280851.16,
+            "Y": 104839.2,
+            "Z": 3676.017
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 254.37439,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::WertheimerTower",
+        "bDefaultActived": false,
+        "bCanRelive": true,
+        "ReliveLocation": {
+          "X": -280851.16,
+          "Y": 104839.2,
+          "Z": 3676.017
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "WertheimerTower_006",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": true,
+        "RewardId": "drop_WertheimerTower",
+        "ExtensionContent": null
+      },
       "Testyaoql_2": {
         "BelongsLevel": "TestMap_yaoql",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "None",
         "Transform": {
           "Rotation": {
@@ -422,6 +511,9 @@
       },
       "ResourceCloneEnter_001": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "001",
         "Transform": {
           "Rotation": {
@@ -490,6 +582,9 @@
       },
       "TalentCloneEnter_001": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "None",
         "Transform": {
           "Rotation": {
@@ -558,6 +653,9 @@
       },
       "ForkbreakthroughCloneEnter_001": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "None",
         "Transform": {
           "Rotation": {
@@ -626,6 +724,9 @@
       },
       "EquipmentCloneEnter_001": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "None",
         "Transform": {
           "Rotation": {
@@ -694,6 +795,9 @@
       },
       "WeeklyClone_Boss05": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "None",
         "Transform": {
           "Rotation": {
@@ -762,6 +866,9 @@
       },
       "WeeklyClone_Boss10": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "None",
         "Transform": {
           "Rotation": {
@@ -830,6 +937,9 @@
       },
       "MapTransfer_00001": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "000",
         "Transform": {
           "Rotation": {
@@ -898,6 +1008,9 @@
       },
       "MapTransfer_00101": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "001",
         "Transform": {
           "Rotation": {
@@ -966,6 +1079,9 @@
       },
       "MapTransfer_00102": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "001",
         "Transform": {
           "Rotation": {
@@ -1034,6 +1150,9 @@
       },
       "MapTransfer_00201": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "002",
         "Transform": {
           "Rotation": {
@@ -1102,6 +1221,9 @@
       },
       "MapTransfer_00301": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "003",
         "Transform": {
           "Rotation": {
@@ -1170,6 +1292,9 @@
       },
       "MapTransfer_00302": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "003",
         "Transform": {
           "Rotation": {
@@ -1238,6 +1363,9 @@
       },
       "MapTransfer_00401": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "004",
         "Transform": {
           "Rotation": {
@@ -1306,6 +1434,9 @@
       },
       "MapTransfer_00402": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "004",
         "Transform": {
           "Rotation": {
@@ -1374,6 +1505,9 @@
       },
       "MapTransfer_00403": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "004",
         "Transform": {
           "Rotation": {
@@ -1442,6 +1576,9 @@
       },
       "MapTransfer_00501": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "005",
         "Transform": {
           "Rotation": {
@@ -1510,6 +1647,9 @@
       },
       "MapTransfer_00502": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "005",
         "Transform": {
           "Rotation": {
@@ -1578,6 +1718,9 @@
       },
       "MapTransfer_00503": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "005",
         "Transform": {
           "Rotation": {
@@ -1646,6 +1789,9 @@
       },
       "MapTransfer_00504": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "005",
         "Transform": {
           "Rotation": {
@@ -1714,6 +1860,9 @@
       },
       "MapTransfer_00505": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "005",
         "Transform": {
           "Rotation": {
@@ -1780,8 +1929,224 @@
         "RewardId": "drop_MapTransfer",
         "ExtensionContent": null
       },
+      "MapTransfer_00601": {
+        "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "006",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.76604444,
+            "W": 0.64278764,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -231586.83,
+            "Y": -42692.402,
+            "Z": 11061.109
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 50.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::MapTransfer",
+        "bDefaultActived": false,
+        "bCanRelive": true,
+        "ReliveLocation": {
+          "X": -231586.83,
+          "Y": -42692.402,
+          "Z": 11061.109
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": true,
+        "RewardId": "drop_MapTransfer",
+        "ExtensionContent": null
+      },
+      "MapTransfer_00602": {
+        "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "006",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.3007058,
+            "W": -0.95371693,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -244990.42,
+            "Y": -180786.78,
+            "Z": 18853.1
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 115.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::MapTransfer",
+        "bDefaultActived": false,
+        "bCanRelive": true,
+        "ReliveLocation": {
+          "X": -59343.703,
+          "Y": 84450.836,
+          "Z": 2666.1257
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": true,
+        "RewardId": "drop_MapTransfer",
+        "ExtensionContent": null
+      },
+      "MapTransfer_00603": {
+        "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "006",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.087155744,
+            "W": 0.9961947,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -140192.4,
+            "Y": -105613.18,
+            "Z": 14024.647
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": -40.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::MapTransfer",
+        "bDefaultActived": false,
+        "bCanRelive": true,
+        "ReliveLocation": {
+          "X": -59343.703,
+          "Y": 84450.836,
+          "Z": 2666.1257
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": true,
+        "RewardId": "drop_MapTransfer",
+        "ExtensionContent": null
+      },
       "MapTransfer_00901": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "009",
         "Transform": {
           "Rotation": {
@@ -1850,6 +2215,9 @@
       },
       "bigword_L_1": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "None",
         "Transform": {
           "Rotation": {
@@ -1916,8 +2284,82 @@
         "RewardId": "None",
         "ExtensionContent": null
       },
+      "bigword_L_2": {
+        "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "None",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.31416598,
+            "W": 0.94936806,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -110932.586,
+            "Y": 32942.617,
+            "Z": 8825.198
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::RealEstate",
+        "bDefaultActived": false,
+        "bCanRelive": true,
+        "ReliveLocation": {
+          "X": -110932.586,
+          "Y": 32942.617,
+          "Z": 8825.198
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -173545.4,
+            "Y": 119172.96,
+            "Z": 10709.992
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
       "bigword_LL_1": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "None",
         "Transform": {
           "Rotation": {
@@ -1986,6 +2428,9 @@
       },
       "bigword_LL_2": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "None",
         "Transform": {
           "Rotation": {
@@ -2054,6 +2499,9 @@
       },
       "bigword_LL_3": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "None",
         "Transform": {
           "Rotation": {
@@ -2122,6 +2570,9 @@
       },
       "bigword_LLL_1": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "None",
         "Transform": {
           "Rotation": {
@@ -2190,6 +2641,9 @@
       },
       "bigword_LLL_2": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "None",
         "Transform": {
           "Rotation": {
@@ -2258,6 +2712,9 @@
       },
       "test_bigword_LL_1": {
         "BelongsLevel": "Testmap_liuyang",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "None",
         "Transform": {
           "Rotation": {
@@ -2326,6 +2783,9 @@
       },
       "test_bigword_LLL_2": {
         "BelongsLevel": "Testmap_liuyang",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "None",
         "Transform": {
           "Rotation": {
@@ -2394,6 +2854,9 @@
       },
       "Abyss": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "None",
         "Transform": {
           "Rotation": {
@@ -2462,6 +2925,9 @@
       },
       "robbank": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "None",
         "Transform": {
           "Rotation": {
@@ -2530,6 +2996,9 @@
       },
       "Boss_07_BP_WorldBoss": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "002",
         "Transform": {
           "Rotation": {
@@ -2598,6 +3067,9 @@
       },
       "boss_13_BP_WorldBoss": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "002",
         "Transform": {
           "Rotation": {
@@ -2666,6 +3138,9 @@
       },
       "boss_09_BP_WorldBoss": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "005",
         "Transform": {
           "Rotation": {
@@ -2734,6 +3209,9 @@
       },
       "boss_15_BP_WorldBoss": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "003",
         "Transform": {
           "Rotation": {
@@ -2802,6 +3280,9 @@
       },
       "boss_19_BP_WorldBoss": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "005",
         "Transform": {
           "Rotation": {
@@ -2870,6 +3351,9 @@
       },
       "boss_33_BP_WorldBoss": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "005",
         "Transform": {
           "Rotation": {
@@ -2938,6 +3422,9 @@
       },
       "boss_08_BP_WorldBoss": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "005",
         "Transform": {
           "Rotation": {
@@ -3006,6 +3493,9 @@
       },
       "Abyss_Clone": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "None",
         "Transform": {
           "Rotation": {
@@ -3074,6 +3564,9 @@
       },
       "Place_13": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "005",
         "Transform": {
           "Rotation": {
@@ -3142,6 +3635,9 @@
       },
       "WeeklyClone_Boss26": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "004",
         "Transform": {
           "Rotation": {
@@ -3210,13 +3706,16 @@
       },
       "DivinationHouse": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "001",
         "Transform": {
           "Rotation": {
             "X": 0.0,
             "Y": -0.0,
-            "Z": 0.0,
-            "W": 1.0,
+            "Z": 0.39624736,
+            "W": 0.9181438,
             "IsNormalized": true,
             "Size": 1.0,
             "SizeSquared": 1.0
@@ -3234,7 +3733,7 @@
         },
         "CameraRotation": {
           "Pitch": 0.0,
-          "Yaw": 46.68758,
+          "Yaw": 0.0,
           "Roll": 0.0
         },
         "TeleportPointType": "ETeleportPointType::WorldBossTeleport",
@@ -3278,13 +3777,16 @@
       },
       "Bank_05_00": {
         "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
         "AreaId": "005",
         "Transform": {
           "Rotation": {
             "X": 0.0,
-            "Y": -0.0,
-            "Z": 0.0,
-            "W": 1.0,
+            "Y": 0.0,
+            "Z": -0.9953502,
+            "W": -0.0963223,
             "IsNormalized": true,
             "Size": 1.0,
             "SizeSquared": 1.0
@@ -3302,10 +3804,4767 @@
         },
         "CameraRotation": {
           "Pitch": 0.0,
-          "Yaw": -191.05486,
+          "Yaw": 0.0,
           "Roll": 0.0
         },
         "TeleportPointType": "ETeleportPointType::WorldBossTeleport",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FinalTower": {
+        "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "005",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.7870685,
+            "W": 0.6168656,
+            "IsNormalized": true,
+            "Size": 0.99999994,
+            "SizeSquared": 0.99999994
+          },
+          "Translation": {
+            "X": 32980.883,
+            "Y": 65123.184,
+            "Z": 9464.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::Common",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Portal_MainToA": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_Main",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_Main",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.76604444,
+            "W": 0.64278764,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -1634.5074,
+            "Y": 13113.043,
+            "Z": 1395.5887
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerPortal",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Portal_MainToB": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_Main",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_Main",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.3826834,
+            "W": 0.92387956,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 5182.048,
+            "Y": 6041.289,
+            "Z": 1467.8414
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerPortal",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Portal_MainToC": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_Main",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_Main",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.9961947,
+            "W": -0.08715571,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -9912.408,
+            "Y": 7469.106,
+            "Z": 1949.3275
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerPortal",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Portal_MainToD": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_Main",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_Main",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 6693.522,
+            "Y": -11.568714,
+            "Z": 1793.6958
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerPortal",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Portal_MainToE": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_Main",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_Main",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.92387956,
+            "W": -0.3826834,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -7389.069,
+            "Y": -476.76883,
+            "Z": 2354.874
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerPortal",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Camp": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_Main",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_B",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.8433914,
+            "W": 0.53729963,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -1675.5094,
+            "Y": 6285.1665,
+            "Z": 1231.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCamp",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Volca_Campfire01": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_B",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_B",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.96363044,
+            "W": 0.2672384,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 110112.0,
+            "Y": 117989.0,
+            "Z": -13729.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": -149.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Volca_Campfire02": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_B",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_B",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.48862097,
+            "W": 0.8724962,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 101670.0,
+            "Y": 120053.0,
+            "Z": -13487.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 58.499966,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Volca_Campfire03": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_B",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_B",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.31471694,
+            "W": 0.94918555,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 112158.3,
+            "Y": 122492.71,
+            "Z": -12006.977
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 36.687454,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Volca_Campfire04": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_B",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_B",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.83055943,
+            "W": 0.55693007,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0000001
+          },
+          "Translation": {
+            "X": 110789.625,
+            "Y": 136224.06,
+            "Z": -11197.401
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 112.31249,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Volca_Campfire05": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_B",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_B",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.84949,
+            "W": 0.5276047,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 111943.53,
+            "Y": 141266.28,
+            "Z": -10511.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 116.312485,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Volca_Campfire06": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_B",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_B",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.19669434,
+            "W": 0.9804649,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0000001
+          },
+          "Translation": {
+            "X": 110856.016,
+            "Y": 140075.23,
+            "Z": -9484.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 22.687439,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Volca_Campfire07": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_B",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_B",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.56280506,
+            "W": 0.82658964,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 114549.47,
+            "Y": 151210.64,
+            "Z": -6568.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 68.500015,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Volca_Campfire08": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_B",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_B",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.99965733,
+            "W": 0.026177026,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 122254.76,
+            "Y": 162639.67,
+            "Z": -3411.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 176.99998,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Volca_Campfire09": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_B",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_B",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.9999999,
+            "W": 0.00054515357,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 108047.22,
+            "Y": 158330.75,
+            "Z": -1090.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": -179.93753,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Volca_Campfire10": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_B",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_B",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.97814757,
+            "W": 0.20791173,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 95789.0,
+            "Y": 150122.0,
+            "Z": 2439.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": -156.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Volca_Campfire11": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_B",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_B",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.6716857,
+            "W": 0.74083626,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 112435.86,
+            "Y": 153863.88,
+            "Z": 379.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": -84.3946,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Volca_Campfire12": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_B",
+        "BelongsFloorArea": "4N_B_1",
+        "floor": -1,
+        "AreaId": "4N_B",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.66913104,
+            "W": 0.74314445,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 101001.0,
+            "Y": 132020.0,
+            "Z": -16535.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 84.00007,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Volca_Campfire13": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_B",
+        "BelongsFloorArea": "4N_B_1",
+        "floor": -1,
+        "AreaId": "4N_B",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.999907,
+            "W": 0.013635137,
+            "IsNormalized": true,
+            "Size": 0.99999994,
+            "SizeSquared": 0.99999994
+          },
+          "Translation": {
+            "X": 93147.56,
+            "Y": 149013.55,
+            "Z": -18808.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": -178.43748,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Volca_Campfire14": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_B",
+        "BelongsFloorArea": "4N_B_1",
+        "floor": -1,
+        "AreaId": "4N_B",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.4999999,
+            "W": 0.86602545,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 97122.0,
+            "Y": 153997.0,
+            "Z": -17232.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 59.99999,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Lake_Campfire07": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_D",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_D",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.22219059,
+            "W": 0.97500324,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 173729.5,
+            "Y": -125614.09,
+            "Z": 18236.316
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Lake_Campfire01": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_D",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_D",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 114308.42,
+            "Y": -133727.88,
+            "Z": 2290.055
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Lake_Campfire02": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_D",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_D",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.37551934,
+            "W": 0.92681456,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 122612.23,
+            "Y": -146418.39,
+            "Z": 2429.7751
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Lake_Campfire03": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_D",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_D",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 131525.73,
+            "Y": -150447.44,
+            "Z": 3611.7908
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Lake_Campfire04": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_D",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_D",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 155167.61,
+            "Y": -143709.84,
+            "Z": -1224.5105
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Lake_Campfire05": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_D",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_D",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0042355997,
+            "Y": -0.024301382,
+            "Z": 0.6341264,
+            "W": 0.7728358,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 147228.02,
+            "Y": -127806.234,
+            "Z": 3067.6677
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Lake_Campfire06": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_D",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_D",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.55864733,
+            "W": 0.8294053,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 171001.66,
+            "Y": -127083.805,
+            "Z": 6098.909
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Lake_Campfire08": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_D",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_D",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 121942.29,
+            "Y": -106664.92,
+            "Z": 2354.9023
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Lake_Campfire09": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_D",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_D",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 130927.445,
+            "Y": -102937.83,
+            "Z": 3069.021
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Lake_Campfire10": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_D",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_D",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 134660.45,
+            "Y": -96993.87,
+            "Z": 4768.875
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Snow_Campfire01": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_C",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_C",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.67172575,
+            "W": 0.7407999,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -346791.4,
+            "Y": 99550.87,
+            "Z": -5878.299
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Snow_Campfire02": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_C",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_C",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.9231453,
+            "W": 0.3844512,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -342271.5,
+            "Y": 119096.32,
+            "Z": -10995.854
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Snow_Campfire03": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_C",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_C",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.804386,
+            "W": 0.594106,
+            "IsNormalized": true,
+            "Size": 0.9999994,
+            "SizeSquared": 0.9999988
+          },
+          "Translation": {
+            "X": -338590.28,
+            "Y": 130460.86,
+            "Z": -10756.946
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Snow_Campfire04": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_C",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_C",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.992225,
+            "W": 0.124454,
+            "IsNormalized": true,
+            "Size": 0.9999996,
+            "SizeSquared": 0.9999992
+          },
+          "Translation": {
+            "X": -342370.9,
+            "Y": 151647.7,
+            "Z": 4698.1934
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Snow_Campfire05": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_C",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_C",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.385363,
+            "W": 0.922765,
+            "IsNormalized": true,
+            "Size": 0.99999994,
+            "SizeSquared": 0.9999999
+          },
+          "Translation": {
+            "X": -317588.2,
+            "Y": 166632.66,
+            "Z": 7412.943
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Snow_Campfire06": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_C",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_C",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.147092,
+            "W": 0.989123,
+            "IsNormalized": true,
+            "Size": 1.0000001,
+            "SizeSquared": 1.0000004
+          },
+          "Translation": {
+            "X": -330373.66,
+            "Y": 158114.98,
+            "Z": 7750.6255
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Castle_Campfire01": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_E",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_E",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": -0.92388,
+            "W": -0.382683,
+            "IsNormalized": true,
+            "Size": 1.0000002,
+            "SizeSquared": 1.0000005
+          },
+          "Translation": {
+            "X": -165472.45,
+            "Y": -152542.89,
+            "Z": 8388.961
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Castle_Campfire02": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_E",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_E",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.461749,
+            "W": 0.887011,
+            "IsNormalized": true,
+            "Size": 1.0000004,
+            "SizeSquared": 1.0000007
+          },
+          "Translation": {
+            "X": -151941.02,
+            "Y": -141735.97,
+            "Z": 8877.869
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Castle_Campfire03": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_E",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_E",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.965926,
+            "W": 0.258819,
+            "IsNormalized": true,
+            "Size": 1.0000001,
+            "SizeSquared": 1.0000004
+          },
+          "Translation": {
+            "X": -140626.56,
+            "Y": -153153.84,
+            "Z": 9464.553
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Castle_Campfire04": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_E",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_E",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.9425406,
+            "W": 0.33409163,
+            "IsNormalized": true,
+            "Size": 0.99999994,
+            "SizeSquared": 0.99999994
+          },
+          "Translation": {
+            "X": -145694.98,
+            "Y": -144653.42,
+            "Z": 10061.879
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Castle_Campfire05": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_E",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_E",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.34795278,
+            "W": -0.93751204,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -137244.19,
+            "Y": -171124.7,
+            "Z": 17414.94
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Castle_Campfire06": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_E",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_E",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.300706,
+            "W": 0.953717,
+            "IsNormalized": true,
+            "Size": 1.0000001,
+            "SizeSquared": 1.0000002
+          },
+          "Translation": {
+            "X": -117380.555,
+            "Y": -143888.31,
+            "Z": 37121.688
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Castle_Campfire07": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_E",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_E",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.258819,
+            "W": 0.965926,
+            "IsNormalized": true,
+            "Size": 1.0000001,
+            "SizeSquared": 1.0000004
+          },
+          "Translation": {
+            "X": -156059.52,
+            "Y": -171152.95,
+            "Z": 13615.784
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Castle_Campfire08": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_E",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_E",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": -0.984808,
+            "W": -0.173648,
+            "IsNormalized": true,
+            "Size": 1.0000002,
+            "SizeSquared": 1.0000005
+          },
+          "Translation": {
+            "X": -146084.23,
+            "Y": -137016.48,
+            "Z": 9462.277
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Castle_Campfire09": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_E",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_E",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": -0.67519057,
+            "W": -0.73764336,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -113122.734,
+            "Y": -138518.05,
+            "Z": 59158.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Snow_Campfire07": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_C",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_C",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.153925,
+            "W": 0.988082,
+            "IsNormalized": true,
+            "Size": 0.99999946,
+            "SizeSquared": 0.9999989
+          },
+          "Translation": {
+            "X": -338861.03,
+            "Y": 144548.2,
+            "Z": 296.4564
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Snow_Campfire08": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_C",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_C",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.371345,
+            "W": 0.928495,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -323172.47,
+            "Y": 160770.44,
+            "Z": 4124.83
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Snow_Campfire09": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_C",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_C",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.484433,
+            "W": 0.874829,
+            "IsNormalized": true,
+            "Size": 1.0000005,
+            "SizeSquared": 1.0000011
+          },
+          "Translation": {
+            "X": -343359.53,
+            "Y": 114591.086,
+            "Z": -6338.393
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Snow_Campfire10": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_C",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_C",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.923603,
+            "W": 0.383351,
+            "IsNormalized": true,
+            "Size": 1.0000002,
+            "SizeSquared": 1.0000005
+          },
+          "Translation": {
+            "X": -336293.44,
+            "Y": 124669.61,
+            "Z": -7123.3247
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Snow_Campfire11": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_C",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_C",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.572687,
+            "W": 0.819774,
+            "IsNormalized": true,
+            "Size": 0.9999999,
+            "SizeSquared": 0.99999976
+          },
+          "Translation": {
+            "X": -327524.6,
+            "Y": 136079.02,
+            "Z": -4967.0674
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Snow_Campfire12": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_C",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_C",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.999253,
+            "W": 0.038641,
+            "IsNormalized": true,
+            "Size": 0.9999998,
+            "SizeSquared": 0.99999964
+          },
+          "Translation": {
+            "X": -325495.53,
+            "Y": 144831.86,
+            "Z": 464.86295
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Lake_Campfire00": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_D",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_D",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.6755902,
+            "W": 0.7372773,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 114907.72,
+            "Y": -123564.35,
+            "Z": 3411.8813
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": -85.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Lake_Campfire11": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_D",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_D",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.1899403,
+            "W": 0.98179567,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 145138.84,
+            "Y": -104369.64,
+            "Z": 4463.766
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerCampfire",
+        "bDefaultActived": false,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Portal_Village": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_Main",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_Main",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.9238795,
+            "W": 0.38268343,
+            "IsNormalized": true,
+            "Size": 0.99999994,
+            "SizeSquared": 0.99999994
+          },
+          "Translation": {
+            "X": -36048.117,
+            "Y": 125394.414,
+            "Z": 3232.1924
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerPortal",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Portal_Minigame_jump01": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_Main",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_Main",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 1096.2219,
+            "Y": 10587.665,
+            "Z": 1065.1453
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerPortal",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Portal_Minigame_jump02": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_Main",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_Main",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 778.0,
+            "Y": 1200.0,
+            "Z": 1185.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerPortal",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Portal_Minigame_Arena": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_Main",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_Main",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 2598.259,
+            "Y": -2627.6567,
+            "Z": 1833.5441
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerPortal",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Portal_Minigame_Bounce": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_Main",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_Main",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 515.77576,
+            "Y": -3538.236,
+            "Z": 2150.6357
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerPortal",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Portal_Minigame_Blacksheep": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_Main",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_Main",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -2294.1318,
+            "Y": 11806.005,
+            "Z": 1186.8367
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerPortal",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Portal_Minigame_Redfog": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_Main",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_Main",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 6403.0,
+            "Y": 2033.0,
+            "Z": 1285.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerPortal",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Portal_Minigame_Knight": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_Main",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_Main",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -7175.0,
+            "Y": 6920.0,
+            "Z": 1700.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerPortal",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Portal_Minigame_Chess": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_Main",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_Main",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.38268343,
+            "W": 0.9238795,
+            "IsNormalized": true,
+            "Size": 0.99999994,
+            "SizeSquared": 0.99999994
+          },
+          "Translation": {
+            "X": 852.0,
+            "Y": 7414.0,
+            "Z": 1182.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerPortal",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "FT_Portal_FloorChallenge": {
+        "BelongsLevel": "Maps_4N",
+        "BelongsGameplayAreaID": "4N_Main",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "4N_Main",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.9396926,
+            "W": -0.34202012,
+            "IsNormalized": true,
+            "Size": 0.99999994,
+            "SizeSquared": 0.99999994
+          },
+          "Translation": {
+            "X": -2643.2788,
+            "Y": -935.72186,
+            "Z": 2103.5493
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::FinalTowerPortal",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "volleyball_PVE": {
+        "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "006",
+        "Transform": {
+          "Rotation": {
+            "X": -0.0,
+            "Y": 0.0,
+            "Z": -0.8108073,
+            "W": 0.5853132,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": -257009.02,
+            "Y": 138435.84,
+            "Z": 2580.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": -108.34976,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::Common",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "volleyball_weekly": {
+        "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "002",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.9659258,
+            "W": 0.25881904,
+            "IsNormalized": true,
+            "Size": 0.99999994,
+            "SizeSquared": 0.99999994
+          },
+          "Translation": {
+            "X": -196717.11,
+            "Y": 217869.83,
+            "Z": 17200.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 150.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::Common",
+        "bDefaultActived": true,
+        "bCanRelive": false,
+        "ReliveLocation": {
+          "X": 0.0,
+          "Y": 0.0,
+          "Z": 0.0
+        },
+        "bCanTeleport": true,
+        "bOverrideTeleportTransform": false,
+        "TeleportTransformOverride": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.0,
+            "W": 1.0,
+            "IsNormalized": true,
+            "Size": 1.0,
+            "SizeSquared": 1.0
+          },
+          "Translation": {
+            "X": 0.0,
+            "Y": 0.0,
+            "Z": 0.0
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "UnlockFogID": "None",
+        "bHasPreQuestId": false,
+        "QuestId": "None",
+        "QuestValue": "None",
+        "bHasReward": false,
+        "RewardId": "None",
+        "ExtensionContent": null
+      },
+      "MotorboatCollect": {
+        "BelongsLevel": "XL_map_bigworld_test",
+        "BelongsGameplayAreaID": "None",
+        "BelongsFloorArea": "None",
+        "floor": 0,
+        "AreaId": "006",
+        "Transform": {
+          "Rotation": {
+            "X": 0.0,
+            "Y": -0.0,
+            "Z": 0.9659258,
+            "W": 0.25881904,
+            "IsNormalized": true,
+            "Size": 0.99999994,
+            "SizeSquared": 0.99999994
+          },
+          "Translation": {
+            "X": -285568.62,
+            "Y": 165807.92,
+            "Z": 2965.2134
+          },
+          "Scale3D": {
+            "X": 1.0,
+            "Y": 1.0,
+            "Z": 1.0
+          }
+        },
+        "CameraRotation": {
+          "Pitch": 0.0,
+          "Yaw": 0.0,
+          "Roll": 0.0
+        },
+        "TeleportPointType": "ETeleportPointType::Common",
         "bDefaultActived": true,
         "bCanRelive": false,
         "ReliveLocation": {

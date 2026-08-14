@@ -11,7 +11,7 @@ class Movie(Map, CharaOcr):
         logger.hr('GOTO MOVIE')
         for attempt in range(3):
             logger.info(f'Attempt {attempt + 1}/3')
-            self.teleport_to(44)
+            self.teleport_to(49)
             self.device.sleep((2, 2.2))
             self.device.move_forward(2)
             self.device.move_right(3)

@@ -16,13 +16,15 @@ Instance -> InfoHandler -> UI -> Map
 
 ### MapData 类
 
-加载大地图 `bigmap_total_hires.png` 和传送点数据 `DT_TeleportPoint.json`。
+加载大地图 `bigmap_total_hires.png` 和传送点数据 `DT_TeleportPoint.json`。当前大地图由
+`NTE_Assets/UI/minimap/13-bigworldmap-2/` 下 25×25 张 512×512 图块按行拼接，最终尺寸为
+12800×12800。
 
 ### 世界坐标系
 
-- `CENTER_X = -40532.004`
-- `CENTER_Y = 131446.33`
-- `EDGE_X = EDGE_Y = 687134.0`
+- `CENTER_X = 0.0`
+- `CENTER_Y = 80000.0`
+- `EDGE_X = EDGE_Y = 796461.8`
 
 ### 方法
 
@@ -35,7 +37,7 @@ Instance -> InfoHandler -> UI -> Map
 
 ### 常量
 
-- `SCALE = 0.1736` — 小地图缩放比例
+- `SCALE = 0.1448791` — 新版大地图缩放比例
 - `MIN_SCORE = 0.2` — 最低匹配分数
 - `EARLY_SCORE = 0.6` — 早停分数
 
