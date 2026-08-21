@@ -4,9 +4,10 @@ interface SwitchProps {
   label?: string;
   ariaLabel?: string;
   compact?: boolean;
+  disabled?: boolean;
 }
 
-export function Switch({ checked, onChange, label, ariaLabel, compact = false }: SwitchProps) {
+export function Switch({ checked, onChange, label, ariaLabel, compact = false, disabled = false }: SwitchProps) {
   return (
     <label className={`switch-control${compact ? ' is-compact' : ''}`}>
       {label && <span className="switch-label">{label}</span>}
@@ -14,6 +15,7 @@ export function Switch({ checked, onChange, label, ariaLabel, compact = false }:
         aria-label={ariaLabel ?? label}
         icons
         selected={checked}
+        disabled={disabled}
         onChange={(event) => onChange(Boolean((event.currentTarget as HTMLElement & { selected?: boolean }).selected))}
       />
     </label>

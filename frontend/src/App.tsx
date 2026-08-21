@@ -322,15 +322,17 @@ export function App() {
               const running = bridge.scheduler.activePlanId === plan.id;
               const title = taskTitleById[plan.taskId] ?? plan.taskId;
               const completedToday = plan.last_run_date === today;
+              const skippedToday = plan.skip_date === today;
+              const enabled = plan.enabled !== false;
               return (
-                <article className="plan-item" key={plan.id}>
+                <article className={`plan-item${enabled ? '' : ' is-disabled'}`} key={plan.id}>
                   <div className="plan-main">
                     <h3>{title}</h3>
                     <div className="plan-meta">
                       <span className="plan-meta-item">时间 {plan.time}</span>
                       <span className="plan-meta-item">优先级 {plan.priority}</span>
-                      <span className={`plan-meta-item plan-done-state ${completedToday ? 'is-done' : 'is-pending'}`}>
-                        {completedToday ? '今日已完成' : '今日未完成'}
+                      <span className={`plan-meta-item plan-done-state ${completedToday ? 'is-done' : skippedToday ? 'is-skipped' : 'is-pending'}`}>
+                        {completedToday ? '今日已完成' : skippedToday ? '今日已跳过' : '今日未完成'}
                       </span>
                     </div>
                     {plan.values && Object.keys(plan.values).length > 0 && (
@@ -347,6 +349,14 @@ export function App() {
                     )}
                   </div>
                   <div className="plan-actions">
+                    <Switch
+                      checked={enabled}
+                      onChange={(checked) => bridge.setSchedulePlanEnabled(plan.id, checked)}
+                      label="启用"
+                      ariaLabel={`${enabled ? '关闭' : '开启'}${title}计划`}
+                      compact
+                      disabled={running}
+                    />
                     {running && (
                       <span className="plan-running-state">
                         <MaterialIcon name="progress_activity" />
@@ -361,6 +371,14 @@ export function App() {
                     >
                       <MaterialIcon name="play_arrow" />
                     </md-icon-button>
+                    <md-text-button
+                      aria-label={`跳过${title}今日计划`}
+                      disabled={running || completedToday || skippedToday}
+                      title={skippedToday ? `${title}今日已跳过` : `跳过${title}今日计划`}
+                      onClick={() => bridge.skipSchedulePlanToday(plan.id)}
+                    >
+                      跳过当日
+                    </md-text-button>
                     <md-icon-button
                       aria-label={`配置${title}计划`}
                       disabled={running}

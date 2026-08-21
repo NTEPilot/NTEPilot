@@ -1,4 +1,5 @@
 import time
+from functools import wraps
 
 from NTEPilot.map.map import Map
 from NTEPilot.team.team import Team
@@ -10,7 +11,22 @@ from template.combat import *
 from template.control import *
 from utils.image import limit_in
 from utils.logger import logger
-from utils.exceptions import ScriptError
+from utils.timer import Timer
+
+class CombatTimeoutError(Exception):
+    pass
+
+def _retry_combat(func):
+    @wraps(func)
+    def wrapper(self, *args, **kwargs):
+        while True:
+            try:
+                func(self, *args, **kwargs)
+                break
+            except CombatTimeoutError:
+                logger.warning('Combat timeout. Retrying...')
+                self.retry_combat()
+    return wrapper
 
 class Combat(Map, Team, Ocr):
     SELECTIONS = {
@@ -67,11 +83,12 @@ class Combat(Map, Team, Ocr):
         }
     }
 
+    @_retry_combat
     def combat(self, teleport_target, selection, double):
         self.teleport_to(teleport_target)
         self.device.sleep((1, 1.2))
         self.init_team()
-        self.device.move_forward(lambda: self.wait_until_appear(INTERACT))
+        self.device.move_forward(self.until_with_timeout(INTERACT))
         self.device.click(INTERACT)
         self.device.sleep((1, 1.2))
         self.device.click(self.SELECTIONS[selection])
@@ -81,6 +98,17 @@ class Combat(Map, Team, Ocr):
         self.device.sleep((0.1, 0.2))
         self.start_combat()
         self.claim_reward(double)
+
+    def until_with_timeout(self, template, similarity=0.85, seconds=20):
+        def wrapper():
+            timer = Timer(seconds)
+            while not timer.reached:
+                self.device.screenshot()
+                if self.appear(template, similarity=similarity):
+                    break
+            if timer.reached:
+                raise CombatTimeoutError('Unable to reach chest')
+        return wrapper
 
     def start_combat(self):
         logger.hr('START COMBAT', level=2)
@@ -135,7 +163,7 @@ class Combat(Map, Team, Ocr):
 
             if not self.appear(CHEST, similarity=0.65):
                 logger.info(f'Chest marker not found, scanning, attempt {attempt}/500')
-                self.device.move_forward(lambda: self.wait_until_appear(CHEST, similarity=0.65))
+                self.device.move_forward(self.until_with_timeout(CHEST, 0.65))
                 continue
 
             chest_x, chest_y = CHEST.pos
@@ -160,8 +188,7 @@ class Combat(Map, Team, Ocr):
 
             self.device.drag(drag_start, (end_x, drag_start[1]))
 
-        self.restart_app()
-        raise ScriptError('Unable to center chest marker')
+        raise CombatTimeoutError('Unable to center chest marker')
 
     def run(self):
         logger.hr('COMBAT', level=1)
@@ -178,3 +205,12 @@ class Combat(Map, Team, Ocr):
             else:
                 self.combat(self.CHINESE_INFO[position]['teleport_id'], self.CHINESE_INFO[position]['selections'][selection], False)
                 number -= 1
+
+    def retry_combat(self):
+        self.device.screenshot()
+        if self.appear_then_click(COMBAT_EXIT):
+            self.wait_until_appear_then_click(COMBAT_EXIT_CONFIRM)
+            time.sleep(3)
+            self.device.screenshot()
+        if not self.appear(CHAT):
+            self.restart_app()

@@ -529,6 +529,10 @@ button {
   min-width: 0;
 }
 
+.plan-item.is-disabled .plan-main {
+  opacity: 0.62;
+}
+
 .plan-main h3,
 .scheduler-task h4 {
   margin: 0;
@@ -581,6 +585,12 @@ button {
   border-color: var(--app-plan-pending-border);
 }
 
+.plan-done-state.is-skipped {
+  color: var(--md-sys-color-on-surface-variant);
+  background: var(--md-sys-color-surface-container-highest);
+  border-color: var(--md-sys-color-outline);
+}
+
 .plan-overrides {
   display: flex;
   flex-wrap: wrap;
@@ -606,6 +616,8 @@ button {
   display: flex;
   align-items: center;
   gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .plan-running-state {

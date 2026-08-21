@@ -2,7 +2,7 @@ import time
 
 from NTEPilot.instance import Instance
 from template import Template
-from template.ui import START_1, START_2, START_3, CHAT, MONTH_CARD, GET_ITEM, SAFE_AREA
+from template.ui import START_1, START_2, START_3, START_4, CHAT, MONTH_CARD, GET_ITEM, SAFE_AREA
 
 from utils.logger import logger
 
@@ -28,7 +28,7 @@ class InfoHandler(Instance):
             self.device.click(template)
         return appear
 
-    def wait_until_appear(self, template: Template, offset=0, similarity=0.85, skip_first_screenshot=False):
+    def wait_until_appear(self, template: Template, offset=10, similarity=0.85, skip_first_screenshot=False):
         while True:
             if skip_first_screenshot:
                 skip_first_screenshot = False
@@ -37,11 +37,11 @@ class InfoHandler(Instance):
             if self.appear(template, offset=offset, similarity=similarity):
                 break
 
-    def wait_until_appear_then_click(self, template: Template, offset=0, similarity=0.85):
+    def wait_until_appear_then_click(self, template: Template, offset=10, similarity=0.85):
         self.wait_until_appear(template, offset=offset, similarity=similarity)
         self.device.click(template)
 
-    def wait_until_disappear(self, template: Template, offset=0, similarity=0.85):
+    def wait_until_disappear(self, template: Template, offset=10, similarity=0.85):
         while True:
             self.device.screenshot()
             if not self.appear(template, offset=offset, similarity=similarity):
@@ -61,6 +61,9 @@ class InfoHandler(Instance):
             self.device.click(START_2)
             return True
         if self.appear(START_3):
+            self.device.click(SAFE_AREA)
+            return True
+        if self.appear(START_4):
             self.device.click(SAFE_AREA)
             return True
         return False

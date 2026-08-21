@@ -250,6 +250,18 @@ class NTEPilotWebSocketApp:
                 result = self.scheduler.remove_plan(instance, str(message.get("planId", "")))
                 await self.send_result(websocket, request_id, True, result)
                 return
+            if message_type == "scheduler.plan.set_enabled":
+                result = self.scheduler.set_plan_enabled(
+                    instance,
+                    str(message.get("planId", "")),
+                    bool(message.get("enabled")),
+                )
+                await self.send_result(websocket, request_id, True, result)
+                return
+            if message_type == "scheduler.plan.skip_today":
+                result = self.scheduler.skip_plan_today(instance, str(message.get("planId", "")))
+                await self.send_result(websocket, request_id, True, result)
+                return
             if message_type == "scheduler.plan.run":
                 result = self.scheduler.run_plan(instance, str(message.get("planId", "")))
                 await self.send_result(websocket, request_id, True, result)

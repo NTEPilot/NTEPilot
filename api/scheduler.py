@@ -93,6 +93,7 @@ class Scheduler:
             "taskId": task_id,
             "time": self._normalize_time(run_time),
             "priority": int(priority),
+            "enabled": True,
             "values": self._filter_plan_values(task_id, values),
         }
         plans = self._plans(config.name)
@@ -129,6 +130,43 @@ class Scheduler:
         config.save()
         self._broadcast_state(config.name)
         return {"instance": config.name, "removed": plan_id}
+
+    def set_plan_enabled(self, instance: str, plan_id: str, enabled: bool) -> dict[str, Any]:
+        config = self.config_store.get(instance)
+        plans = self._plans(config.name)
+        plan = next((item for item in plans if item.get("id") == plan_id), None)
+        if plan is None:
+            raise ValueError(f"Unknown plan: {plan_id}")
+
+        plan["enabled"] = bool(enabled)
+        config["scheduler.plans"] = plans
+        config.save()
+
+        if not enabled and self._active_plan.get(config.name) == plan_id:
+            try:
+                self.task_runner.stop(config.name)
+            except RuntimeError:
+                pass
+
+        self._broadcast_state(config.name)
+        return {"instance": config.name, "planId": plan_id, "enabled": bool(enabled)}
+
+    def skip_plan_today(self, instance: str, plan_id: str) -> dict[str, Any]:
+        config = self.config_store.get(instance)
+        if self._active_plan.get(config.name) == plan_id:
+            raise ValueError("Cannot skip a running plan")
+
+        today = datetime.now().date().isoformat()
+        plans = self._plans(config.name)
+        plan = next((item for item in plans if item.get("id") == plan_id), None)
+        if plan is None:
+            raise ValueError(f"Unknown plan: {plan_id}")
+
+        plan["skip_date"] = today
+        config["scheduler.plans"] = plans
+        config.save()
+        self._broadcast_state(config.name)
+        return {"instance": config.name, "planId": plan_id, "skipDate": today}
 
     def run_plan(self, instance: str, plan_id: str) -> dict[str, Any]:
         config = self.config_store.get(instance)
@@ -200,7 +238,9 @@ class Scheduler:
         due = [
             plan
             for plan in self._plans(config.name)
-            if plan.get("last_run_date") != today
+            if bool(plan.get("enabled", True))
+            and plan.get("last_run_date") != today
+            and plan.get("skip_date") != today
             and str(plan.get("time", "23:59")) <= current_time
         ]
         due.sort(key=lambda item: (-int(item.get("priority", 0)), str(item.get("time", "00:00")), str(item.get("id", ""))))
@@ -269,8 +309,7 @@ class Scheduler:
         return status
 
     def _finish_forced_plan(self, instance: str, plan_id: str, handle: Any) -> None:
-        if self._finish_plan(instance, plan_id, handle) == "done":
-            self.task_runner.close_app(instance)
+        self._finish_plan(instance, plan_id, handle)
 
     def _mark_plan_success(self, instance: str, plan_id: str) -> None:
         config = self.config_store.get(instance)
@@ -309,10 +348,13 @@ class Scheduler:
             "taskId": str(plan.get("taskId") or ""),
             "time": str(plan.get("time") or "00:00"),
             "priority": int(plan.get("priority", 0)),
+            "enabled": bool(plan.get("enabled", True)),
             "values": copy.deepcopy(plan.get("values") if isinstance(plan.get("values"), dict) else {}),
         }
         if plan.get("last_run_date"):
             cleaned["last_run_date"] = str(plan["last_run_date"])
+        if plan.get("skip_date"):
+            cleaned["skip_date"] = str(plan["skip_date"])
         return cleaned
 
     @staticmethod

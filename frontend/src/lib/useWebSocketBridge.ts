@@ -321,6 +321,23 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
     send({ type: 'scheduler.plan.remove', requestId, instance: selectedInstanceRef.current, planId });
   }, [send]);
 
+  const setSchedulePlanEnabled = useCallback((planId: string, enabled: boolean) => {
+    const requestId = crypto.randomUUID();
+    send({
+      type: 'scheduler.plan.set_enabled',
+      requestId,
+      instance: selectedInstanceRef.current,
+      planId,
+      enabled,
+    });
+  }, [send]);
+
+  const skipSchedulePlanToday = useCallback((planId: string) => {
+    const requestId = crypto.randomUUID();
+    send({ type: 'scheduler.plan.skip_today', requestId, instance: selectedInstanceRef.current, planId });
+    appendLog({ level: 'info', source: '前端', message: `已请求跳过今日计划：${selectedInstanceRef.current}/${planId}` });
+  }, [appendLog, send]);
+
   const runSchedulePlan = useCallback((planId: string) => {
     const requestId = crypto.randomUUID();
     send({ type: 'scheduler.plan.run', requestId, instance: selectedInstanceRef.current, planId });
@@ -366,6 +383,8 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
     addSchedulePlan,
     updateSchedulePlan,
     removeSchedulePlan,
+    setSchedulePlanEnabled,
+    skipSchedulePlanToday,
     runSchedulePlan,
   };
 }

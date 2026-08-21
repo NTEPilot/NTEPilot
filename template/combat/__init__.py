@@ -3,6 +3,8 @@ from template.load_template import load_template
 CHEST = load_template("./template/combat/assets/CHEST.png", rect=(0, 0, 1280, 720))
 CLAIM_DOUBLE = load_template("./template/combat/assets/CLAIM_DOUBLE.png")
 CLAIM_SINGLE = load_template("./template/combat/assets/CLAIM_SINGLE.png")
+COMBAT_EXIT = load_template("./template/combat/assets/COMBAT_EXIT.png")
+COMBAT_EXIT_CONFIRM = load_template("./template/combat/assets/COMBAT_EXIT_CONFIRM.png")
 ENTER = load_template("./template/combat/assets/ENTER.png")
 EXIT = load_template("./template/combat/assets/EXIT.png")
 FOCUS_POINT = load_template("./template/combat/assets/FOCUS_POINT.png", rect=(0, 0, 1280, 720))
