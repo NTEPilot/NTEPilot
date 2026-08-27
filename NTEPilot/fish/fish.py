@@ -76,24 +76,35 @@ class Fish(UI):
                     continue
 
         while True:
-            self.device.click(HOOK)
-            self.device.sleep((0.1, 0.2))
             self.device.screenshot()
             
             if self.appear(FISH_BAR_ICON):
                 self.fish()
+                continue
 
             if self.appear(NEED_BAIT):
                 if not self.config["tools.fish.buy_bait"]:
                     logger.info('Need bait, stopping because BUY_BAIT is disabled')
                     break
                 self.buy_bait()
+                continue
 
             if self.appear(FULL_STORAGE):
                 if not self.config["tools.fish.sell_fish"]:
                     logger.info('Fish storage full, stopping because SELL_FISH is disabled')
                     break
                 self.sell_fish()
+                continue
+
+            if self.appear(HOOK_2):
+                self.device.click(HOOK_2)
+                self.device.sleep((0.1, 0.2))
+                continue
+
+            if self.appear(HOOK):
+                self.device.click(HOOK)
+                self.device.sleep((0.1, 0.2))
+                continue
 
     def buy_bait(self):
         logger.hr('BUY BAIT')
