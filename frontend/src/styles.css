@@ -495,7 +495,7 @@ button {
 .scheduler-toolbar {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 16px;
   min-height: 56px;
   padding: 10px 14px;
@@ -503,6 +503,12 @@ button {
   background: var(--md-sys-color-surface-container-low);
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: var(--app-radius-small);
+}
+
+.scheduler-toolbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .plan-list {
@@ -585,10 +591,24 @@ button {
   border-color: var(--app-plan-pending-border);
 }
 
-.plan-done-state.is-skipped {
-  color: var(--md-sys-color-on-surface-variant);
-  background: var(--md-sys-color-surface-container-highest);
-  border-color: var(--md-sys-color-outline);
+.plan-done-toggle {
+  appearance: none;
+  cursor: pointer;
+  font: inherit;
+  transition: filter 120ms ease, box-shadow 120ms ease;
+}
+
+.plan-done-toggle:hover:not(:disabled) {
+  filter: brightness(0.96);
+}
+
+.plan-done-toggle:focus-visible {
+  outline: 2px solid var(--md-sys-color-primary);
+  outline-offset: 2px;
+}
+
+.plan-done-toggle:disabled {
+  cursor: default;
 }
 
 .plan-overrides {

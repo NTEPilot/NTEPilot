@@ -151,10 +151,10 @@ class Scheduler:
         self._broadcast_state(config.name)
         return {"instance": config.name, "planId": plan_id, "enabled": bool(enabled)}
 
-    def skip_plan_today(self, instance: str, plan_id: str) -> dict[str, Any]:
+    def set_plan_completed_today(self, instance: str, plan_id: str, completed: bool) -> dict[str, Any]:
         config = self.config_store.get(instance)
         if self._active_plan.get(config.name) == plan_id:
-            raise ValueError("Cannot skip a running plan")
+            raise ValueError("Cannot change the completion state of a running plan")
 
         today = datetime.now().date().isoformat()
         plans = self._plans(config.name)
@@ -162,11 +162,15 @@ class Scheduler:
         if plan is None:
             raise ValueError(f"Unknown plan: {plan_id}")
 
-        plan["skip_date"] = today
+        if completed:
+            plan["last_run_date"] = today
+        elif plan.get("last_run_date") == today:
+            plan.pop("last_run_date", None)
+
         config["scheduler.plans"] = plans
         config.save()
         self._broadcast_state(config.name)
-        return {"instance": config.name, "planId": plan_id, "skipDate": today}
+        return {"instance": config.name, "planId": plan_id, "completed": bool(completed)}
 
     def run_plan(self, instance: str, plan_id: str) -> dict[str, Any]:
         config = self.config_store.get(instance)
@@ -180,6 +184,23 @@ class Scheduler:
         )
         watcher.start()
         return {"instance": config.name, "planId": plan_id, "taskId": handle.task_id, "status": "running"}
+
+    def run_all_plans(self, instance: str) -> dict[str, Any]:
+        config = self.config_store.get(instance)
+        plans = [plan for plan in self._plans(config.name) if bool(plan.get("enabled", True))]
+        if not plans:
+            return {"instance": config.name, "planIds": [], "status": "done"}
+
+        handle = self._start_plan(config.name, plans[0])
+        plan_ids = [str(plan["id"]) for plan in plans]
+        watcher = threading.Thread(
+            target=self._finish_forced_plans,
+            args=(config.name, plan_ids, handle),
+            name=f"NTEPilotSchedulerRunAll-{config.name}",
+            daemon=True,
+        )
+        watcher.start()
+        return {"instance": config.name, "planIds": plan_ids, "status": "running"}
 
     def _loop(self) -> None:
         while not self._stop_event.is_set():
@@ -240,7 +261,6 @@ class Scheduler:
             for plan in self._plans(config.name)
             if bool(plan.get("enabled", True))
             and plan.get("last_run_date") != today
-            and plan.get("skip_date") != today
             and str(plan.get("time", "23:59")) <= current_time
         ]
         due.sort(key=lambda item: (-int(item.get("priority", 0)), str(item.get("time", "00:00")), str(item.get("id", ""))))
@@ -311,6 +331,22 @@ class Scheduler:
     def _finish_forced_plan(self, instance: str, plan_id: str, handle: Any) -> None:
         self._finish_plan(instance, plan_id, handle)
 
+    def _finish_forced_plans(self, instance: str, plan_ids: list[str], handle: Any) -> None:
+        for index, plan_id in enumerate(plan_ids):
+            if self._finish_plan(instance, plan_id, handle) != "done":
+                return
+            if index + 1 >= len(plan_ids):
+                self.task_runner.close_app(instance)
+                return
+
+            try:
+                plan = self._get_plan(instance, plan_ids[index + 1])
+                handle = self._start_plan(instance, plan)
+            except Exception as exc:
+                logger.error("Failed to continue running all plans for %s: %s", instance, exc)
+                logger.debug(traceback.format_exc())
+                return
+
     def _mark_plan_success(self, instance: str, plan_id: str) -> None:
         config = self.config_store.get(instance)
         today = datetime.now().date().isoformat()
@@ -353,8 +389,6 @@ class Scheduler:
         }
         if plan.get("last_run_date"):
             cleaned["last_run_date"] = str(plan["last_run_date"])
-        if plan.get("skip_date"):
-            cleaned["skip_date"] = str(plan["skip_date"])
         return cleaned
 
     @staticmethod

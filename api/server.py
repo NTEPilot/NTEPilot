@@ -258,12 +258,20 @@ class NTEPilotWebSocketApp:
                 )
                 await self.send_result(websocket, request_id, True, result)
                 return
-            if message_type == "scheduler.plan.skip_today":
-                result = self.scheduler.skip_plan_today(instance, str(message.get("planId", "")))
+            if message_type == "scheduler.plan.set_completed_today":
+                result = self.scheduler.set_plan_completed_today(
+                    instance,
+                    str(message.get("planId", "")),
+                    bool(message.get("completed")),
+                )
                 await self.send_result(websocket, request_id, True, result)
                 return
             if message_type == "scheduler.plan.run":
                 result = self.scheduler.run_plan(instance, str(message.get("planId", "")))
+                await self.send_result(websocket, request_id, True, result)
+                return
+            if message_type == "scheduler.plan.run_all":
+                result = self.scheduler.run_all_plans(instance)
                 await self.send_result(websocket, request_id, True, result)
                 return
 

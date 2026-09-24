@@ -332,16 +332,32 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
     });
   }, [send]);
 
-  const skipSchedulePlanToday = useCallback((planId: string) => {
+  const setSchedulePlanCompletedToday = useCallback((planId: string, completed: boolean) => {
     const requestId = crypto.randomUUID();
-    send({ type: 'scheduler.plan.skip_today', requestId, instance: selectedInstanceRef.current, planId });
-    appendLog({ level: 'info', source: '前端', message: `已请求跳过今日计划：${selectedInstanceRef.current}/${planId}` });
+    send({
+      type: 'scheduler.plan.set_completed_today',
+      requestId,
+      instance: selectedInstanceRef.current,
+      planId,
+      completed,
+    });
+    appendLog({
+      level: 'info',
+      source: '前端',
+      message: `已请求将今日计划标记为${completed ? '已完成' : '未完成'}：${selectedInstanceRef.current}/${planId}`,
+    });
   }, [appendLog, send]);
 
   const runSchedulePlan = useCallback((planId: string) => {
     const requestId = crypto.randomUUID();
     send({ type: 'scheduler.plan.run', requestId, instance: selectedInstanceRef.current, planId });
     appendLog({ level: 'info', source: '前端', message: `已请求强制运行计划：${selectedInstanceRef.current}/${planId}` });
+  }, [appendLog, send]);
+
+  const runAllSchedulePlans = useCallback(() => {
+    const requestId = crypto.randomUUID();
+    send({ type: 'scheduler.plan.run_all', requestId, instance: selectedInstanceRef.current });
+    appendLog({ level: 'info', source: '前端', message: `已请求运行全部计划：${selectedInstanceRef.current}` });
   }, [appendLog, send]);
 
   useEffect(() => {
@@ -384,7 +400,8 @@ export function useWebSocketBridge(initialUrl = defaultWsUrl()) {
     updateSchedulePlan,
     removeSchedulePlan,
     setSchedulePlanEnabled,
-    skipSchedulePlanToday,
+    setSchedulePlanCompletedToday,
     runSchedulePlan,
+    runAllSchedulePlans,
   };
 }

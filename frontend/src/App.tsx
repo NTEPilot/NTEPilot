@@ -300,15 +300,25 @@ export function App() {
         </aside>
 
         <section className="plan-board" aria-label="每日计划">
-          <div className="scheduler-toolbar" style={{ justifyContent: 'space-between' }}>
+          <div className="scheduler-toolbar">
             <div className="tool-title">
               <h3>总开关</h3>
             </div>
-            <Switch
-              checked={bridge.scheduler.enabled}
-              onChange={bridge.setSchedulerEnabled}
-              ariaLabel="计划器总开关"
-            />
+            <div className="scheduler-toolbar-actions">
+              <md-filled-button
+                disabled={hasActiveTask || !sortedPlans.some((plan) => plan.enabled !== false)}
+                hasIcon
+                onClick={bridge.runAllSchedulePlans}
+              >
+                <MaterialIcon name="play_arrow" slot="icon" filled />
+                运行全部
+              </md-filled-button>
+              <Switch
+                checked={bridge.scheduler.enabled}
+                onChange={bridge.setSchedulerEnabled}
+                ariaLabel="计划器总开关"
+              />
+            </div>
           </div>
 
           <div className="plan-list" ref={planListRef}>
@@ -322,7 +332,6 @@ export function App() {
               const running = bridge.scheduler.activePlanId === plan.id;
               const title = taskTitleById[plan.taskId] ?? plan.taskId;
               const completedToday = plan.last_run_date === today;
-              const skippedToday = plan.skip_date === today;
               const enabled = plan.enabled !== false;
               return (
                 <article className={`plan-item${enabled ? '' : ' is-disabled'}`} key={plan.id}>
@@ -331,9 +340,15 @@ export function App() {
                     <div className="plan-meta">
                       <span className="plan-meta-item">时间 {plan.time}</span>
                       <span className="plan-meta-item">优先级 {plan.priority}</span>
-                      <span className={`plan-meta-item plan-done-state ${completedToday ? 'is-done' : skippedToday ? 'is-skipped' : 'is-pending'}`}>
-                        {completedToday ? '今日已完成' : skippedToday ? '今日已跳过' : '今日未完成'}
-                      </span>
+                      <button
+                        className={`plan-meta-item plan-done-state plan-done-toggle ${completedToday ? 'is-done' : 'is-pending'}`}
+                        disabled={running}
+                        onClick={() => bridge.setSchedulePlanCompletedToday(plan.id, !completedToday)}
+                        title={`点击标记为今日${completedToday ? '未完成' : '已完成'}`}
+                        type="button"
+                      >
+                        {completedToday ? '今日已完成' : '今日未完成'}
+                      </button>
                     </div>
                     {plan.values && Object.keys(plan.values).length > 0 && (
                       <div className="plan-overrides">
@@ -371,14 +386,6 @@ export function App() {
                     >
                       <MaterialIcon name="play_arrow" />
                     </md-icon-button>
-                    <md-text-button
-                      aria-label={`跳过${title}今日计划`}
-                      disabled={running || completedToday || skippedToday}
-                      title={skippedToday ? `${title}今日已跳过` : `跳过${title}今日计划`}
-                      onClick={() => bridge.skipSchedulePlanToday(plan.id)}
-                    >
-                      跳过当日
-                    </md-text-button>
                     <md-icon-button
                       aria-label={`配置${title}计划`}
                       disabled={running}

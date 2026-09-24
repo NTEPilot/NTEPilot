@@ -61,7 +61,6 @@ export interface SchedulerPlan {
   priority: number;
   enabled: boolean;
   last_run_date?: string;
-  skip_date?: string;
   values?: Record<string, string | number | boolean>;
 }
 
@@ -200,11 +199,18 @@ export interface SchedulerPlanSetEnabledMessage {
   enabled: boolean;
 }
 
-export interface SchedulerPlanSkipTodayMessage {
-  type: 'scheduler.plan.skip_today';
+export interface SchedulerPlanSetCompletedTodayMessage {
+  type: 'scheduler.plan.set_completed_today';
   requestId: string;
   instance: string;
   planId: string;
+  completed: boolean;
+}
+
+export interface SchedulerPlanRunAllMessage {
+  type: 'scheduler.plan.run_all';
+  requestId: string;
+  instance: string;
 }
 
 export type FrontendMessage =
@@ -223,5 +229,6 @@ export type FrontendMessage =
   | SchedulerPlanUpdateMessage
   | SchedulerPlanRemoveMessage
   | SchedulerPlanSetEnabledMessage
-  | SchedulerPlanSkipTodayMessage
-  | SchedulerPlanRunMessage;
+  | SchedulerPlanSetCompletedTodayMessage
+  | SchedulerPlanRunMessage
+  | SchedulerPlanRunAllMessage;
