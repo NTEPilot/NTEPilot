@@ -15,7 +15,7 @@ class CharaOcr(Ocr):
         elif result == '小':
             logger.info('Detected 小, correcting to 小吱')
             result = '小吱'
-        elif result == '小歧'
+        elif result == '小歧':
             logger.info('Detected 小歧, correcting to 小吱')
             result = '小吱'
 

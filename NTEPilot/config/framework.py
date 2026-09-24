@@ -289,22 +289,7 @@ CONFIG = {
             "label": "领房产资源",
             "description": None,
             "runner": "NTEPilot.house.claim_house:ClaimHouse",
-            "config": {
-                "house": {
-                    "label": "房产选择",
-                    "type": "select",
-                    "description": None,
-                    "options": HOUSE_OPTIONS,
-                    "default": "维纳公寓",
-                },
-                "index": {
-                    "label": "家具编号",
-                    "type": "integer",
-                    "description": "家具页面拉到最上面从上往下数领第几个（1-4）",
-                    "range": (1, 4, 1),
-                    "default": 1,
-                },
-            },
+            "config": {},
         },
     },
 }
